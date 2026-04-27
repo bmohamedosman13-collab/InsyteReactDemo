@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insyte Demo — Visual Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --plum: #2D1B4E;
+    --plum-deep: #0F0A1F;
+    --plum-mid: #1A1230;
+    --accent: #B4A4E8;
+    --accent-soft: #9F8FCF;
+    --text-primary: rgba(255,255,255,0.95);
+    --text-secondary: rgba(255,255,255,0.65);
+    --text-tertiary: rgba(255,255,255,0.4);
+    --border-subtle: rgba(255,255,255,0.08);
+    --border-active: rgba(255,255,255,0.15);
+    --card-bg: rgba(255,255,255,0.03);
+    --card-bg-hover: rgba(255,255,255,0.05);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--plum-deep);
+    color: var(--text-primary);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background atmosphere */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1200px;
+    height: 800px;
+    background: radial-gradient(ellipse at center, rgba(45,27,78,0.45) 0%, rgba(107,79,186,0.15) 30%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(40px);
+  }
+
+  .walkthrough-header {
+    position: relative;
+    z-index: 10;
+    padding: 60px 40px 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 60px;
+  }
+
+  .walkthrough-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .walkthrough-header p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .screen-section {
+    position: relative;
+    z-index: 10;
+    max-width: 1280px;
+    margin: 0 auto 80px;
+    padding: 0 40px;
+  }
+
+  .screen-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .screen-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .screen-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .screen-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 24px;
+    max-width: 700px;
+  }
+
+  /* Browser frame */
+  .browser-frame {
+    background: var(--plum-mid);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+
+  .browser-bar {
+    background: rgba(0,0,0,0.3);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .browser-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .browser-url {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-family: 'DM Sans', monospace;
+  }
+
+  .screen-content {
+    background: var(--plum-deep);
+    position: relative;
+    min-height: 480px;
+    padding: 32px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .screen-content::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(45,27,78,0.6) 0%, transparent 70%);
+    pointer-events: none;
+    filter: blur(30px);
+  }
+
+  /* Top nav for in-app screens */
+  .app-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .app-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .app-logo-mark {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    position: relative;
+  }
+
+  .app-logo-mark::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+  }
+
+  .nav-pills {
+    display: flex;
+    gap: 8px;
+    padding: 4px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+  }
+
+  .nav-pill {
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .nav-pill.active {
+    background: var(--card-bg-hover);
+    color: var(--text-primary);
+  }
+
+  /* SCREEN 1: Picker */
+  .picker-container {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 40px 0;
+  }
+
+  .picker-eyebrow {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .picker-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 400;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .picker-subtitle {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin-bottom: 48px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .picker-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .picker-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 32px 28px;
+    text-align: left;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .picker-card:hover {
+    border-color: var(--border-active);
+    background: var(--card-bg-hover);
+    transform: translateY(-2px);
+  }
+
+  .picker-card-icon {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .picker-card-icon-inner {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--accent);
+    border-radius: 4px;
+  }
+
+  .picker-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .picker-card-desc {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .picker-card-cta {
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* SCREEN 2: Workbench layout */
+  .workbench-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .sidebar {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 20px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    height: fit-content;
+  }
+
+  .sidebar-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+  }
+
+  .project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .project-item {
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .project-item:hover {
+    background: var(--card-bg-hover);
+    color: var(--text-primary);
+  }
+
+  .project-item.active {
+    background: rgba(180,164,232,0.08);
+    color: var(--accent);
+    border-left: 2px solid var(--accent);
+    padding-left: 10px;
+  }
+
+  .project-item-meta {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+  }
+
+  .new-project-btn {
+    margin-top: 16px;
+    padding: 10px 12px;
+    background: rgba(180,164,232,0.08);
+    border: 1px dashed var(--border-active);
+    border-radius: 6px;
+    color: var(--accent);
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .main-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .project-title-block h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .project-title-block p {
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+
+  .project-stats {
+    display: flex;
+    gap: 24px;
+  }
+
+  .stat {
+    text-align: right;
+  }
+
+  .stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+  }
+
+  /* Document table */
+  .doc-table {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    overflow: hidden;
+  }
+
+  .doc-table-header {
+    padding: 14px 20px;
+    display: grid;
+    grid-template-columns: 1fr 140px 100px 120px;
+    gap: 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .doc-row {
+    padding: 14px 20px;
+    display: grid;
+    grid-template-columns: 1fr 140px 100px 120px;
+    gap: 16px;
+    align-items: center;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .doc-row:last-child { border-bottom: none; }
+  .doc-row:hover { background: var(--card-bg-hover); }
+
+  .doc-name {
+    color: var(--text-primary);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .doc-icon {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--border-active);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .doc-type {
+    color: var(--text-secondary);
+    font-size: 12px;
+  }
+
+  .doc-date { color: var(--text-tertiary); font-size: 12px; }
+
+  .preview-btn {
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--border-active);
+    border-radius: 4px;
+    color: var(--accent);
+    font-size: 11px;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .preview-btn:hover { background: rgba(180,164,232,0.08); }
+
+  /* Analysis bar */
+  .analysis-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .analysis-btn {
+    padding: 16px 18px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+
+  .analysis-btn:hover {
+    border-color: var(--accent);
+    background: rgba(180,164,232,0.05);
+  }
+
+  .analysis-btn-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    margin-bottom: 4px;
+  }
+
+  .analysis-btn-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  /* Tooltip (Style 1 onboarding) */
+  .tooltip {
+    position: absolute;
+    background: var(--plum);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    max-width: 260px;
+    z-index: 20;
+    box-shadow: 0 10px 40px rgba(180,164,232,0.2);
+  }
+
+  .tooltip-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .tooltip-body {
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .tooltip-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-tertiary);
+  }
+
+  .tooltip-next {
+    color: var(--accent);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* Style 3 chips */
+  .suggested-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    background: rgba(180,164,232,0.05);
+    border: 1px solid rgba(180,164,232,0.15);
+    border-radius: 10px;
+  }
+
+  .chip-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-right: 4px;
+  }
+
+  .chip {
+    padding: 6px 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-active);
+    border-radius: 100px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  .chip:hover { color: var(--text-primary); border-color: var(--accent); }
+
+  /* Analysis result panel */
+  .analysis-result {
+    background: var(--card-bg);
+    border: 1px solid var(--border-active);
+    border-radius: 12px;
+    padding: 24px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .result-eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .result-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  .result-meta {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-align: right;
+  }
+
+  .result-body {
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .result-citations {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .citation-chip {
+    padding: 4px 10px;
+    background: rgba(180,164,232,0.08);
+    border: 1px solid rgba(180,164,232,0.2);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--accent);
+    cursor: pointer;
+  }
+
+  /* Sentiment legend */
+  .sentiment-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .sentiment-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 60px;
+    gap: 12px;
+    align-items: center;
+    font-size: 12px;
+  }
+
+  .sentiment-bar-track {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sentiment-bar-fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 3px;
+  }
+
+  .sentiment-bar-fill.positive { background: #6BCFA8; left: 50%; }
+  .sentiment-bar-fill.negative { background: #E89BB0; right: 50%; }
+  .sentiment-bar-fill.neutral { background: var(--accent-soft); left: 45%; right: 45%; }
+
+  .sentiment-zero {
+    position: absolute;
+    left: 50%;
+    top: -2px;
+    bottom: -2px;
+    width: 1px;
+    background: var(--text-tertiary);
+  }
+
+  .sentiment-score { text-align: right; font-family: 'Cormorant Garamond', serif; font-size: 16px; }
+
+  /* Risk panel */
+  .risk-search {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .risk-input {
+    flex: 1;
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border-active);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+  }
+
+  .risk-run-btn {
+    padding: 12px 24px;
+    background: var(--accent);
+    color: var(--plum-deep);
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  /* Highlighted document mention in result */
+  .doc-mention {
+    color: var(--accent);
+    border-bottom: 1px dotted var(--accent);
+    cursor: pointer;
+  }
+
+  /* Footer note */
+  .design-notes {
+    max-width: 1280px;
+    margin: 60px auto;
+    padding: 40px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: relative;
+    z-index: 10;
+  }
+
+  .design-notes h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  .design-notes h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+
+  .design-notes p, .design-notes li {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .design-notes ul {
+    margin-left: 20px;
+    margin-bottom: 16px;
+  }
+
+  .design-notes code {
+    background: rgba(255,255,255,0.06);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'DM Sans', monospace;
+    font-size: 12px;
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<div class="walkthrough-header">
+  <h1>Insyte demo walkthrough</h1>
+  <p>A visual reference of every key screen, ready for handoff to Claude Code. Open this in a browser to see exactly what the live demo should feel like.</p>
+</div>
+
+<!-- ================== SCREEN 1: PICKER ================== -->
+<div class="screen-section">
+  <div class="screen-label">
+    <span class="screen-number">01</span>
+    <h2 class="screen-title">Landing — organization or casework</h2>
+  </div>
+  <p class="screen-description">First screen the prospect sees. No login, straight to the picker. Two large cards establish the two product modes. Background atmosphere does most of the visual work.</p>
+
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div>
+      <div class="browser-url">demo.tryinsyte.ca</div>
+    </div>
+    <div class="screen-content">
+      <div class="picker-container">
+        <div class="picker-eyebrow">Document Intelligence</div>
+        <h1 class="picker-title">Welcome to Insyte</h1>
+        <p class="picker-subtitle">Choose a workspace to begin. This is an interactive demo using sample data.</p>
+
+        <div class="picker-cards">
+          <div class="picker-card">
+            <div class="picker-card-icon"><div class="picker-card-icon-inner"></div></div>
+            <h3 class="picker-card-title">Organization</h3>
+            <p class="picker-card-desc">For agencies, programs, and leadership reviewing documents across multiple cases, files, and reports.</p>
+            <div class="picker-card-cta">Enter workspace →</div>
+          </div>
+          <div class="picker-card">
+            <div class="picker-card-icon"><div class="picker-card-icon-inner" style="border-radius:50%"></div></div>
+            <h3 class="picker-card-title">Casework</h3>
+            <p class="picker-card-desc">For clinicians and caseworkers reviewing all documents related to a single client over time.</p>
+            <div class="picker-card-cta">Enter workspace →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== SCREEN 2: ORG WORKBENCH (default state) ================== -->
+<div class="screen-section">
+  <div class="screen-label">
+    <span class="screen-number">02</span>
+    <h2 class="screen-title">Organization workbench</h2>
+  </div>
+  <p class="screen-description">Sidebar shows previous projects on the left. Main area shows the active project with document table and analysis bar. The onboarding tooltip appears on first visit (Style 1) and the suggested actions chips persist (Style 3).</p>
+
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div>
+      <div class="browser-url">demo.tryinsyte.ca/org</div>
+    </div>
+    <div class="screen-content">
+      <div class="app-nav">
+        <div class="app-logo"><span class="app-logo-mark"></span>Insyte</div>
+        <div class="nav-pills">
+          <div class="nav-pill active">Organization</div>
+          <div class="nav-pill">Casework</div>
+        </div>
+      </div>
+
+      <div class="workbench-grid">
+        <div class="sidebar">
+          <div class="sidebar-label">Projects</div>
+          <div class="project-list">
+            <div class="project-item active">
+              <div>Q1 2026 Program Review</div>
+              <div class="project-item-meta">14 documents · Active</div>
+            </div>
+            <div class="project-item">
+              <div>2025 Annual Report</div>
+              <div class="project-item-meta">28 documents</div>
+            </div>
+            <div class="project-item">
+              <div>Bissell Partnership</div>
+              <div class="project-item-meta">11 documents</div>
+            </div>
+            <div class="project-item">
+              <div>Funder Reports Q4</div>
+              <div class="project-item-meta">9 documents</div>
+            </div>
+          </div>
+          <div class="new-project-btn">+ New project</div>
+        </div>
+
+        <div class="main-area">
+          <div class="project-header">
+            <div class="project-title-block">
+              <h2>Q1 2026 Program Review</h2>
+              <p>Northbridge Youth Mental Health Society · Last updated April 14</p>
+            </div>
+            <div class="project-stats">
+              <div class="stat">
+                <div class="stat-value">14</div>
+                <div class="stat-label">Documents</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">4</div>
+                <div class="stat-label">Analyses run</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="suggested-actions">
+            <span class="chip-label">Try</span>
+            <div class="chip">Compare program performance</div>
+            <div class="chip">Find disciplinary patterns</div>
+            <div class="chip">Check for fraud risk</div>
+            <div class="chip">Sentiment across emails</div>
+          </div>
+
+          <div class="doc-table">
+            <div class="doc-table-header">
+              <div>Document</div>
+              <div>Type</div>
+              <div>Date</div>
+              <div></div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>Bridges Program Quarterly Report</div>
+              <div class="doc-type">Program Report</div>
+              <div class="doc-date">Apr 8</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>Anchor Program Quarterly Report</div>
+              <div class="doc-type">Program Report</div>
+              <div class="doc-date">Apr 11</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>Compass Program Quarterly Report</div>
+              <div class="doc-type">Program Report</div>
+              <div class="doc-date">Apr 14</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>2025 Annual Funding Summary</div>
+              <div class="doc-type">Financial</div>
+              <div class="doc-date">Mar 28</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>Internal Email · Anchor Funding</div>
+              <div class="doc-type">Email</div>
+              <div class="doc-date">Mar 6</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>Disciplinary Action Log Q1</div>
+              <div class="doc-type">HR</div>
+              <div class="doc-date">Apr 3</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row" style="opacity:0.5">
+              <div class="doc-name"><div class="doc-icon"></div>+ 8 more documents</div>
+              <div></div><div></div><div></div>
+            </div>
+          </div>
+
+          <div class="analysis-bar">
+            <div class="analysis-btn">
+              <div class="analysis-btn-label">01</div>
+              <div class="analysis-btn-name">Keyword search</div>
+            </div>
+            <div class="analysis-btn">
+              <div class="analysis-btn-label">02</div>
+              <div class="analysis-btn-name">Sentiment</div>
+            </div>
+            <div class="analysis-btn">
+              <div class="analysis-btn-label">03</div>
+              <div class="analysis-btn-name">Pattern</div>
+            </div>
+            <div class="analysis-btn">
+              <div class="analysis-btn-label">04</div>
+              <div class="analysis-btn-name">Risk</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tooltip" style="top: 280px; right: 60px;">
+        <div class="tooltip-title">Welcome</div>
+        <div class="tooltip-body">We've loaded a sample organization for you to explore. Click any document to preview, or pick an analysis below.</div>
+        <div class="tooltip-controls">
+          <span>Step 1 of 4</span>
+          <span class="tooltip-next">Next →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== SCREEN 3: SENTIMENT RESULT ================== -->
+<div class="screen-section">
+  <div class="screen-label">
+    <span class="screen-number">03</span>
+    <h2 class="screen-title">Sentiment analysis result</h2>
+  </div>
+  <p class="screen-description">After clicking sentiment, the results panel slides in. Project-level summary at top, then per-document breakdown with sentiment bars. Document mentions in the summary are clickable.</p>
+
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div>
+      <div class="browser-url">demo.tryinsyte.ca/org</div>
+    </div>
+    <div class="screen-content">
+      <div class="app-nav">
+        <div class="app-logo"><span class="app-logo-mark"></span>Insyte</div>
+        <div class="nav-pills">
+          <div class="nav-pill active">Organization</div>
+          <div class="nav-pill">Casework</div>
+        </div>
+      </div>
+
+      <div class="analysis-result">
+        <div class="result-header">
+          <div>
+            <div class="result-eyebrow">Sentiment Analysis</div>
+            <h2 class="result-title">Q1 2026 Program Review</h2>
+          </div>
+          <div class="result-meta">
+            14 documents analyzed<br>
+            Completed in 1.2s
+          </div>
+        </div>
+        <div class="result-body">
+          Across 14 documents, sentiment is mixed with strong polarization between programs.
+          <span class="doc-mention">Compass</span> shows consistently positive sentiment with themes of engagement, satisfaction, and stability.
+          <span class="doc-mention">Bridges</span> shows cautiously optimistic sentiment with concern themes around staff retention and rising case acuity.
+          <span class="doc-mention">Anchor</span> shows clearly negative sentiment with persistent themes of burnout, frustration, and resource constraint. Internal communications between leadership and program staff show distinct tonal contrast worth examining.
+
+          <div class="sentiment-bars">
+            <div class="sentiment-row">
+              <div>Compass</div>
+              <div class="sentiment-bar-track">
+                <div class="sentiment-zero"></div>
+                <div class="sentiment-bar-fill positive" style="width: 39%"></div>
+              </div>
+              <div class="sentiment-score">+0.78</div>
+            </div>
+            <div class="sentiment-row">
+              <div>Bridges</div>
+              <div class="sentiment-bar-track">
+                <div class="sentiment-zero"></div>
+                <div class="sentiment-bar-fill positive" style="width: 21%"></div>
+              </div>
+              <div class="sentiment-score">+0.42</div>
+            </div>
+            <div class="sentiment-row">
+              <div>Internal Emails</div>
+              <div class="sentiment-bar-track">
+                <div class="sentiment-zero"></div>
+                <div class="sentiment-bar-fill negative" style="width: 9%"></div>
+              </div>
+              <div class="sentiment-score">−0.18</div>
+            </div>
+            <div class="sentiment-row">
+              <div>Anchor</div>
+              <div class="sentiment-bar-track">
+                <div class="sentiment-zero"></div>
+                <div class="sentiment-bar-fill negative" style="width: 25%"></div>
+              </div>
+              <div class="sentiment-score">−0.51</div>
+            </div>
+          </div>
+        </div>
+        <div class="result-citations">
+          <div class="citation-chip">View source: Doc 1</div>
+          <div class="citation-chip">View source: Doc 2</div>
+          <div class="citation-chip">View source: Doc 3</div>
+          <div class="citation-chip">View source: Doc 8</div>
+          <div class="citation-chip">+ 4 more</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== SCREEN 4: PATTERN RESULT (TURNOVER) ================== -->
+<div class="screen-section">
+  <div class="screen-label">
+    <span class="screen-number">04</span>
+    <h2 class="screen-title">Pattern analysis — turnover</h2>
+  </div>
+  <p class="screen-description">User typed "staff turnover" or clicked the suggested chip. Pattern analysis connects 5 documents into a single coherent narrative. This is the moment that makes prospects say "wait, can I see that again."</p>
+
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div>
+      <div class="browser-url">demo.tryinsyte.ca/org</div>
+    </div>
+    <div class="screen-content">
+      <div class="app-nav">
+        <div class="app-logo"><span class="app-logo-mark"></span>Insyte</div>
+        <div class="nav-pills">
+          <div class="nav-pill active">Organization</div>
+          <div class="nav-pill">Casework</div>
+        </div>
+      </div>
+
+      <div class="analysis-result">
+        <div class="result-header">
+          <div>
+            <div class="result-eyebrow">Pattern Analysis</div>
+            <h2 class="result-title">"Staff turnover and retention"</h2>
+          </div>
+          <div class="result-meta">
+            5 documents linked<br>
+            Completed in 1.8s
+          </div>
+        </div>
+        <div class="result-body">
+          Q1 2026 turnover rate of 10.5% sits above the sector benchmark of 8%, with two departures and two unfilled vacancies. The Anchor peer support worker position has been open 5 months, and the Communications Coordinator role has been open 3 months.
+
+          <br><br>
+
+          Turnover concentrates in the <span class="doc-mention">Anchor program</span>, where 2 of 5 disciplinary actions also occurred and where the program lead has formally raised burnout concerns to leadership three times since January. Exit interview themes (compensation, workload, career progression) align with the <span class="doc-mention">Bridges Coordinator's recommendation</span> to revisit compensation benchmarks.
+
+          <br><br>
+
+          Compass program shows zero turnover and stable staffing, correlating with its strongest outcome metrics across the organization. Pattern suggests turnover is concentrated in programs experiencing combined funding pressure and staffing strain rather than distributed evenly.
+        </div>
+        <div class="result-citations">
+          <div class="citation-chip">Doc 5: Staffing Roster</div>
+          <div class="citation-chip">Doc 6: Disciplinary Log</div>
+          <div class="citation-chip">Doc 2: Anchor Q1 Report</div>
+          <div class="citation-chip">Doc 8: Email · Heather to Marcus</div>
+          <div class="citation-chip">Doc 14: Board Minutes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== SCREEN 5: RISK ANALYSIS ================== -->
+<div class="screen-section">
+  <div class="screen-label">
+    <span class="screen-number">05</span>
+    <h2 class="screen-title">Risk analysis with custom query</h2>
+  </div>
+  <p class="screen-description">User clicked Risk, search bar slid in. They typed "fraud or financial irregularity" and ran. Result shows the petty cash story stitched together across 4 documents.</p>
+
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div>
+      <div class="browser-url">demo.tryinsyte.ca/org</div>
+    </div>
+    <div class="screen-content">
+      <div class="app-nav">
+        <div class="app-logo"><span class="app-logo-mark"></span>Insyte</div>
+        <div class="nav-pills">
+          <div class="nav-pill active">Organization</div>
+          <div class="nav-pill">Casework</div>
+        </div>
+      </div>
+
+      <div class="analysis-result">
+        <div class="result-header">
+          <div>
+            <div class="result-eyebrow">Risk Analysis</div>
+            <h2 class="result-title">Custom query</h2>
+          </div>
+          <div class="result-meta">
+            4 documents flagged<br>
+            Completed in 2.1s
+          </div>
+        </div>
+
+        <div class="risk-search">
+          <input class="risk-input" value="fraud or financial irregularity" />
+          <button class="risk-run-btn">Run analysis</button>
+        </div>
+
+        <div class="result-body">
+          Four documents reference an unresolved pattern around petty cash reconciliation. In November and December 2025, discrepancies totaling $1,847 were attributed to administrative error and replaced from operational reserves.
+
+          <br><br>
+
+          The same staff member was responsible for reconciliation in both months. In <span class="doc-mention">March 2026</span>, that staff member was placed on suspension pending investigation, which closed with a finding of administrative error. The Operations Manager has since formally raised concerns in writing that two recovered receipts showed signatures inconsistent with the staff member's known handwriting, and has recommended an external review prior to the May audit.
+
+          <br><br>
+
+          Board minutes document the implementation of dual-approval procedures for petty cash above $200, but no external review has been authorized. The pattern remains open in internal communications.
+        </div>
+        <div class="result-citations">
+          <div class="citation-chip">Doc 4: Funding Summary</div>
+          <div class="citation-chip">Doc 6: Disciplinary Log</div>
+          <div class="citation-chip">Doc 9: Email · Brent to Heather</div>
+          <div class="citation-chip">Doc 14: Board Minutes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== SCREEN 6: CASEWORK MODE ================== -->
+<div class="screen-section">
+  <div class="screen-label">
+    <span class="screen-number">06</span>
+    <h2 class="screen-title">Casework workbench</h2>
+  </div>
+  <p class="screen-description">Same skeleton as the org workbench, but the sidebar shows previous patients and the main area focuses on a single client's documents over time. Sentiment analysis here surfaces a mood trajectory rather than program polarization.</p>
+
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div>
+      <div class="browser-url">demo.tryinsyte.ca/case</div>
+    </div>
+    <div class="screen-content">
+      <div class="app-nav">
+        <div class="app-logo"><span class="app-logo-mark"></span>Insyte</div>
+        <div class="nav-pills">
+          <div class="nav-pill">Organization</div>
+          <div class="nav-pill active">Casework</div>
+        </div>
+      </div>
+
+      <div class="workbench-grid">
+        <div class="sidebar">
+          <div class="sidebar-label">Patients</div>
+          <div class="project-list">
+            <div class="project-item active">
+              <div>M.J.</div>
+              <div class="project-item-meta">7 documents · 8 weeks</div>
+            </div>
+            <div class="project-item">
+              <div>K.T.</div>
+              <div class="project-item-meta">12 documents</div>
+            </div>
+            <div class="project-item">
+              <div>D.A.</div>
+              <div class="project-item-meta">5 documents</div>
+            </div>
+          </div>
+          <div class="new-project-btn">+ New patient</div>
+        </div>
+
+        <div class="main-area">
+          <div class="project-header">
+            <div class="project-title-block">
+              <h2>M.J.</h2>
+              <p>21yo · MDD moderate · Treating: Dr. R. Marcoux · Since Feb 17</p>
+            </div>
+            <div class="project-stats">
+              <div class="stat">
+                <div class="stat-value">9</div>
+                <div class="stat-label">Current PHQ-9</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">−8</div>
+                <div class="stat-label">From intake</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="suggested-actions">
+            <span class="chip-label">Try</span>
+            <div class="chip">Mood trajectory across journal</div>
+            <div class="chip">Sleep and mood pattern</div>
+            <div class="chip">Risk: ideation tracking</div>
+          </div>
+
+          <div class="doc-table">
+            <div class="doc-table-header">
+              <div>Document</div><div>Type</div><div>Date</div><div></div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>Initial Intake Assessment</div>
+              <div class="doc-type">Intake</div>
+              <div class="doc-date">Feb 17</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>PHQ-9 Baseline</div>
+              <div class="doc-type">Measure</div>
+              <div class="doc-date">Feb 17</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>SOAP Note · Session 1</div>
+              <div class="doc-type">Progress</div>
+              <div class="doc-date">Feb 24</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>Personal Journal · Wk of Mar 16</div>
+              <div class="doc-type">Journal</div>
+              <div class="doc-date">Mar 22</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>SOAP Note · Session 4</div>
+              <div class="doc-type">Progress</div>
+              <div class="doc-date">Mar 24</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>Treatment Plan Update</div>
+              <div class="doc-type">Plan</div>
+              <div class="doc-date">Apr 14</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name"><div class="doc-icon"></div>PHQ-9 8-Week Follow-up</div>
+              <div class="doc-type">Measure</div>
+              <div class="doc-date">Apr 14</div>
+              <div class="preview-btn">Preview</div>
+            </div>
+          </div>
+
+          <div class="analysis-bar">
+            <div class="analysis-btn"><div class="analysis-btn-label">01</div><div class="analysis-btn-name">Keyword search</div></div>
+            <div class="analysis-btn"><div class="analysis-btn-label">02</div><div class="analysis-btn-name">Sentiment</div></div>
+            <div class="analysis-btn"><div class="analysis-btn-label">03</div><div class="analysis-btn-name">Pattern</div></div>
+            <div class="analysis-btn"><div class="analysis-btn-label">04</div><div class="analysis-btn-name">Risk</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== SCREEN 7: DOCUMENT PREVIEW MODAL ================== -->
+<div class="screen-section">
+  <div class="screen-label">
+    <span class="screen-number">07</span>
+    <h2 class="screen-title">Document preview</h2>
+  </div>
+  <p class="screen-description">When user clicks Preview, a modal slides in showing the document rendered in a clean, professional document layout. Looks like a real Word or PDF doc, but is just styled HTML rendering content from the JSON file.</p>
+
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div>
+      <div class="browser-url">demo.tryinsyte.ca/org</div>
+    </div>
+    <div class="screen-content" style="background-image:none">
+      <div style="background:#1a1230; opacity:0.4; position:absolute; inset:0;"></div>
+      <div style="position: relative; z-index: 5; max-width: 720px; margin: 0 auto; background: #FAFAF7; color: #2A2A2A; border-radius: 8px; box-shadow: 0 30px 80px rgba(0,0,0,0.6); overflow: hidden; font-family: 'Cormorant Garamond', serif;">
+        <div style="padding: 16px 24px; background: #2D1B4E; color: white; display: flex; justify-content: space-between; align-items: center; font-family: 'DM Sans';">
+          <div style="font-size: 13px; font-weight: 500;">Anchor Program Quarterly Report</div>
+          <div style="font-size: 12px; color: rgba(255,255,255,0.6);">Close ✕</div>
+        </div>
+        <div style="padding: 48px 56px; max-height: 480px; overflow-y: auto;">
+          <div style="border-bottom: 2px solid #2D1B4E; padding-bottom: 16px; margin-bottom: 24px;">
+            <div style="font-family: 'DM Sans'; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #888; margin-bottom: 6px;">Northbridge Youth Mental Health Society</div>
+            <h1 style="font-size: 28px; font-weight: 500; color: #2D1B4E; margin-bottom: 8px;">Anchor Program Quarterly Report — Q1 2026</h1>
+            <div style="font-family: 'DM Sans'; font-size: 12px; color: #666;">
+              <strong>Author:</strong> Devon Ng, Anchor Program Lead &nbsp;·&nbsp;
+              <strong>Date:</strong> April 11, 2026
+            </div>
+          </div>
+
+          <h2 style="font-size: 20px; font-weight: 500; color: #2D1B4E; margin-bottom: 12px;">Program Overview</h2>
+          <p style="font-family: 'DM Sans'; font-size: 14px; line-height: 1.7; color: #2A2A2A; margin-bottom: 20px;">The Anchor Program provides drop-in mental health peer support for youth aged 16 to 22. Q1 2026 logged 312 unique visits across 14 weeks of programming at our Whyte Avenue location.</p>
+
+          <h2 style="font-size: 20px; font-weight: 500; color: #2D1B4E; margin-bottom: 12px;">Outcomes</h2>
+          <p style="font-family: 'DM Sans'; font-size: 14px; line-height: 1.7; color: #2A2A2A; margin-bottom: 20px;">Outcome data has been difficult to collect this quarter. Our intake survey response rate dropped to 34%, down sharply from 61% in Q4 2025. Several youth raised concerns about wait times to speak with a peer support worker, with three separate complaints documented in the suggestion box.</p>
+
+          <h2 style="font-size: 20px; font-weight: 500; color: #2D1B4E; margin-bottom: 12px;">Concerns</h2>
+          <p style="font-family: 'DM Sans'; font-size: 14px; line-height: 1.7; color: #2A2A2A;">Staff burnout is the most pressing issue I can identify. Both full-time workers have indicated they are considering leaving if conditions don't improve. I have flagged this to the Executive Director on three separate occasions since January and have not received a clear response...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== DESIGN NOTES ================== -->
+<div class="design-notes">
+  <h2>Design specifications for handoff</h2>
+
+  <h3>Color tokens</h3>
+  <ul>
+    <li><code>--plum-deep</code> #0F0A1F — base background</li>
+    <li><code>--plum</code> #2D1B4E — Insyte primary brand</li>
+    <li><code>--plum-mid</code> #1A1230 — elevated surfaces</li>
+    <li><code>--accent</code> #B4A4E8 — interactive accent (links, focus, CTA)</li>
+    <li><code>--accent-soft</code> #9F8FCF — secondary accent</li>
+  </ul>
+
+  <h3>Typography</h3>
+  <ul>
+    <li>Display headings, page titles, big numbers: Cormorant Garamond, weight 400-500</li>
+    <li>Body, UI, buttons, table content: DM Sans, weight 300-500</li>
+    <li>Eyebrow labels: DM Sans, 11px, uppercase, letter-spacing 0.12em</li>
+  </ul>
+
+  <h3>Atmosphere</h3>
+  <ul>
+    <li>Dotted grid: 1px dots, rgba(255,255,255,0.04), 32px spacing, fixed background</li>
+    <li>Radial glow: 1200×800px ellipse, plum to transparent, 12-15% opacity, blurred 40px, top-center fixed</li>
+    <li>All cards: glassmorphic with backdrop-filter blur(12px), rgba(255,255,255,0.03) bg, 1px white-alpha border</li>
+  </ul>
+
+  <h3>Motion (use Framer Motion in React)</h3>
+  <ul>
+    <li>Page mount: cards stagger fade-in with 80ms delay each</li>
+    <li>Analysis run: fake 1.2s loading with subtle accent pulse on the active button</li>
+    <li>Result panel: slides in from below with spring physics</li>
+    <li>Hover: cards lift 2px, border brightens, 200ms ease</li>
+  </ul>
+
+  <h3>What's hardcoded</h3>
+  <ul>
+    <li><code>src/data/documents.json</code> — all 21 documents from the markdown file</li>
+    <li><code>src/data/analysisResults.json</code> — pre-written outputs keyed by analysis type and query</li>
+    <li><code>src/data/projects.json</code> — sidebar list (one active project plus 3 dummy entries)</li>
+  </ul>
+
+  <h3>What's interactive</h3>
+  <ul>
+    <li>Picker → routes to /org or /case</li>
+    <li>Analysis buttons → reveal input or run with default query</li>
+    <li>Preview buttons → open document modal</li>
+    <li>Citation chips and inline doc mentions → scroll to or open the relevant document</li>
+    <li>Suggested action chips → trigger pre-built scenario</li>
+    <li>Pattern/risk text input → keyword match against 4-5 prebuilt scenarios with friendly fallback</li>
+  </ul>
+</div>
+
+</body>
+</html>
