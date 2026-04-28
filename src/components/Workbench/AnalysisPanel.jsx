@@ -37,10 +37,11 @@ const RISK_TO_HIGHLIGHT = {
   ideation: 'risk.ideation',
 }
 
-function computeHighlightContext(activeAnalysis, patternScenario, riskScenario) {
+function computeHighlightContext(activeAnalysis, patternScenario, riskScenario, keywordQuery) {
   if (activeAnalysis === 'sentiment') return 'sentiment.all'
   if (activeAnalysis === 'pattern' && patternScenario) return PATTERN_TO_HIGHLIGHT[patternScenario] || null
   if (activeAnalysis === 'risk' && riskScenario) return RISK_TO_HIGHLIGHT[riskScenario] || null
+  if (activeAnalysis === 'keyword' && keywordQuery) return 'keyword:' + keywordQuery
   return null
 }
 
@@ -66,7 +67,7 @@ export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
 
   if (!activeAnalysis) return null
 
-  const highlightContext = computeHighlightContext(activeAnalysis, patternScenario, riskScenario)
+  const highlightContext = computeHighlightContext(activeAnalysis, patternScenario, riskScenario, keywordQuery)
 
   // Wrap onPreview to inject the current highlight context
   function onPreviewWithCtx(doc) {

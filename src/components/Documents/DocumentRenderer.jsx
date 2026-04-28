@@ -46,7 +46,8 @@ function HighlightedSpan({ text, confidence, label, reason, animDelay }) {
   return (
     <motion.span
       initial={{ backgroundColor: 'rgba(180,164,232,0)' }}
-      animate={{ backgroundColor: 'rgba(180,164,232,0.18)' }}
+      animate={{ backgroundColor: 'rgba(180,164,232,0.28)' }}
+      whileHover={{ backgroundColor: 'rgba(180,164,232,0.38)' }}
       transition={{ duration: 0.35, delay: animDelay }}
       style={{
         position: 'relative',
@@ -136,6 +137,37 @@ function renderWithHighlights(text, docHighlights, usedIndices, baseDelay) {
   return <>{parts}</>
 }
 
+function renderWithKeyword(text, keyword) {
+  const lower = text.toLowerCase()
+  const q = keyword.toLowerCase()
+  if (!lower.includes(q)) return <span style={{ whiteSpace: 'pre-line' }}>{text}</span>
+
+  const parts = []
+  let pos = 0
+  let count = 0
+  let idx = lower.indexOf(q)
+  while (idx !== -1) {
+    if (idx > pos) parts.push(<span key={`t-${pos}`} style={{ whiteSpace: 'pre-line' }}>{text.slice(pos, idx)}</span>)
+    parts.push(
+      <motion.mark
+        key={`kw-${idx}`}
+        initial={{ backgroundColor: 'rgba(180,164,232,0)' }}
+        animate={{ backgroundColor: 'rgba(180,164,232,0.28)' }}
+        whileHover={{ backgroundColor: 'rgba(180,164,232,0.38)' }}
+        transition={{ duration: 0.3, delay: count * 0.04 }}
+        style={{ color: 'var(--accent)', borderRadius: 3, padding: '1px 2px', background: 'none' }}
+      >
+        {text.slice(idx, idx + keyword.length)}
+      </motion.mark>
+    )
+    pos = idx + keyword.length
+    count++
+    idx = lower.indexOf(q, pos)
+  }
+  if (pos < text.length) parts.push(<span key="t-end" style={{ whiteSpace: 'pre-line' }}>{text.slice(pos)}</span>)
+  return <>{parts}</>
+}
+
 function formatDate(dateStr) {
   if (!dateStr) return ''
   const d = new Date(dateStr)
@@ -145,9 +177,22 @@ function formatDate(dateStr) {
 export default function DocumentRenderer({ doc, mode, highlightContext }) {
   if (!doc) return null
 
-  const docHighlights = getHighlightsForDoc(mode, highlightContext, doc.id)
+  const isKeyword = highlightContext?.startsWith('keyword:')
+  const keywordQuery = isKeyword ? highlightContext.slice(8) : null
+
+  const docHighlights = isKeyword ? [] : getHighlightsForDoc(mode, highlightContext, doc.id)
   const usedIndices = new Set()
   let globalHlDelay = 0.1
+
+  const keywordMatchCount = keywordQuery
+    ? doc.sections.reduce((n, s) => {
+        const lower = s.body.toLowerCase()
+        const q = keywordQuery.toLowerCase()
+        let idx = lower.indexOf(q), count = 0
+        while (idx !== -1) { count++; idx = lower.indexOf(q, idx + 1) }
+        return n + count
+      }, 0)
+    : 0
 
   const orgName = (parseInt(doc.id.split('-')[1]) <= 14)
     ? 'Northbridge Youth Mental Health Society'
@@ -179,7 +224,7 @@ export default function DocumentRenderer({ doc, mode, highlightContext }) {
       </div>
 
       {/* Highlight banner */}
-      {docHighlights.length > 0 && highlightContext && (
+      {(docHighlights.length > 0 || (isKeyword && keywordMatchCount > 0)) && (
         <motion.div
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
@@ -199,7 +244,9 @@ export default function DocumentRenderer({ doc, mode, highlightContext }) {
           }}
         >
           <span style={{ fontSize: 14 }}>◈</span>
-          {docHighlights.length} passage{docHighlights.length !== 1 ? 's' : ''} flagged by this analysis. Hover any highlight to see why it was surfaced.
+          {isKeyword
+            ? `${keywordMatchCount} match${keywordMatchCount !== 1 ? 'es' : ''} for "${keywordQuery}" in this document.`
+            : `${docHighlights.length} passage${docHighlights.length !== 1 ? 's' : ''} flagged by this analysis. Hover any highlight to see why it was surfaced.`}
         </motion.div>
       )}
 
@@ -212,7 +259,9 @@ export default function DocumentRenderer({ doc, mode, highlightContext }) {
               {section.heading}
             </h2>
             {paragraphs.map((para, j) => {
-              const rendered = renderWithHighlights(para, docHighlights, usedIndices, globalHlDelay)
+              const rendered = isKeyword
+                ? renderWithKeyword(para, keywordQuery)
+                : renderWithHighlights(para, docHighlights, usedIndices, globalHlDelay)
               globalHlDelay += 0.05
               return (
                 <p key={j} style={{

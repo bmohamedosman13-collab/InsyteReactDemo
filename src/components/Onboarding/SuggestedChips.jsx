@@ -2,13 +2,13 @@ import { motion } from 'framer-motion'
 
 const CHIPS = {
   org: {
-    keyword: ['fraud', 'burnout', 'waitlist', 'suicidal ideation'],
+    keyword: ['burnout', 'waitlist', 'suicidal ideation', 'funding'],
     sentiment: ['All documents', 'Just the program reports', 'Just internal emails'],
     pattern: ['Programs by performance', 'Staff turnover and retention', 'Disciplinary actions across programs'],
     risk: ['Fraud or financial irregularity', 'Duty of care or client safety'],
   },
   case: {
-    keyword: ['suicidal ideation', 'sleep', 'PHQ-9', 'safety plan'],
+    keyword: ['sleep', 'Sarah', 'walked', 'PHQ-9'],
     sentiment: ['Full trajectory', 'Journal entries only', 'Clinical notes only'],
     pattern: ['Mood trajectory across journal', 'Sleep and mood pattern', 'Social withdrawal trajectory'],
     risk: ['Suicidal ideation or self-harm'],
