@@ -8,16 +8,28 @@ import DocumentTable from '../components/Workbench/DocumentTable'
 import AnalysisBar from '../components/Workbench/AnalysisBar'
 import AnalysisPanel from '../components/Workbench/AnalysisPanel'
 import PreviewModal from '../components/Documents/PreviewModal'
+import Tooltip from '../components/Onboarding/Tooltip'
 import documents from '../data/documents.json'
 
 const TOAST_DURATION = 3500
+
+function ChevronIcon({ open }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+      <polyline points={open ? '4,10 8,6 12,10' : '4,6 8,10 12,6'} />
+    </svg>
+  )
+}
 
 export default function CaseWorkbench() {
   const [loaded, setLoaded] = useState(false)
   const [activeAnalysis, setActiveAnalysis] = useState(null)
   const [previewDoc, setPreviewDoc] = useState(null)
+  const [previewCtx, setPreviewCtx] = useState(null)
   const [analysesRun, setAnalysesRun] = useState(0)
+  const [showTooltip, setShowTooltip] = useState(true)
   const [toast, setToast] = useState(false)
+  const [tableOpen, setTableOpen] = useState(true)
 
   function handleLoaded() {
     setLoaded(true)
@@ -29,13 +41,19 @@ export default function CaseWorkbench() {
     setLoaded(false)
     setActiveAnalysis(null)
     setAnalysesRun(0)
+    setShowTooltip(true)
+    setTableOpen(true)
   }
 
   function handleAnalysisSelect(id) {
-    if (activeAnalysis !== id) {
-      setAnalysesRun(n => n + 1)
-    }
+    if (activeAnalysis !== id) setAnalysesRun(n => n + 1)
     setActiveAnalysis(id)
+    if (tableOpen) setTableOpen(false)
+  }
+
+  function handlePreview(doc, ctx = null) {
+    setPreviewDoc(doc)
+    setPreviewCtx(ctx)
   }
 
   return (
@@ -54,17 +72,76 @@ export default function CaseWorkbench() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
-                  style={{ display: 'flex', flexDirection: 'column', gap: 20 }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: 20, position: 'relative' }}
                 >
                   <ProjectHeader mode="case" analysesRun={analysesRun} />
-                  <DocumentTable documents={documents.case} onPreview={setPreviewDoc} />
+
+                  {/* Collapsible table section */}
+                  <div>
+                    {/* Toggle header */}
+                    <button
+                      onClick={() => setTableOpen(o => !o)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        width: '100%',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '6px 2px',
+                        marginBottom: tableOpen ? 10 : 0,
+                        color: 'var(--text-secondary)',
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: 12,
+                        textAlign: 'left',
+                        transition: 'color 0.15s',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
+                      onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+                    >
+                      <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-tertiary)' }}>
+                        Documents
+                      </span>
+                      <span style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>
+                        7
+                      </span>
+                      <span style={{ marginLeft: 'auto', color: 'var(--text-tertiary)' }}>
+                        <ChevronIcon open={tableOpen} />
+                      </span>
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {tableOpen && (
+                        <motion.div
+                          key="table"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25, ease: 'easeInOut' }}
+                          style={{ overflow: 'hidden' }}
+                        >
+                          <DocumentTable
+                            documents={documents.case}
+                            onPreview={doc => handlePreview(doc, null)}
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
                   <AnalysisBar active={activeAnalysis} onSelect={handleAnalysisSelect} />
+
                   {activeAnalysis && (
                     <AnalysisPanel
                       activeAnalysis={activeAnalysis}
                       mode="case"
-                      onPreview={setPreviewDoc}
+                      onPreview={handlePreview}
                     />
+                  )}
+
+                  {showTooltip && !activeAnalysis && (
+                    <Tooltip onDismiss={() => setShowTooltip(false)} />
                   )}
                 </motion.div>
               )}
@@ -73,6 +150,7 @@ export default function CaseWorkbench() {
         </div>
       </div>
 
+      {/* Toast */}
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -103,7 +181,12 @@ export default function CaseWorkbench() {
         )}
       </AnimatePresence>
 
-      <PreviewModal doc={previewDoc} onClose={() => setPreviewDoc(null)} />
+      <PreviewModal
+        doc={previewDoc}
+        mode="case"
+        highlightContext={previewCtx}
+        onClose={() => { setPreviewDoc(null); setPreviewCtx(null) }}
+      />
     </AppShell>
   )
 }

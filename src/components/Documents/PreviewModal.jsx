@@ -2,14 +2,18 @@ import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import DocumentRenderer from './DocumentRenderer'
 
-export default function PreviewModal({ doc, onClose }) {
+export default function PreviewModal({ doc, mode, highlightContext, onClose }) {
   useEffect(() => {
-    function onKey(e) {
-      if (e.key === 'Escape') onClose()
+    function onKey(e) { if (e.key === 'Escape') onClose() }
+    if (doc) {
+      document.addEventListener('keydown', onKey)
+      document.body.style.overflow = 'hidden'
     }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [onClose])
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [doc, onClose])
 
   return (
     <AnimatePresence>
@@ -21,93 +25,114 @@ export default function PreviewModal({ doc, onClose }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.18 }}
             onClick={onClose}
             style={{
               position: 'fixed',
               inset: 0,
-              background: 'rgba(0,0,0,0.65)',
+              background: 'rgba(0,0,0,0.68)',
               zIndex: 100,
             }}
           />
 
-          {/* Modal */}
-          <motion.div
-            key="modal"
-            initial={{ opacity: 0, scale: 0.96, y: 12 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 12 }}
-            transition={{ duration: 0.22, ease: 'easeOut' }}
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 101,
-              maxWidth: 720,
-              width: 'calc(100vw - 48px)',
-              maxHeight: '85vh',
-              display: 'flex',
-              flexDirection: 'column',
-              borderRadius: 8,
-              overflow: 'hidden',
-              boxShadow: '0 30px 80px rgba(0,0,0,0.6)',
-            }}
-          >
-            {/* Modal header */}
-            <div style={{
-              padding: '14px 20px',
-              background: '#2D1B4E',
-              color: 'white',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              fontFamily: 'var(--font-sans)',
-              flexShrink: 0,
-            }}>
-              <span style={{ fontSize: 13, fontWeight: 500, maxWidth: '80%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {doc.title}
-              </span>
-              <button
-                onClick={onClose}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'rgba(255,255,255,0.6)',
-                  cursor: 'pointer',
-                  fontSize: 18,
-                  lineHeight: 1,
-                  padding: '0 4px',
-                  fontFamily: 'var(--font-sans)',
-                }}
-              >
-                ✕
-              </button>
-            </div>
+          {/* Modal wrapper — centers with flex so it never clips */}
+          <div style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 101,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px 24px',
+            pointerEvents: 'none',
+          }}>
+            <motion.div
+              key="modal"
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+              style={{
+                width: '100%',
+                maxWidth: 740,
+                maxHeight: 'calc(100vh - 48px)',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: 8,
+                overflow: 'hidden',
+                boxShadow: '0 32px 80px rgba(0,0,0,0.65)',
+                pointerEvents: 'auto',
+              }}
+            >
+              {/* Header */}
+              <div style={{
+                padding: '13px 20px',
+                background: '#2D1B4E',
+                color: 'white',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                fontFamily: 'var(--font-sans)',
+                flexShrink: 0,
+              }}>
+                <span style={{
+                  fontSize: 13,
+                  fontWeight: 500,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: '85%',
+                }}>
+                  {doc.title}
+                </span>
+                <button
+                  onClick={onClose}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'rgba(255,255,255,0.55)',
+                    cursor: 'pointer',
+                    fontSize: 18,
+                    lineHeight: 1,
+                    padding: '2px 4px',
+                    fontFamily: 'var(--font-sans)',
+                    flexShrink: 0,
+                    marginLeft: 12,
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
 
-            {/* Modal body */}
-            <div style={{
-              background: '#FAFAF7',
-              padding: '40px 48px',
-              overflowY: 'auto',
-              flex: 1,
-            }}>
-              <DocumentRenderer doc={doc} />
-            </div>
+              {/* Scrollable body */}
+              <div style={{
+                background: '#FAFAF7',
+                padding: '32px 40px',
+                overflowY: 'auto',
+                flex: 1,
+                minHeight: 0,
+              }}>
+                <DocumentRenderer
+                  doc={doc}
+                  mode={mode}
+                  highlightContext={highlightContext}
+                />
+              </div>
 
-            {/* Modal footer */}
-            <div style={{
-              background: '#FAFAF7',
-              borderTop: '1px solid #e8e8e4',
-              padding: '10px 48px',
-              fontFamily: 'var(--font-sans)',
-              fontSize: 11,
-              color: '#aaa',
-              flexShrink: 0,
-            }}>
-              Demo mode: download disabled
-            </div>
-          </motion.div>
+              {/* Footer */}
+              <div style={{
+                background: '#F4F4F0',
+                borderTop: '1px solid #e4e4e0',
+                padding: '8px 40px',
+                fontFamily: 'var(--font-sans)',
+                fontSize: 11,
+                color: '#aaa',
+                flexShrink: 0,
+              }}>
+                Demo mode: download disabled
+              </div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>

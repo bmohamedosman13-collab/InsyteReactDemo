@@ -22,15 +22,26 @@ const CHIP_TO_RISK = {
   'Suicidal ideation or self-harm': 'ideation',
 }
 
-const CHIP_TO_KEYWORD = {
-  'fraud': 'fraud',
-  'burnout': 'burnout',
-  'waitlist': 'waitlist',
-  'suicidal ideation': 'suicidal ideation',
-  'sleep': 'sleep',
-  'PHQ-9': 'PHQ-9',
-  'safety plan': 'safety plan',
-  'behavioural activation': 'behavioural activation',
+const PATTERN_TO_HIGHLIGHT = {
+  performance: 'pattern.performance',
+  turnover: 'pattern.turnover',
+  disciplinary: 'pattern.disciplinary',
+  mood: 'sentiment.all',
+  sleep: 'pattern.sleepMood',
+  social: 'pattern.socialWithdrawal',
+}
+
+const RISK_TO_HIGHLIGHT = {
+  fraud: 'risk.fraud',
+  dutyOfCare: 'risk.dutyOfCare',
+  ideation: 'risk.ideation',
+}
+
+function computeHighlightContext(activeAnalysis, patternScenario, riskScenario) {
+  if (activeAnalysis === 'sentiment') return 'sentiment.all'
+  if (activeAnalysis === 'pattern' && patternScenario) return PATTERN_TO_HIGHLIGHT[patternScenario] || null
+  if (activeAnalysis === 'risk' && riskScenario) return RISK_TO_HIGHLIGHT[riskScenario] || null
+  return null
 }
 
 export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
@@ -48,18 +59,19 @@ export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
 
   function handleChipClick(chip) {
     setActiveChip(chip)
-
-    if (activeAnalysis === 'pattern' && CHIP_TO_PATTERN[chip]) {
-      setPatternScenario(CHIP_TO_PATTERN[chip])
-    } else if (activeAnalysis === 'risk' && CHIP_TO_RISK[chip]) {
-      setRiskScenario(CHIP_TO_RISK[chip])
-    } else if (activeAnalysis === 'keyword') {
-      const q = CHIP_TO_KEYWORD[chip] ?? chip
-      setKeywordQuery(q)
-    }
+    if (activeAnalysis === 'pattern' && CHIP_TO_PATTERN[chip]) setPatternScenario(CHIP_TO_PATTERN[chip])
+    else if (activeAnalysis === 'risk' && CHIP_TO_RISK[chip]) setRiskScenario(CHIP_TO_RISK[chip])
+    else if (activeAnalysis === 'keyword') setKeywordQuery(chip)
   }
 
   if (!activeAnalysis) return null
+
+  const highlightContext = computeHighlightContext(activeAnalysis, patternScenario, riskScenario)
+
+  // Wrap onPreview to inject the current highlight context
+  function onPreviewWithCtx(doc) {
+    onPreview(doc, highlightContext)
+  }
 
   const patternData = analysisResults[mode]?.pattern
   const resolvedPattern = patternScenario
@@ -76,7 +88,6 @@ export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
         transition={{ duration: 0.3, type: 'spring', stiffness: 120, damping: 14 }}
         style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
       >
-        {/* Suggested chips */}
         <SuggestedChips
           mode={mode}
           activeAnalysis={activeAnalysis}
@@ -84,7 +95,6 @@ export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
           onChipClick={handleChipClick}
         />
 
-        {/* Result panel */}
         <div style={{
           background: 'var(--card-bg)',
           border: '1px solid var(--border-active)',
@@ -94,11 +104,7 @@ export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
           WebkitBackdropFilter: 'blur(12px)',
         }}>
           {activeAnalysis === 'keyword' && (
-            <KeywordSearch
-              mode={mode}
-              initialQuery={keywordQuery}
-              onPreview={onPreview}
-            />
+            <KeywordSearch mode={mode} initialQuery={keywordQuery} onPreview={onPreviewWithCtx} />
           )}
 
           {activeAnalysis === 'sentiment' && (
@@ -112,22 +118,10 @@ export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
                 borderBottom: '1px solid var(--border-subtle)',
               }}>
                 <div>
-                  <div style={{
-                    fontSize: 11,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: 'var(--accent)',
-                    marginBottom: 4,
-                    fontFamily: 'var(--font-sans)',
-                  }}>
+                  <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--accent)', marginBottom: 4, fontFamily: 'var(--font-sans)' }}>
                     Sentiment Analysis
                   </div>
-                  <h3 style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: 22,
-                    fontWeight: 500,
-                    color: 'var(--text-primary)',
-                  }}>
+                  <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 500, color: 'var(--text-primary)' }}>
                     {mode === 'org' ? 'Q1 2026 Program Review' : 'M.J. — Treatment Period'}
                   </h3>
                 </div>
@@ -136,23 +130,16 @@ export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
                   <div style={{ marginTop: 2 }}>Completed in 1.2s</div>
                 </div>
               </div>
-              <SentimentResult mode={mode} onPreview={onPreview} />
+              <SentimentResult mode={mode} onPreview={onPreviewWithCtx} />
             </>
           )}
 
           {activeAnalysis === 'pattern' && (
-            <PatternResult
-              result={resolvedPattern}
-              onPreview={onPreview}
-            />
+            <PatternResult result={resolvedPattern} onPreview={onPreviewWithCtx} />
           )}
 
           {activeAnalysis === 'risk' && (
-            <RiskResult
-              mode={mode}
-              initialScenario={riskScenario}
-              onPreview={onPreview}
-            />
+            <RiskResult mode={mode} initialScenario={riskScenario} onPreview={onPreviewWithCtx} />
           )}
         </div>
       </motion.div>

@@ -1,0 +1,226 @@
+{
+  "org": {
+    "sentiment.all": {
+      "doc-01": [
+        { "text": "84% reported improved daily functioning since intake", "confidence": 91, "label": "Strong", "reason": "Strongly positive outcome statement contributing to overall positive sentiment for Bridges" },
+        { "text": "the only thing keeping me showing up", "confidence": 88, "label": "Strong", "reason": "Direct participant testimony with high emotional valence" },
+        { "text": "Staff retention remains a concern", "confidence": 79, "label": "Moderate", "reason": "Concern marker offsetting positive outcome data" },
+        { "text": "more participants reporting active suicidal ideation than in any previous quarter", "confidence": 86, "label": "Strong", "reason": "High-acuity concern expressed with directness" }
+      ],
+      "doc-02": [
+        { "text": "the staff seem burnt out and rushed", "confidence": 94, "label": "Strong", "reason": "Direct negative testimony from program participant" },
+        { "text": "Staff burnout is the most pressing issue", "confidence": 92, "label": "Strong", "reason": "Explicit problem framing by program lead" },
+        { "text": "considering leaving if conditions don't improve", "confidence": 89, "label": "Strong", "reason": "Strong attrition signal" },
+        { "text": "have not received a clear response", "confidence": 81, "label": "Moderate", "reason": "Frustration indicator regarding leadership engagement" }
+      ],
+      "doc-03": [
+        { "text": "91% reported learning at least one new coping skill", "confidence": 90, "label": "Strong", "reason": "Positive quantitative outcome" },
+        { "text": "the most engaged she had seen her students all year", "confidence": 87, "label": "Strong", "reason": "Strongly positive teacher testimony" },
+        { "text": "performing well within budget and on schedule", "confidence": 84, "label": "Strong", "reason": "Operational stability indicator" }
+      ],
+      "doc-08": [
+        { "text": "I want to be careful that we're not seen as cutting a program because its lead has been raising concerns", "confidence": 82, "label": "Moderate", "reason": "Defensive framing suggests organizational tension" },
+        { "text": "we need to lead with the data", "confidence": 76, "label": "Moderate", "reason": "Strategic framing language indicating prepared narrative" }
+      ],
+      "doc-09": [
+        { "text": "I want to put my concerns in writing so we have a record", "confidence": 88, "label": "Strong", "reason": "Formalization of concerns indicating elevated tension" },
+        { "text": "I am noting that we have a pattern", "confidence": 84, "label": "Strong", "reason": "Direct articulation of unresolved concern" }
+      ]
+    },
+    "pattern.performance": {
+      "doc-01": [
+        { "text": "84% reported improved daily functioning since intake", "confidence": 91, "label": "Strong", "reason": "Primary outcome metric for Bridges" },
+        { "text": "average self-reported wellbeing scores increased from 4.2 to 6.8", "confidence": 89, "label": "Strong", "reason": "Quantitative improvement measure" },
+        { "text": "waitlist has grown 22% since Q4 2025", "confidence": 87, "label": "Strong", "reason": "Demand indicator suggesting program success limited by capacity" }
+      ],
+      "doc-02": [
+        { "text": "22% reported it was very helpful", "confidence": 86, "label": "Strong", "reason": "Comparatively weak positive outcome" },
+        { "text": "intake survey response rate dropped to 34%", "confidence": 83, "label": "Strong", "reason": "Engagement decline indicator" },
+        { "text": "operating at roughly 70% capacity with no end in sight", "confidence": 90, "label": "Strong", "reason": "Direct capacity constraint statement" }
+      ],
+      "doc-03": [
+        { "text": "91% reported learning at least one new coping skill", "confidence": 92, "label": "Strong", "reason": "Highest positive outcome rate across programs" },
+        { "text": "87% rated the workshop as good or excellent", "confidence": 90, "label": "Strong", "reason": "Strong satisfaction metric" },
+        { "text": "95% requesting return visits next school year", "confidence": 89, "label": "Strong", "reason": "Stakeholder demand validation" }
+      ],
+      "doc-04": [
+        { "text": "Bridges Program: $987,000 (35% of program spending)", "confidence": 95, "label": "Strong", "reason": "Funding allocation for second-highest performing program" },
+        { "text": "Anchor Program: $642,000 (23%)", "confidence": 95, "label": "Strong", "reason": "Funding allocation for lowest-performing program" },
+        { "text": "Anchor receives an 18% reduction to $527,000 due to reduced demonstrable outcomes", "confidence": 93, "label": "Strong", "reason": "Outcome-linked funding decision" }
+      ],
+      "doc-05": [
+        { "text": "VACANT — Peer Support Worker position open since November 2025", "confidence": 93, "label": "Strong", "reason": "Chronic vacancy at struggling program" }
+      ]
+    },
+    "pattern.turnover": {
+      "doc-05": [
+        { "text": "Staff turnover this quarter sits at 10.5%, slightly above sector average of 8%", "confidence": 96, "label": "Strong", "reason": "Direct turnover metric exceeding sector benchmark" },
+        { "text": "Two open positions have been unfilled for over three months", "confidence": 92, "label": "Strong", "reason": "Concrete vacancy duration" },
+        { "text": "Exit interview themes include compensation below market, workload intensity, and limited career progression pathways", "confidence": 89, "label": "Strong", "reason": "Causal factors for turnover documented" },
+        { "text": "Kira Henderson, Bridges Youth Worker, departed January 17, 2026 (cited workload and pay)", "confidence": 88, "label": "Strong", "reason": "Specific departure with cited reasons" }
+      ],
+      "doc-06": [
+        { "text": "Three of five Q1 disciplinary actions involved frontline program staff", "confidence": 87, "label": "Strong", "reason": "Disciplinary concentration indicating frontline strain" },
+        { "text": "Two involved Anchor Program team members specifically", "confidence": 91, "label": "Strong", "reason": "Cross-program comparison showing Anchor disproportion" },
+        { "text": "team-level review of Anchor Program working conditions", "confidence": 84, "label": "Strong", "reason": "HR recommendation linking discipline to working conditions" }
+      ],
+      "doc-02": [
+        { "text": "considering leaving if conditions don't improve", "confidence": 90, "label": "Strong", "reason": "Imminent attrition risk from current staff" },
+        { "text": "five months vacant", "confidence": 93, "label": "Strong", "reason": "Chronic unfilled position" },
+        { "text": "operating at roughly 70% capacity with no end in sight", "confidence": 86, "label": "Strong", "reason": "Capacity strain feeding burnout cycle" }
+      ],
+      "doc-14": [
+        { "text": "an 18% cut may accelerate the staffing crisis Devon has flagged", "confidence": 88, "label": "Strong", "reason": "Board-level recognition of staffing-funding interaction" }
+      ]
+    },
+    "pattern.disciplinary": {
+      "doc-06": [
+        { "text": "Three of five Q1 disciplinary actions involved frontline program staff", "confidence": 94, "label": "Strong", "reason": "Direct concentration metric" },
+        { "text": "Two involved Anchor Program team members specifically", "confidence": 92, "label": "Strong", "reason": "Program-level concentration" },
+        { "text": "verbal warning regarding peer conflict with another team member", "confidence": 81, "label": "Moderate", "reason": "Indicator of within-team strain" },
+        { "text": "expense reimbursement irregularities", "confidence": 86, "label": "Strong", "reason": "Connects to financial concerns thread" }
+      ],
+      "doc-05": [
+        { "text": "Anchor Program (2 of 3 budgeted)", "confidence": 89, "label": "Strong", "reason": "Understaffed program correlating with disciplinary concentration" }
+      ],
+      "doc-02": [
+        { "text": "Staff burnout is the most pressing issue", "confidence": 87, "label": "Strong", "reason": "Burnout as upstream cause of conflict" }
+      ]
+    },
+    "risk.fraud": {
+      "doc-04": [
+        { "text": "three reimbursement irregularities in the Bridges program", "confidence": 89, "label": "Strong", "reason": "Initial flag of irregularities" },
+        { "text": "Petty cash reconciliation in November and December showed gaps totaling $1,847", "confidence": 95, "label": "Strong", "reason": "Specific quantified discrepancy" },
+        { "text": "attributed to administrative error and replaced from operational funds", "confidence": 86, "label": "Strong", "reason": "Stated resolution that contradicts later concerns" },
+        { "text": "implementing dual-approval for all petty cash above $200 going forward", "confidence": 84, "label": "Strong", "reason": "Control recommendation indicating concern persistence" }
+      ],
+      "doc-06": [
+        { "text": "placed on suspension with pay pending investigation regarding expense reimbursement irregularities", "confidence": 92, "label": "Strong", "reason": "Personnel action tied to financial concerns" },
+        { "text": "Investigation concluded March 18 with finding of administrative error rather than misconduct", "confidence": 88, "label": "Strong", "reason": "Investigation closure that the Operations Manager later questions" }
+      ],
+      "doc-09": [
+        { "text": "the same staff member was responsible for the petty cash reconciliation in both months where discrepancies appeared", "confidence": 94, "label": "Strong", "reason": "Pattern recognition by Operations Manager" },
+        { "text": "two of the receipts that were eventually located showed signatures that don't match handwriting samples we have on file from that staff member", "confidence": 96, "label": "Strong", "reason": "Direct evidence concern raised in writing" },
+        { "text": "I am not making any accusation here. I am noting that we have a pattern", "confidence": 85, "label": "Strong", "reason": "Formal pattern flag" },
+        { "text": "external review by our auditors is warranted before the May audit", "confidence": 88, "label": "Strong", "reason": "Escalation recommendation not yet acted upon" }
+      ],
+      "doc-14": [
+        { "text": "Lisa briefly noted the November and December petty cash discrepancies", "confidence": 79, "label": "Moderate", "reason": "Board-level discussion noted as brief" },
+        { "text": "implement dual-approval for petty cash above $200 effective immediately", "confidence": 82, "label": "Moderate", "reason": "Partial control implemented but external review not authorized" }
+      ]
+    },
+    "risk.dutyOfCare": {
+      "doc-01": [
+        { "text": "more participants reporting active suicidal ideation than in any previous quarter on record", "confidence": 95, "label": "Strong", "reason": "High-acuity disclosure trend at intake" },
+        { "text": "average wait time will exceed 8 weeks by Q3 2026", "confidence": 87, "label": "Strong", "reason": "Access barrier in context of rising acuity" },
+        { "text": "increasing clinical supervision hours from 0.5 FTE to 1.0 FTE", "confidence": 84, "label": "Strong", "reason": "Recommendation indicating insufficient current supervision" }
+      ],
+      "doc-07": [
+        { "text": "11 disclosed active suicidal ideation at intake, which is the highest count we have recorded in any quarter", "confidence": 96, "label": "Strong", "reason": "Quantified peak in high-acuity disclosures" },
+        { "text": "Suicidal ideation disclosures have nearly doubled compared to Q1 2025", "confidence": 93, "label": "Strong", "reason": "Year-over-year doubling in critical risk indicator" },
+        { "text": "warrants increased clinical capacity", "confidence": 86, "label": "Strong", "reason": "Clinical recommendation tied to risk trend" }
+      ],
+      "doc-11": [
+        { "text": "disclosed active suicidal ideation with plan during a one-on-one session", "confidence": 94, "label": "Strong", "reason": "Section 4 reportable incident with high acuity" },
+        { "text": "Mandatory report filed with Children's Services", "confidence": 92, "label": "Strong", "reason": "Child safety reportable event" },
+        { "text": "Q1 2026 shows 5 reportable incidents, compared to 3 in Q4 2025", "confidence": 89, "label": "Strong", "reason": "Incident rate increase" }
+      ]
+    }
+  },
+  "case": {
+    "sentiment.all": {
+      "doc-15": [
+        { "text": "feeling stuck and unsure of what comes next", "confidence": 91, "label": "Strong", "reason": "Direct expression of depressive cognition" },
+        { "text": "feeling like a failure", "confidence": 94, "label": "Strong", "reason": "Self-evaluative negative cognition characteristic of depression" },
+        { "text": "her life is on pause while everyone else moves forward", "confidence": 90, "label": "Strong", "reason": "Comparative negative self-perception" },
+        { "text": "occasional passive thoughts that she would not mind not waking up", "confidence": 92, "label": "Strong", "reason": "Passive ideation disclosure (clinical risk indicator)" }
+      ],
+      "doc-17": [
+        { "text": "the past week as one of the harder weeks", "confidence": 89, "label": "Strong", "reason": "Self-reported worsening" },
+        { "text": "feeling guilty for being a burden on her family", "confidence": 93, "label": "Strong", "reason": "Burdensomeness cognition" },
+        { "text": "unable to perform being okay long enough for a conversation", "confidence": 88, "label": "Strong", "reason": "Social withdrawal indicator with insight" }
+      ],
+      "doc-18": [
+        { "text": "the day is already a failure before you even start it", "confidence": 87, "label": "Strong", "reason": "All-or-nothing thinking pattern" },
+        { "text": "I think I've been calling avoidance rest for a while now", "confidence": 86, "label": "Strong", "reason": "Emerging insight, mixed valence" },
+        { "text": "I noticed I had some 5s this week. I haven't had any 5s in a long time", "confidence": 91, "label": "Strong", "reason": "First positive self-recognition in journal" },
+        { "text": "I want to remember this when I forget", "confidence": 89, "label": "Strong", "reason": "Forward-looking hope statement" }
+      ],
+      "doc-19": [
+        { "text": "a meaningful improvement over the past two weeks", "confidence": 92, "label": "Strong", "reason": "Clinician-rated positive change" },
+        { "text": "passive thoughts described in the intake have become less frequent", "confidence": 88, "label": "Strong", "reason": "Risk reduction signal" }
+      ],
+      "doc-20": [
+        { "text": "single episode, moderate, improving", "confidence": 95, "label": "Strong", "reason": "Diagnostic specifier indicating positive trajectory" },
+        { "text": "Behavioural activation has been the most consistently helpful intervention", "confidence": 91, "label": "Strong", "reason": "Treatment efficacy attribution" }
+      ]
+    },
+    "pattern.sleepMood": {
+      "doc-15": [
+        { "text": "sleeping 10 to 12 hours per night but waking unrested", "confidence": 94, "label": "Strong", "reason": "Initial hypersomnia pattern" }
+      ],
+      "doc-17": [
+        { "text": "spending most of her time in her room, sleeping during the day", "confidence": 91, "label": "Strong", "reason": "Sleep dysregulation persisting" },
+        { "text": "Sleep continues to be poor in quality despite long duration", "confidence": 89, "label": "Strong", "reason": "Quality vs duration distinction" }
+      ],
+      "doc-18": [
+        { "text": "Slept until 1pm. Felt worse", "confidence": 92, "label": "Strong", "reason": "Direct association of oversleep with worsened mood" },
+        { "text": "Slept in again. 11 hours", "confidence": 85, "label": "Strong", "reason": "Persistent oversleep pattern" }
+      ],
+      "doc-19": [
+        { "text": "continued sleep difficulties with consistent oversleeping", "confidence": 90, "label": "Strong", "reason": "Sleep lagging mood improvement" }
+      ],
+      "doc-20": [
+        { "text": "Sleep duration improving but quality still variable", "confidence": 88, "label": "Strong", "reason": "Confirms sleep as lagging indicator" }
+      ]
+    },
+    "pattern.socialWithdrawal": {
+      "doc-15": [
+        { "text": "difficulty engaging with friends who are continuing their studies", "confidence": 89, "label": "Strong", "reason": "Initial social comparison-driven withdrawal" }
+      ],
+      "doc-17": [
+        { "text": "did not respond for four days", "confidence": 87, "label": "Strong", "reason": "Specific avoidance behavior" },
+        { "text": "avoiding her parents", "confidence": 84, "label": "Strong", "reason": "Withdrawal extending to immediate family" }
+      ],
+      "doc-18": [
+        { "text": "Replied to Sarah", "confidence": 95, "label": "Strong", "reason": "First proactive social re-engagement" },
+        { "text": "I told her I withdrew from school. She said that takes guts", "confidence": 92, "label": "Strong", "reason": "Disclosure beyond family for first time" },
+        { "text": "Helped my mom with groceries", "confidence": 80, "label": "Moderate", "reason": "Social activity within family system" }
+      ],
+      "doc-19": [
+        { "text": "successfully reconnecting with a high school friend via text", "confidence": 93, "label": "Strong", "reason": "Clinician documents social reconnection" },
+        { "text": "the response was supportive and that this surprised her", "confidence": 86, "label": "Strong", "reason": "Cognitive update from social experience" }
+      ],
+      "doc-20": [
+        { "text": "resumed limited contact with three high school friends", "confidence": 91, "label": "Strong", "reason": "Expanded social re-engagement" },
+        { "text": "Re-establish at least one meaningful social connection outside the family. Status: Achieved", "confidence": 94, "label": "Strong", "reason": "Goal completion documented" }
+      ]
+    },
+    "risk.ideation": {
+      "doc-15": [
+        { "text": "Client denies current suicidal ideation, intent, or plan", "confidence": 96, "label": "Strong", "reason": "Formal risk assessment documentation" },
+        { "text": "occasional passive thoughts that she would not mind not waking up", "confidence": 93, "label": "Strong", "reason": "Passive ideation acknowledged at intake" },
+        { "text": "no history of self-harm", "confidence": 89, "label": "Strong", "reason": "Protective factor documented" },
+        { "text": "Safety plan completed and provided", "confidence": 92, "label": "Strong", "reason": "Standard of care documented" }
+      ],
+      "doc-16": [
+        { "text": "Thoughts that you would be better off dead, or of hurting yourself in some way — 1 (several days)", "confidence": 95, "label": "Strong", "reason": "PHQ-9 item 9 baseline score" }
+      ],
+      "doc-17": [
+        { "text": "Client denies suicidal ideation, intent, or plan", "confidence": 94, "label": "Strong", "reason": "Continued absence of active ideation" },
+        { "text": "No acute risk indicators present", "confidence": 91, "label": "Strong", "reason": "Clinical risk formulation" }
+      ],
+      "doc-19": [
+        { "text": "denies any suicidal ideation, intent, or plan", "confidence": 93, "label": "Strong", "reason": "Continued risk denial" },
+        { "text": "the passive thoughts described in the intake have become less frequent", "confidence": 92, "label": "Strong", "reason": "Direct evidence of de-escalation in passive ideation" }
+      ],
+      "doc-20": [
+        { "text": "Suicidal ideation: Currently denied. No self-harm", "confidence": 95, "label": "Strong", "reason": "Treatment plan risk status" },
+        { "text": "Safety plan remains in place and was last reviewed April 7, 2026", "confidence": 93, "label": "Strong", "reason": "Ongoing safety planning documented" }
+      ],
+      "doc-21": [
+        { "text": "Thoughts that you would be better off dead, or of hurting yourself in some way — 0 (not at all)", "confidence": 96, "label": "Strong", "reason": "PHQ-9 item 9 follow-up score showing full de-escalation" }
+      ]
+    }
+  }
+}
