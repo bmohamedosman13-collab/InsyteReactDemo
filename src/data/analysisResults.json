@@ -1,0 +1,209 @@
+{
+  "org": {
+    "sentiment": {
+      "summary": "Across 14 documents, sentiment is mixed with strong polarization between programs. Compass shows consistently positive sentiment (0.78 strength) with themes of engagement, satisfaction, and stability. Bridges shows cautiously optimistic sentiment (0.42) with concern themes around staff retention and rising case acuity. Anchor shows clearly negative sentiment (-0.51) with persistent themes of burnout, frustration, and resource constraint. Internal communications between leadership and program staff show distinct tonal contrast worth examining.",
+      "perGroup": [
+        { "label": "Compass", "score": 0.78, "docs": ["doc-03", "doc-12"] },
+        { "label": "Bridges", "score": 0.42, "docs": ["doc-01", "doc-07"] },
+        { "label": "Board / Governance", "score": -0.08, "docs": ["doc-14"] },
+        { "label": "Internal Emails", "score": -0.18, "docs": ["doc-08", "doc-09"] },
+        { "label": "Anchor", "score": -0.51, "docs": ["doc-02"] }
+      ],
+      "citations": [
+        { "label": "Doc 1: Bridges Q1 Report", "docId": "doc-01" },
+        { "label": "Doc 2: Anchor Q1 Report", "docId": "doc-02" },
+        { "label": "Doc 3: Compass Q1 Report", "docId": "doc-03" },
+        { "label": "Doc 8: Email — Heather to Marcus", "docId": "doc-08" },
+        { "label": "Doc 9: Email — Brent to Heather", "docId": "doc-09" },
+        { "label": "Doc 12: Compass Feedback", "docId": "doc-12" },
+        { "label": "Doc 14: Board Minutes", "docId": "doc-14" }
+      ]
+    },
+    "pattern": {
+      "performance": {
+        "title": "Programs by performance",
+        "docsLinked": 5,
+        "body": "Compass shows the strongest outcomes (87% positive ratings) with stable staffing (5 facilitators, no vacancies) and proportional funding ($891K). The program has zero turnover and the only documented concerns are minor screening refinements.\n\nBridges shows strong outcomes (84% positive, clinically meaningful PHQ-9 and GAD-7 reductions) but with significant operational strain: a 22% waitlist growth, one recent departure, elevated acuity at intake, and compensation concerns flagged explicitly by program leadership.\n\nAnchor shows weakening outcomes (only 22% rated very helpful, response rates falling from 61% to 34%) coinciding with chronic understaffing (5-month vacancy), proposed 18% funding cut, and burnout escalations formally raised to the Executive Director three times since January. The pattern suggests resource constraint is directly affecting service quality.",
+        "docMentions": [
+          { "text": "Doc 1: Bridges Q1 Report", "docId": "doc-01" },
+          { "text": "Doc 2: Anchor Q1 Report", "docId": "doc-02" },
+          { "text": "Doc 3: Compass Q1 Report", "docId": "doc-03" }
+        ],
+        "citations": [
+          { "label": "Doc 1: Bridges Q1 Report", "docId": "doc-01" },
+          { "label": "Doc 2: Anchor Q1 Report", "docId": "doc-02" },
+          { "label": "Doc 3: Compass Q1 Report", "docId": "doc-03" },
+          { "label": "Doc 4: Funding Summary", "docId": "doc-04" },
+          { "label": "Doc 5: Staffing Roster", "docId": "doc-05" }
+        ]
+      },
+      "turnover": {
+        "title": "Staff turnover and retention",
+        "docsLinked": 5,
+        "body": "Q1 2026 turnover rate of 10.5% sits above the sector benchmark of 8%, with two departures and two unfilled vacancies. The Anchor peer support worker position has been open 5 months, and the Communications Coordinator role has been open 3 months.\n\nTurnover concentrates in the Anchor program, where 2 of 5 disciplinary actions also occurred and where the program lead has formally raised burnout concerns to leadership three times since January. Exit interview themes (compensation, workload, career progression) align with the Bridges Coordinator's recommendation to revisit compensation benchmarks.\n\nCompass program shows zero turnover and stable staffing, correlating with its strongest outcome metrics across the organization. The pattern suggests turnover is concentrated in programs experiencing combined funding pressure and staffing strain rather than distributed evenly.",
+        "docMentions": [
+          { "text": "Anchor program", "docId": "doc-02" },
+          { "text": "Bridges Coordinator's recommendation", "docId": "doc-01" }
+        ],
+        "citations": [
+          { "label": "Doc 5: Staffing Roster", "docId": "doc-05" },
+          { "label": "Doc 6: Disciplinary Log", "docId": "doc-06" },
+          { "label": "Doc 2: Anchor Q1 Report", "docId": "doc-02" },
+          { "label": "Doc 8: Email — Heather to Marcus", "docId": "doc-08" },
+          { "label": "Doc 14: Board Minutes", "docId": "doc-14" }
+        ]
+      },
+      "disciplinary": {
+        "title": "Disciplinary actions across programs",
+        "docsLinked": 3,
+        "body": "Five formal disciplinary actions were recorded in Q1 2026. Three involved frontline program staff; two of those specifically involved Anchor Program team members.\n\nThe concentration of disciplinary actions in Anchor aligns with separately reported staff burnout, a 5-month vacancy reducing team capacity to 70%, and peer conflict documented in the incident log. HR has explicitly recommended a team-level working conditions review.\n\nOne disciplinary action (March 4) involved suspension pending investigation of expense reimbursement irregularities. The investigation was closed as administrative error, but the Operations Manager has subsequently raised concerns in writing about the pattern, specifically noting handwriting inconsistencies on recovered receipts.",
+        "docMentions": [
+          { "text": "Anchor Program team members", "docId": "doc-02" },
+          { "text": "Operations Manager's concerns", "docId": "doc-09" }
+        ],
+        "citations": [
+          { "label": "Doc 6: Disciplinary Log", "docId": "doc-06" },
+          { "label": "Doc 5: Staffing Roster", "docId": "doc-05" },
+          { "label": "Doc 2: Anchor Q1 Report", "docId": "doc-02" }
+        ]
+      }
+    },
+    "risk": {
+      "fraud": {
+        "title": "Fraud or financial irregularity",
+        "docsLinked": 4,
+        "body": "Four documents reference an unresolved pattern around petty cash reconciliation. In November and December 2025, discrepancies totaling $1,847 were attributed to administrative error and replaced from operational reserves.\n\nThe same staff member was responsible for reconciliation in both months. In March 2026, that staff member was placed on suspension pending investigation, which closed with a finding of administrative error. The Operations Manager has since formally raised concerns in writing that two recovered receipts showed signatures inconsistent with the staff member's known handwriting, and has recommended an external review prior to the May audit.\n\nBoard minutes document the implementation of dual-approval procedures for petty cash above $200, but no external review has been authorized. The pattern remains open in internal communications.",
+        "docMentions": [
+          { "text": "November and December 2025 discrepancies", "docId": "doc-04" },
+          { "text": "March 2026 suspension", "docId": "doc-06" },
+          { "text": "Operations Manager's written concerns", "docId": "doc-09" }
+        ],
+        "citations": [
+          { "label": "Doc 4: Funding Summary", "docId": "doc-04" },
+          { "label": "Doc 6: Disciplinary Log", "docId": "doc-06" },
+          { "label": "Doc 9: Email — Brent to Heather", "docId": "doc-09" },
+          { "label": "Doc 14: Board Minutes", "docId": "doc-14" }
+        ]
+      },
+      "dutyOfCare": {
+        "title": "Duty of care or client safety",
+        "docsLinked": 3,
+        "body": "Q1 2026 shows the highest count of suicidal ideation disclosures at intake on record (11 participants, nearly double Q1 2025's count of 6) coinciding with a growing waitlist and reduced clinical supervision capacity running at 0.5 FTE.\n\nFive Section 4 reportable incidents occurred in Q1 2026, up from 3 in Q4 2025. Incidents include one participant who disclosed active suicidal ideation with a plan (crisis protocol activated, admitted to inpatient care), one mandatory report filed with Children's Services, and one wellness check initiated after a participant was unreachable for 48 hours.\n\nThree documents reinforce this pattern: the Bridges Cohort Analysis explicitly notes highest-ever acuity at intake, the Incident Log shows an uptick in serious incidents, and the Bridges Quarterly Report flags a growing waitlist that will exceed 8 weeks average wait by Q3 2026 without capacity expansion.",
+        "docMentions": [
+          { "text": "Bridges Cohort Analysis", "docId": "doc-07" },
+          { "text": "Incident Log", "docId": "doc-11" },
+          { "text": "Bridges Quarterly Report", "docId": "doc-01" }
+        ],
+        "citations": [
+          { "label": "Doc 7: Bridges Cohort Analysis", "docId": "doc-07" },
+          { "label": "Doc 11: Incident Report Log", "docId": "doc-11" },
+          { "label": "Doc 1: Bridges Q1 Report", "docId": "doc-01" }
+        ]
+      }
+    },
+    "keyword": {
+      "fraud": ["doc-04", "doc-06", "doc-09", "doc-14"],
+      "burnout": ["doc-02", "doc-05", "doc-06", "doc-08"],
+      "waitlist": ["doc-01", "doc-07", "doc-13"],
+      "suicidal ideation": ["doc-01", "doc-07", "doc-11"]
+    }
+  },
+  "case": {
+    "sentiment": {
+      "summary": "Sentiment trajectory shows clear positive movement from intake (Feb 17) through the 8-week review (Apr 14). Initial sentiment is heavily negative with themes of failure, isolation, and feeling stuck. Mid-point sentiment is ambivalent with emerging themes of hope and reconnection. Recent sentiment is cautiously positive with self-recognition of progress across mood logs, the SOAP notes, and the treatment plan update.",
+      "perGroup": [
+        { "label": "Intake Assessment", "score": -0.72, "docs": ["doc-15"] },
+        { "label": "PHQ-9 Baseline", "score": -0.68, "docs": ["doc-16"] },
+        { "label": "Session 1 Note", "score": -0.45, "docs": ["doc-17"] },
+        { "label": "Journal Week 5", "score": -0.10, "docs": ["doc-18"] },
+        { "label": "Session 4 Note", "score": 0.28, "docs": ["doc-19"] },
+        { "label": "Treatment Plan Update", "score": 0.55, "docs": ["doc-20"] },
+        { "label": "PHQ-9 Follow-up", "score": 0.62, "docs": ["doc-21"] }
+      ],
+      "citations": [
+        { "label": "Doc 15: Intake Assessment", "docId": "doc-15" },
+        { "label": "Doc 16: PHQ-9 Baseline", "docId": "doc-16" },
+        { "label": "Doc 17: SOAP Note Session 1", "docId": "doc-17" },
+        { "label": "Doc 18: Journal Week 5", "docId": "doc-18" },
+        { "label": "Doc 19: SOAP Note Session 4", "docId": "doc-19" },
+        { "label": "Doc 20: Treatment Plan Update", "docId": "doc-20" },
+        { "label": "Doc 21: PHQ-9 Follow-up", "docId": "doc-21" }
+      ]
+    },
+    "pattern": {
+      "mood": {
+        "title": "Mood trajectory across journal",
+        "docsLinked": 4,
+        "body": "Mood self-ratings across the clinical record show a clear positive trajectory. PHQ-9 scores declined from 17 at intake to 9 at the 8-week review, a clinically meaningful 8-point reduction.\n\nThe journal entries from week 5 of treatment (March 16-22) capture a pivotal mid-week shift: two consecutive days scoring 5 out of 10, the patient's first self-reported 5s in an extended period. The patient explicitly noted this in the Sunday entry: 'I noticed I had some 5s this week. I haven't had any 5s in a long time.'\n\nGAD-7 scores show parallel improvement: 11 at intake, 9 at session 4, 7 at session 8. The treating clinician notes that the mood improvement has been more consistent than sleep improvement, suggesting mood is a leading indicator of treatment response in this case.",
+        "docMentions": [
+          { "text": "PHQ-9 decline from 17 to 9", "docId": "doc-20" },
+          { "text": "journal entries from week 5", "docId": "doc-18" }
+        ],
+        "citations": [
+          { "label": "Doc 16: PHQ-9 Baseline", "docId": "doc-16" },
+          { "label": "Doc 18: Journal Week 5", "docId": "doc-18" },
+          { "label": "Doc 19: SOAP Note Session 4", "docId": "doc-19" },
+          { "label": "Doc 20: Treatment Plan Update", "docId": "doc-20" }
+        ]
+      },
+      "sleep": {
+        "title": "Sleep and mood pattern",
+        "docsLinked": 5,
+        "body": "Patient reported oversleeping (10-12 hours) at intake, persisting through session 4. This pattern appears consistently across intake documentation, the session 1 SOAP note, and the patient's own journal entries (sleeping until 1pm on March 17 and 11 hours on March 21).\n\nMood improvements have outpaced sleep improvements across the 8-week period. PHQ-9 declined 8 points while sleep quality remains variable per the session 8 treatment plan update. The treating clinician introduced sleep hygiene as a focus area beginning session 5.\n\nThis pattern suggests sleep is functioning as a lagging indicator of treatment response in this case, consistent with CBT literature on depression. The patient's journal also demonstrates self-awareness of the connection: 'There's something about waking up that late where the day is already a failure before you even start it.'",
+        "docMentions": [
+          { "text": "patient's journal entries", "docId": "doc-18" },
+          { "text": "treatment plan update", "docId": "doc-20" }
+        ],
+        "citations": [
+          { "label": "Doc 15: Intake Assessment", "docId": "doc-15" },
+          { "label": "Doc 17: SOAP Note Session 1", "docId": "doc-17" },
+          { "label": "Doc 18: Journal Week 5", "docId": "doc-18" },
+          { "label": "Doc 19: SOAP Note Session 4", "docId": "doc-19" },
+          { "label": "Doc 20: Treatment Plan Update", "docId": "doc-20" }
+        ]
+      },
+      "social": {
+        "title": "Social withdrawal trajectory",
+        "docsLinked": 4,
+        "body": "Social re-engagement traces clearly across the document set. At intake, the patient described total withdrawal from peers, difficulty engaging with friends who were continuing their studies, and feeling unable to 'perform being okay' long enough for a conversation.\n\nThe first peer outreach attempt occurred in week 5 of treatment (March 20 journal entry): replying to Sarah's text, disclosing the university withdrawal, and agreeing to a potential phone call. The patient's mood score that day reached 5, the highest in the recorded period to that point.\n\nBy the 8-week treatment plan update, the patient had resumed limited contact with three high school friends. The treating clinician identifies social re-engagement as a key mechanism of the behavioural activation intervention and introduced a phone call goal as the session 4 behavioral experiment.",
+        "docMentions": [
+          { "text": "first peer outreach", "docId": "doc-18" },
+          { "text": "session 4 behavioral experiment", "docId": "doc-19" }
+        ],
+        "citations": [
+          { "label": "Doc 15: Intake Assessment", "docId": "doc-15" },
+          { "label": "Doc 17: SOAP Note Session 1", "docId": "doc-17" },
+          { "label": "Doc 18: Journal Week 5", "docId": "doc-18" },
+          { "label": "Doc 20: Treatment Plan Update", "docId": "doc-20" }
+        ]
+      }
+    },
+    "risk": {
+      "ideation": {
+        "title": "Suicidal ideation or self-harm",
+        "docsLinked": 5,
+        "body": "Risk trajectory shows clear de-escalation across the 8-week treatment period. At intake, the patient acknowledged passive ideation: occasional thoughts that she 'would not mind not waking up,' rated 1 on PHQ-9 item 9 (several days). No intent or plan was identified, and protective factors were strong.\n\nSession 1 SOAP note documents denial of suicidal ideation. By session 4, the patient reported that passive thoughts 'have become less frequent.' The 8-week PHQ-9 follow-up shows item 9 scored 0 (not at all), a full reduction from intake.\n\nSafety plan was completed at intake, reviewed at each session per documentation, and last formally reviewed April 7, 2026. No self-harm history. No acute risk indicators identified at any point in the documented record.",
+        "docMentions": [
+          { "text": "passive ideation at intake", "docId": "doc-15" },
+          { "text": "PHQ-9 item 9 reduction", "docId": "doc-21" },
+          { "text": "safety plan review", "docId": "doc-20" }
+        ],
+        "citations": [
+          { "label": "Doc 15: Intake Assessment", "docId": "doc-15" },
+          { "label": "Doc 16: PHQ-9 Baseline", "docId": "doc-16" },
+          { "label": "Doc 17: SOAP Note Session 1", "docId": "doc-17" },
+          { "label": "Doc 19: SOAP Note Session 4", "docId": "doc-19" },
+          { "label": "Doc 20: Treatment Plan Update", "docId": "doc-20" },
+          { "label": "Doc 21: PHQ-9 Follow-up", "docId": "doc-21" }
+        ]
+      }
+    },
+    "keyword": {
+      "suicidal ideation": ["doc-15", "doc-16", "doc-17", "doc-19", "doc-20", "doc-21"],
+      "sleep": ["doc-15", "doc-17", "doc-18", "doc-19", "doc-20"],
+      "PHQ-9": ["doc-15", "doc-16", "doc-17", "doc-19", "doc-20", "doc-21"],
+      "safety plan": ["doc-15", "doc-17", "doc-19", "doc-20"],
+      "behavioural activation": ["doc-17", "doc-19", "doc-20"]
+    }
+  }
+}

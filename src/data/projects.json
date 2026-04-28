@@ -1,0 +1,32 @@
+{
+  "org": {
+    "active": {
+      "id": "q1-2026",
+      "name": "Q1 2026 Program Review",
+      "org": "Northbridge Youth Mental Health Society",
+      "lastUpdated": "April 14",
+      "docCount": 14,
+      "analysesRun": 0
+    },
+    "previous": [
+      { "id": "annual-2025", "name": "2025 Annual Report", "docCount": 28 },
+      { "id": "bissell", "name": "Bissell Partnership", "docCount": 11 },
+      { "id": "funder-q4", "name": "Funder Reports Q4", "docCount": 9 }
+    ]
+  },
+  "case": {
+    "active": {
+      "id": "mj",
+      "name": "M.J.",
+      "meta": "21yo · MDD moderate · Treating: Dr. R. Marcoux · Since Feb 17",
+      "docCount": 7,
+      "duration": "8 weeks",
+      "phq9Current": 9,
+      "phq9Delta": -8
+    },
+    "previous": [
+      { "id": "kt", "name": "K.T.", "docCount": 12 },
+      { "id": "da", "name": "D.A.", "docCount": 5 }
+    ]
+  }
+}
