@@ -50,8 +50,8 @@ function SentimentBar({ score }) {
   )
 }
 
-export default function SentimentResult({ mode, onPreview }) {
-  const data = analysisResults[mode].sentiment
+export default function SentimentResult({ mode, scope = 'all', onPreview }) {
+  const data = analysisResults[mode].sentiment[scope]
 
   return (
     <div>

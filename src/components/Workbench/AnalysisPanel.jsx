@@ -7,6 +7,20 @@ import RiskResult from '../Analyses/RiskResult'
 import KeywordSearch from '../Analyses/KeywordSearch'
 import SuggestedChips from '../Onboarding/SuggestedChips'
 
+const CHIP_TO_SENTIMENT = {
+  'All documents': 'all',
+  'Just the program reports': 'programReports',
+  'Just internal emails': 'internalEmails',
+  'Full trajectory': 'all',
+  'Journal entries only': 'journalOnly',
+  'Clinical notes only': 'clinicalNotes',
+}
+
+const SENTIMENT_DOC_COUNTS = {
+  org: { all: 14, programReports: 3, internalEmails: 2 },
+  case: { all: 7, journalOnly: 1, clinicalNotes: 4 },
+}
+
 const CHIP_TO_PATTERN = {
   'Programs by performance': 'performance',
   'Staff turnover and retention': 'turnover',
@@ -37,8 +51,8 @@ const RISK_TO_HIGHLIGHT = {
   ideation: 'risk.ideation',
 }
 
-function computeHighlightContext(activeAnalysis, patternScenario, riskScenario, keywordQuery) {
-  if (activeAnalysis === 'sentiment') return 'sentiment.all'
+function computeHighlightContext(activeAnalysis, sentimentScope, patternScenario, riskScenario, keywordQuery) {
+  if (activeAnalysis === 'sentiment') return 'sentiment.' + sentimentScope
   if (activeAnalysis === 'pattern' && patternScenario) return PATTERN_TO_HIGHLIGHT[patternScenario] || null
   if (activeAnalysis === 'risk' && riskScenario) return RISK_TO_HIGHLIGHT[riskScenario] || null
   if (activeAnalysis === 'keyword' && keywordQuery) return 'keyword:' + keywordQuery
@@ -47,12 +61,14 @@ function computeHighlightContext(activeAnalysis, patternScenario, riskScenario, 
 
 export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
   const [activeChip, setActiveChip] = useState(null)
+  const [sentimentScope, setSentimentScope] = useState('all')
   const [patternScenario, setPatternScenario] = useState(null)
   const [riskScenario, setRiskScenario] = useState(null)
   const [keywordQuery, setKeywordQuery] = useState(null)
 
   useEffect(() => {
     setActiveChip(null)
+    setSentimentScope('all')
     setPatternScenario(null)
     setRiskScenario(null)
     setKeywordQuery(null)
@@ -60,14 +76,16 @@ export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
 
   function handleChipClick(chip) {
     setActiveChip(chip)
-    if (activeAnalysis === 'pattern' && CHIP_TO_PATTERN[chip]) setPatternScenario(CHIP_TO_PATTERN[chip])
+    if (activeAnalysis === 'sentiment' && CHIP_TO_SENTIMENT[chip]) setSentimentScope(CHIP_TO_SENTIMENT[chip])
+    else if (activeAnalysis === 'pattern' && CHIP_TO_PATTERN[chip]) setPatternScenario(CHIP_TO_PATTERN[chip])
     else if (activeAnalysis === 'risk' && CHIP_TO_RISK[chip]) setRiskScenario(CHIP_TO_RISK[chip])
     else if (activeAnalysis === 'keyword') setKeywordQuery(chip)
   }
 
   if (!activeAnalysis) return null
 
-  const highlightContext = computeHighlightContext(activeAnalysis, patternScenario, riskScenario, keywordQuery)
+  const highlightContext = computeHighlightContext(activeAnalysis, sentimentScope, patternScenario, riskScenario, keywordQuery)
+  const sentimentDocCount = SENTIMENT_DOC_COUNTS[mode]?.[sentimentScope] ?? (mode === 'org' ? 14 : 7)
 
   // Wrap onPreview to inject the current highlight context
   function onPreviewWithCtx(doc) {
@@ -127,11 +145,11 @@ export default function AnalysisPanel({ activeAnalysis, mode, onPreview }) {
                   </h3>
                 </div>
                 <div style={{ textAlign: 'right', fontSize: 12, color: 'var(--text-tertiary)', flexShrink: 0, marginLeft: 16 }}>
-                  <div>{mode === 'org' ? '14' : '7'} documents analyzed</div>
+                  <div>{sentimentDocCount} {sentimentDocCount === 1 ? 'document' : 'documents'} analyzed</div>
                   <div style={{ marginTop: 2 }}>Completed in 1.2s</div>
                 </div>
               </div>
-              <SentimentResult mode={mode} onPreview={onPreviewWithCtx} />
+              <SentimentResult mode={mode} scope={sentimentScope} onPreview={onPreviewWithCtx} />
             </>
           )}
 

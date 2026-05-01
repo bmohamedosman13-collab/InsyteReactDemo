@@ -1,23 +1,49 @@
 {
   "org": {
     "sentiment": {
-      "summary": "Across 14 documents, sentiment is mixed with strong polarization between programs. Compass shows consistently positive sentiment (0.78 strength) with themes of engagement, satisfaction, and stability. Bridges shows cautiously optimistic sentiment (0.42) with concern themes around staff retention and rising case acuity. Anchor shows clearly negative sentiment (-0.51) with persistent themes of burnout, frustration, and resource constraint. Internal communications between leadership and program staff show distinct tonal contrast worth examining.",
-      "perGroup": [
-        { "label": "Compass", "score": 0.78, "docs": ["doc-03", "doc-12"] },
-        { "label": "Bridges", "score": 0.42, "docs": ["doc-01", "doc-07"] },
-        { "label": "Board / Governance", "score": -0.08, "docs": ["doc-14"] },
-        { "label": "Internal Emails", "score": -0.18, "docs": ["doc-08", "doc-09"] },
-        { "label": "Anchor", "score": -0.51, "docs": ["doc-02"] }
-      ],
-      "citations": [
-        { "label": "Doc 1: Bridges Q1 Report", "docId": "doc-01" },
-        { "label": "Doc 2: Anchor Q1 Report", "docId": "doc-02" },
-        { "label": "Doc 3: Compass Q1 Report", "docId": "doc-03" },
-        { "label": "Doc 8: Email — Heather to Marcus", "docId": "doc-08" },
-        { "label": "Doc 9: Email — Brent to Heather", "docId": "doc-09" },
-        { "label": "Doc 12: Compass Feedback", "docId": "doc-12" },
-        { "label": "Doc 14: Board Minutes", "docId": "doc-14" }
-      ]
+      "all": {
+        "summary": "Across 14 documents, sentiment is mixed with strong polarization between programs. Compass shows consistently positive sentiment (0.78 strength) with themes of engagement, satisfaction, and stability. Bridges shows cautiously optimistic sentiment (0.42) with concern themes around staff retention and rising case acuity. Anchor shows clearly negative sentiment (-0.51) with persistent themes of burnout, frustration, and resource constraint. Internal communications between leadership and program staff show distinct tonal contrast worth examining.",
+        "perGroup": [
+          { "label": "Compass", "score": 0.78, "docs": ["doc-03", "doc-12"] },
+          { "label": "Bridges", "score": 0.42, "docs": ["doc-01", "doc-07"] },
+          { "label": "Board / Governance", "score": -0.08, "docs": ["doc-14"] },
+          { "label": "Internal Emails", "score": -0.18, "docs": ["doc-08", "doc-09"] },
+          { "label": "Anchor", "score": -0.51, "docs": ["doc-02"] }
+        ],
+        "citations": [
+          { "label": "Doc 1: Bridges Q1 Report", "docId": "doc-01" },
+          { "label": "Doc 2: Anchor Q1 Report", "docId": "doc-02" },
+          { "label": "Doc 3: Compass Q1 Report", "docId": "doc-03" },
+          { "label": "Doc 8: Email — Heather to Marcus", "docId": "doc-08" },
+          { "label": "Doc 9: Email — Brent to Heather", "docId": "doc-09" },
+          { "label": "Doc 12: Compass Feedback", "docId": "doc-12" },
+          { "label": "Doc 14: Board Minutes", "docId": "doc-14" }
+        ]
+      },
+      "programReports": {
+        "summary": "Across the three program quarterly reports, sentiment polarizes sharply by program. Compass shows consistent positive sentiment driven by strong outcome metrics and stakeholder validation. Bridges shows cautiously positive sentiment offset by capacity strain and rising case acuity. Anchor shows clearly negative sentiment with persistent themes of burnout, leadership disconnect, and resource constraint.",
+        "perGroup": [
+          { "label": "Compass", "score": 0.81, "docs": ["doc-03"] },
+          { "label": "Bridges", "score": 0.42, "docs": ["doc-01"] },
+          { "label": "Anchor", "score": -0.58, "docs": ["doc-02"] }
+        ],
+        "citations": [
+          { "label": "Doc 1: Bridges Q1 Report", "docId": "doc-01" },
+          { "label": "Doc 2: Anchor Q1 Report", "docId": "doc-02" },
+          { "label": "Doc 3: Compass Q1 Report", "docId": "doc-03" }
+        ]
+      },
+      "internalEmails": {
+        "summary": "The two internal email exchanges reveal organizational tension that does not appear in formal program documentation. Leadership communication shows defensive framing around budget decisions and acknowledgement of staff escalation as a complicating factor. Operations communication shows formalized concern about an unresolved financial pattern that the executive team has signaled as closed.",
+        "perGroup": [
+          { "label": "Heather to Marcus", "score": -0.22, "docs": ["doc-08"] },
+          { "label": "Brent to Heather", "score": -0.41, "docs": ["doc-09"] }
+        ],
+        "citations": [
+          { "label": "Doc 8: Email — Heather to Marcus", "docId": "doc-08" },
+          { "label": "Doc 9: Email — Brent to Heather", "docId": "doc-09" }
+        ]
+      }
     },
     "pattern": {
       "performance": {
@@ -110,25 +136,57 @@
   },
   "case": {
     "sentiment": {
-      "summary": "Sentiment trajectory shows clear positive movement from intake (Feb 17) through the 8-week review (Apr 14). Initial sentiment is heavily negative with themes of failure, isolation, and feeling stuck. Mid-point sentiment is ambivalent with emerging themes of hope and reconnection. Recent sentiment is cautiously positive with self-recognition of progress across mood logs, the SOAP notes, and the treatment plan update.",
-      "perGroup": [
-        { "label": "Intake Assessment", "score": -0.72, "docs": ["doc-15"] },
-        { "label": "PHQ-9 Baseline", "score": -0.68, "docs": ["doc-16"] },
-        { "label": "Session 1 Note", "score": -0.45, "docs": ["doc-17"] },
-        { "label": "Journal Week 5", "score": -0.10, "docs": ["doc-18"] },
-        { "label": "Session 4 Note", "score": 0.28, "docs": ["doc-19"] },
-        { "label": "Treatment Plan Update", "score": 0.55, "docs": ["doc-20"] },
-        { "label": "PHQ-9 Follow-up", "score": 0.62, "docs": ["doc-21"] }
-      ],
-      "citations": [
-        { "label": "Doc 15: Intake Assessment", "docId": "doc-15" },
-        { "label": "Doc 16: PHQ-9 Baseline", "docId": "doc-16" },
-        { "label": "Doc 17: SOAP Note Session 1", "docId": "doc-17" },
-        { "label": "Doc 18: Journal Week 5", "docId": "doc-18" },
-        { "label": "Doc 19: SOAP Note Session 4", "docId": "doc-19" },
-        { "label": "Doc 20: Treatment Plan Update", "docId": "doc-20" },
-        { "label": "Doc 21: PHQ-9 Follow-up", "docId": "doc-21" }
-      ]
+      "all": {
+        "summary": "Sentiment trajectory shows clear positive movement from intake (Feb 17) through the 8-week review (Apr 14). Initial sentiment is heavily negative with themes of failure, isolation, and feeling stuck. Mid-point sentiment is ambivalent with emerging themes of hope and reconnection. Recent sentiment is cautiously positive with self-recognition of progress across mood logs, the SOAP notes, and the treatment plan update.",
+        "perGroup": [
+          { "label": "Intake Assessment", "score": -0.72, "docs": ["doc-15"] },
+          { "label": "PHQ-9 Baseline", "score": -0.68, "docs": ["doc-16"] },
+          { "label": "Session 1 Note", "score": -0.45, "docs": ["doc-17"] },
+          { "label": "Journal Week 5", "score": -0.10, "docs": ["doc-18"] },
+          { "label": "Session 4 Note", "score": 0.28, "docs": ["doc-19"] },
+          { "label": "Treatment Plan Update", "score": 0.55, "docs": ["doc-20"] },
+          { "label": "PHQ-9 Follow-up", "score": 0.62, "docs": ["doc-21"] }
+        ],
+        "citations": [
+          { "label": "Doc 15: Intake Assessment", "docId": "doc-15" },
+          { "label": "Doc 16: PHQ-9 Baseline", "docId": "doc-16" },
+          { "label": "Doc 17: SOAP Note Session 1", "docId": "doc-17" },
+          { "label": "Doc 18: Journal Week 5", "docId": "doc-18" },
+          { "label": "Doc 19: SOAP Note Session 4", "docId": "doc-19" },
+          { "label": "Doc 20: Treatment Plan Update", "docId": "doc-20" },
+          { "label": "Doc 21: PHQ-9 Follow-up", "docId": "doc-21" }
+        ]
+      },
+      "journalOnly": {
+        "summary": "The patient's own voice across one week shows a measurable upward trajectory. Early entries center on failure, isolation, and avoidance reframed as rest. Mid-week entries show emerging insight as the patient distinguishes avoidance from genuine recovery. End-of-week entries contain the first explicit positive self-recognition: 'I noticed I had some 5s this week. I haven't had any 5s in a long time.'",
+        "perGroup": [
+          { "label": "Mon", "score": -0.45, "docs": ["doc-18"] },
+          { "label": "Tue", "score": -0.78, "docs": ["doc-18"] },
+          { "label": "Wed", "score": -0.18, "docs": ["doc-18"] },
+          { "label": "Thu", "score": -0.51, "docs": ["doc-18"] },
+          { "label": "Fri", "score": 0.22, "docs": ["doc-18"] },
+          { "label": "Sat", "score": 0.31, "docs": ["doc-18"] },
+          { "label": "Sun", "score": 0.58, "docs": ["doc-18"] }
+        ],
+        "citations": [
+          { "label": "Doc 18: Journal Week 5", "docId": "doc-18" }
+        ]
+      },
+      "clinicalNotes": {
+        "summary": "Clinician documentation across intake, two SOAP notes, and the treatment plan update shows steady positive trajectory grounded in objective indicators rather than subjective valence alone. Affect, eye contact, speech, and engagement are tracked as observable evidence alongside standardized measures. PHQ-9 trajectory from 17 to 9 over 8 weeks supports the qualitative impressions.",
+        "perGroup": [
+          { "label": "Intake", "score": -0.65, "docs": ["doc-15"] },
+          { "label": "Session 1", "score": -0.42, "docs": ["doc-17"] },
+          { "label": "Session 4", "score": 0.31, "docs": ["doc-19"] },
+          { "label": "Treatment Plan", "score": 0.62, "docs": ["doc-20"] }
+        ],
+        "citations": [
+          { "label": "Doc 15: Intake Assessment", "docId": "doc-15" },
+          { "label": "Doc 17: SOAP Note Session 1", "docId": "doc-17" },
+          { "label": "Doc 19: SOAP Note Session 4", "docId": "doc-19" },
+          { "label": "Doc 20: Treatment Plan Update", "docId": "doc-20" }
+        ]
+      }
     },
     "pattern": {
       "mood": {
