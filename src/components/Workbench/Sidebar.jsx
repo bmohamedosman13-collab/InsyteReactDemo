@@ -10,7 +10,7 @@ export default function Sidebar({ mode, onNewClick }) {
   const prevItems = isOrg
     ? [
         { name: '2025 Annual Report', meta: '28 documents' },
-        { name: 'Bissell Partnership', meta: '11 documents' },
+        { name: 'Atlas Partnership', meta: '11 documents' },
         { name: 'Funder Reports Q4', meta: '9 documents' },
       ]
     : [
