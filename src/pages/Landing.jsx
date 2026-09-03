@@ -1,170 +1,81 @@
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import AppShell from '../components/Layout/AppShell'
+import TopNav from '../components/TopNav.jsx'
 
-function PickerCard({ icon, title, description, cta, onClick, delay }) {
+/**
+ * Landing picker. Spec section 1 keeps this stage, restyled to the light
+ * cream system. The client code gate that used to follow it is disabled, so
+ * each card goes straight to its redaction review.
+ */
+export default function Landing() {
+  const navigate = useNavigate()
   return (
-    <motion.button
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay, ease: 'easeOut' }}
-      whileHover={{ y: -2, transition: { duration: 0.2 } }}
-      onClick={onClick}
-      style={{
-        background: 'var(--card-bg)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 16,
-        padding: '32px 28px',
-        textAlign: 'left',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        cursor: 'pointer',
-        width: '100%',
-        transition: 'border-color 0.2s ease, background 0.2s ease',
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.borderColor = 'var(--border-active)'
-        e.currentTarget.style.background = 'var(--card-bg-hover)'
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.borderColor = 'var(--border-subtle)'
-        e.currentTarget.style.background = 'var(--card-bg)'
-      }}
-    >
-      <div style={{
-        width: 40,
-        height: 40,
-        border: '1px solid var(--accent)',
-        borderRadius: icon === 'circle' ? '50%' : 10,
-        marginBottom: 20,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <div style={{
-          width: 18,
-          height: 18,
-          border: '1.5px solid var(--accent)',
-          borderRadius: icon === 'circle' ? '50%' : 4,
-        }} />
-      </div>
-      <h3 style={{
-        fontFamily: 'var(--font-serif)',
-        fontSize: 24,
-        fontWeight: 500,
-        color: 'var(--text-primary)',
-        marginBottom: 8,
-      }}>
-        {title}
-      </h3>
-      <p style={{
-        color: 'var(--text-secondary)',
-        fontSize: 13,
-        lineHeight: 1.6,
-        marginBottom: 20,
-      }}>
-        {description}
-      </p>
-      <span style={{
-        color: 'var(--accent)',
-        fontSize: 13,
-        fontWeight: 500,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 6,
-      }}>
-        {cta}
-      </span>
-    </motion.button>
+    <>
+      <TopNav onHome={() => navigate('/')} />
+      <main style={{ maxWidth: 880, margin: '0 auto', padding: '72px 24px 60px' }}>
+        <h1 style={{ fontSize: 40, lineHeight: 1.14, marginBottom: 14 }}>
+          Evidence you can point at.
+        </h1>
+        <p style={{ fontSize: 16.5, color: 'var(--ink-secondary)', maxWidth: 620, marginBottom: 44 }}>
+          Insyte reads the documents you already have, redacts them before anything is analysed,
+          and cites every line of what it gives back. Pick a track to walk through.
+        </p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
+          <PickerCard
+            title="Casework"
+            lede="Two client folders, one an eleven month depression episode and one a compensable injury claim."
+            points={[
+              '11 documents across 2 clients',
+              '3 client-authored documents',
+              'Exports: episode summary, SOAP, DAP, WCB C-851',
+            ]}
+            onClick={() => navigate('/case')}
+          />
+          <PickerCard
+            title="Organization"
+            lede="One fiscal year at a youth mental health nonprofit. Programs, funding, staffing, governance."
+            points={[
+              '15 documents across 1 fiscal year',
+              'Board minutes, financials, incident log',
+              'Exports: quarterly report, grant application',
+            ]}
+            onClick={() => navigate('/org')}
+          />
+        </div>
+
+        <p style={{ marginTop: 40, fontSize: 13, color: 'var(--ink-faint)' }}>
+          Every document in this demo is synthetic. No real person or organisation is represented.
+        </p>
+      </main>
+    </>
   )
 }
 
-export default function Landing() {
-  const navigate = useNavigate()
-
+function PickerCard({ title, lede, points, onClick }) {
   return (
-    <AppShell showNav={false}>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        padding: '40px 24px',
-        textAlign: 'center',
-      }}>
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
-          style={{
-            fontSize: 11,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            color: 'var(--accent)',
-            marginBottom: 12,
-            fontFamily: 'var(--font-sans)',
-          }}
-        >
-          Document Intelligence
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: 0.05, ease: 'easeOut' }}
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: 'clamp(32px, 5vw, 48px)',
-            fontWeight: 400,
-            color: 'var(--text-primary)',
-            marginBottom: 16,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          Welcome to Insyte
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.35, delay: 0.1 }}
-          style={{
-            color: 'var(--text-secondary)',
-            fontSize: 15,
-            maxWidth: 480,
-            marginBottom: 48,
-            lineHeight: 1.6,
-          }}
-        >
-          Choose a workspace to begin. This is an interactive demo using sample data.
-        </motion.p>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 20,
-          maxWidth: 720,
-          width: '100%',
-        }}>
-          <PickerCard
-            icon="square"
-            title="Organization"
-            description="For agencies, programs, and leadership reviewing documents across multiple cases, files, and reports."
-            cta="Enter workspace →"
-            onClick={() => navigate('/org')}
-            delay={0.15}
-          />
-          <PickerCard
-            icon="circle"
-            title="Casework"
-            description="For clinicians and caseworkers reviewing all documents related to a single client over time."
-            cta="Enter workspace →"
-            onClick={() => navigate('/case')}
-            delay={0.22}
-          />
-        </div>
-      </div>
-    </AppShell>
+    <button
+      onClick={onClick}
+      className="ins-card"
+      style={{ padding: '24px 24px 20px', textAlign: 'left', transition: 'border-color 0.15s ease, transform 0.15s ease' }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = 'var(--violet)'
+        e.currentTarget.style.transform = 'translateY(-2px)'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = 'var(--line)'
+        e.currentTarget.style.transform = 'none'
+      }}
+    >
+      <h2 style={{ fontSize: 23, marginBottom: 8 }}>{title}</h2>
+      <p style={{ fontSize: 14, color: 'var(--ink-secondary)', marginBottom: 16, lineHeight: 1.6 }}>{lede}</p>
+      <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 5 }}>
+        {points.map((p) => (
+          <li key={p} style={{ fontSize: 12.8, color: 'var(--ink-tertiary)', display: 'flex', gap: 8 }}>
+            <span style={{ color: 'var(--violet)' }}>·</span>
+            {p}
+          </li>
+        ))}
+      </ul>
+    </button>
   )
 }

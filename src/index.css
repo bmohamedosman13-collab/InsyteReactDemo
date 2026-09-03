@@ -1,20 +1,62 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Insyte demo design system. Light cream, minimal, Notion-like.
+   Brand constants are fixed by spec section 8 and must not drift.
+   Amber is reserved for risk. Red is never used.
+   --------------------------------------------------------------------------- */
+
 :root {
-  --plum-deep: #0F0A1F;
+  /* Brand, spec 8 */
   --plum: #2D1B4E;
-  --plum-mid: #1A1230;
-  --accent: #B4A4E8;
-  --accent-soft: #9F8FCF;
-  --text-primary: rgba(255,255,255,0.95);
-  --text-secondary: rgba(255,255,255,0.65);
-  --text-tertiary: rgba(255,255,255,0.4);
-  --border-subtle: rgba(255,255,255,0.08);
-  --border-active: rgba(255,255,255,0.15);
-  --card-bg: rgba(255,255,255,0.03);
-  --card-bg-hover: rgba(255,255,255,0.05);
+  --violet: #8B6FBB;
+  --spark: #C4A8FF;
+  --cream: #F2EFF8;
+
+  /* Surfaces */
+  --bg: #FBFAFC;
+  --surface: #FFFFFF;
+  --surface-sunk: var(--cream);
+  --surface-hover: #F7F5FB;
+
+  /* Ink */
+  --ink: #1F1830;
+  --ink-secondary: #57506B;
+  --ink-tertiary: #8B849C;
+  --ink-faint: #ADA6BC;
+
+  /* Lines */
+  --line: #E6E1F0;
+  --line-strong: #D2CAE4;
+
+  /* Risk. Amber only, spec 8. */
+  --amber: #B87333;
+  --amber-bg: #FDF6EC;
+  --amber-line: #EBD9BE;
+
+  /* Positive, used for the remission phase band only */
+  --positive: #4A7C6F;
+  --positive-bg: #EFF6F3;
+
+  /* Author-type badges, spec 3.7 */
+  --badge-clinician: #5A6B85;
+  --badge-clinician-bg: #EEF1F6;
+  --badge-client: #7B5EA7;
+  --badge-client-bg: #F3EEFA;
+
+  /* Redaction */
+  --redact-bg: #EDE7F7;
+  --redact-line: #CFC2E8;
+  --restored-bg: #FFF9E6;
+
   --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow-card: 0 1px 2px rgba(45, 27, 78, 0.04), 0 4px 12px rgba(45, 27, 78, 0.05);
+  --shadow-pop: 0 4px 12px rgba(45, 27, 78, 0.10), 0 12px 32px rgba(45, 27, 78, 0.10);
 }
 
 *, *::before, *::after {
@@ -25,26 +67,111 @@
 
 html, body, #root {
   min-height: 100vh;
-  background: var(--plum-deep);
-  color: var(--text-primary);
+  background: var(--bg);
+  color: var(--ink);
   font-family: var(--font-sans);
   font-weight: 400;
-  line-height: 1.6;
-  overflow-x: hidden;
+  line-height: 1.62;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-input:focus, button:focus {
-  outline: none;
+body { overflow-x: hidden; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  color: var(--plum);
 }
 
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+button { font-family: inherit; cursor: pointer; }
+input, textarea { font-family: inherit; }
+input:focus, button:focus, textarea:focus { outline: none; }
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-active);
-  border-radius: 2px;
+  background: var(--line-strong);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+/* --------------------------------------------------------------- primitives */
+
+.ins-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.ins-btn {
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.ins-btn:hover:not(:disabled) {
+  background: var(--surface-hover);
+  border-color: var(--violet);
+}
+.ins-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.ins-btn-primary {
+  background: var(--plum);
+  border-color: var(--plum);
+  color: #fff;
+}
+.ins-btn-primary:hover:not(:disabled) {
+  background: #3C2765;
+  border-color: #3C2765;
+}
+
+.ins-mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+
+/* Mandatory review banners. Amber, never dismissible, never red. */
+.ins-review-banner {
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-line);
+  border-left: 3px solid var(--amber);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  color: #7A4A18;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.ins-review-banner strong {
+  display: block;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
