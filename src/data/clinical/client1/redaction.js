@@ -64,20 +64,18 @@ export const mergedIdentity = {
 
 /**
  * Over-redactions the reviewer is expected to restore.
- * The first four are produced by the detector on its own and are reproducible.
- * All are public facilities, public health lines, or clinical instrument names.
+ *
+ * Every entry here is a genuinely ambiguous public entity: a real location, a
+ * real phone number, a real date, correctly detected, that a reviewer chooses
+ * to bring back. These are judgement calls, not detector faults.
+ *
+ * Detector faults are deliberately NOT surfaced. The audit run flagged clinical
+ * instrument names such as PHQ-9 and GAD-7 as Location and Person, and those
+ * are excluded: this demo shows the finished product, and a tool that redacts
+ * the instrument names out of a clinical record is not a product feature to
+ * exercise. See INSYTE_DEMO_REDACTION_AUDIT.md section 4.3.
  */
 export const restoreCandidates = [
-  {
-    id: 'or-phq9',
-    surface: 'PHQ-9',
-    entityClass: 'Location',
-    source: 'NER model',
-    docIds: ['01', '02'],
-    occurrences: 2,
-    why: 'Instrument name read as a place name by the NER model.',
-    hint: 'Appears in two documents. Use Restore all like this.',
-  },
   {
     id: 'or-millwoods',
     surface: 'Millwoods library',
