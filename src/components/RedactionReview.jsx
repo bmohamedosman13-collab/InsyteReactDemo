@@ -71,14 +71,17 @@ function RedactedChip({ span, onRemove, onRemoveAll, count }) {
   }, [open])
 
   return (
-    <span style={{ position: 'relative', display: 'inline-block' }}>
-      <button
+    <span style={{ position: 'relative' }}>
+      <span
+        role="button"
+        tabIndex={0}
         onClick={(e) => { e.stopPropagation(); setOpen((v) => !v) }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); setOpen((v) => !v) } }}
         title={span.cls}
         className="ins-chip-redacted"
       >
         REDACTED
-      </button>
+      </span>
       {open && (
         <span className="ins-pop" onClick={(e) => e.stopPropagation()}>
           <span className="ins-pop-title">{span.cls}</span>
@@ -112,14 +115,17 @@ function RestoredSpan({ span, onRedact, onRedactAll, count }) {
   }, [open])
 
   return (
-    <span style={{ position: 'relative', display: 'inline-block' }}>
-      <button
+    <span style={{ position: 'relative' }}>
+      <span
+        role="button"
+        tabIndex={0}
         onClick={(e) => { e.stopPropagation(); setOpen((v) => !v) }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); setOpen((v) => !v) } }}
         title={`Visible. Detected as ${span.cls}.`}
         className="ins-chip-restored"
       >
         {span.surface}
-      </button>
+      </span>
       {open && (
         <span className="ins-pop" onClick={(e) => e.stopPropagation()}>
           <span className="ins-pop-title">Visible in the export</span>
@@ -188,6 +194,8 @@ export default function RedactionReview({
     return [...groups.values()]
   }, [spansByDoc])
 
+  const nextUnreviewed = docs.find((d) => !visited.has(d.id))
+
   const openDoc = (id) => {
     setActiveId(id)
     setVisited((prev) => new Set(prev).add(id))
@@ -211,9 +219,9 @@ export default function RedactionReview({
   }, [spansByDoc])
 
   /* -- text selection to redact ------------------------------------------- */
-  const captureSelection = (e) => {
+  const captureSelection = () => {
     const sel = window.getSelection()
-    if (!sel || sel.isCollapsed) { setSelection(null); return }
+    if (!sel || sel.isCollapsed || sel.rangeCount === 0) { setSelection(null); return }
     const a = absoluteOffset(sel.anchorNode, sel.anchorOffset)
     const b = absoluteOffset(sel.focusNode, sel.focusOffset)
     if (a === null || b === null) { setSelection(null); return }
@@ -223,7 +231,18 @@ export default function RedactionReview({
     if (!surface || end - start < 2) { setSelection(null); return }
     const trimStart = start + source.original.slice(start, end).indexOf(surface)
     if (spans.some((s) => !(end <= s.start || trimStart >= s.end))) { setSelection(null); return }
-    setSelection({ start: trimStart, end: trimStart + surface.length, surface, x: e.clientX, y: e.clientY })
+    // Position against the selection rectangle rather than the pointer, so the
+    // button lands on the text however the selection was made and wherever the
+    // pane happens to be scrolled.
+    const rect = sel.getRangeAt(0).getBoundingClientRect()
+    setSelection({
+      start: trimStart,
+      end: trimStart + surface.length,
+      surface,
+      x: rect.left + rect.width / 2,
+      y: rect.top,
+      bottom: rect.bottom,
+    })
   }
 
   const redactSelection = () => {
@@ -348,27 +367,43 @@ export default function RedactionReview({
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
-        {docs.map((d) => {
-          const seen = visited.has(d.id)
-          const active = d.id === activeId
-          return (
-            <button
-              key={d.id}
-              onClick={() => openDoc(d.id)}
-              className="ins-doctab"
-              style={{
-                background: active ? 'var(--plum)' : 'var(--surface)',
-                color: active ? '#fff' : 'var(--ink-secondary)',
-                borderColor: active ? 'var(--plum)' : 'var(--line-strong)',
-              }}
-              title={d.title}
-            >
-              <span className="ins-doctab-dot" style={{ background: seen ? 'var(--positive)' : 'var(--line-strong)' }} />
-              {shortTitle(d)}
+      <div className="ins-card ins-doctabs">
+        <div className="ins-doctabs-head">
+          <span>
+            Documents
+            <span style={{ color: 'var(--ink-faint)', fontWeight: 400 }}>
+              {'  '}{visited.size} of {docs.length} reviewed
+            </span>
+          </span>
+          {nextUnreviewed && (
+            <button className="ins-btn" style={{ padding: '4px 11px', fontSize: 12.5 }} onClick={() => openDoc(nextUnreviewed.id)}>
+              Next unreviewed
             </button>
-          )
-        })}
+          )}
+        </div>
+        <div className="ins-doctabs-strip">
+          {docs.map((d) => {
+            const seen = visited.has(d.id)
+            const active = d.id === activeId
+            return (
+              <button
+                key={d.id}
+                onClick={() => openDoc(d.id)}
+                className="ins-doctab"
+                style={{
+                  background: active ? 'var(--plum)' : 'var(--surface)',
+                  color: active ? '#fff' : seen ? 'var(--ink-tertiary)' : 'var(--ink)',
+                  borderColor: active ? 'var(--plum)' : 'var(--line-strong)',
+                }}
+                title={d.title}
+              >
+                <span className="ins-doctab-dot" style={{ background: seen ? 'var(--positive)' : 'var(--amber)' }} />
+                <span className="ins-mono" style={{ opacity: 0.6, fontSize: 10.5 }}>{d.id}</span>
+                {shortTitle(d)}
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       {callout && activeId === calloutDoc && (
@@ -429,10 +464,13 @@ export default function RedactionReview({
       {selection && (
         <div
           className="ins-selection-tip"
-          style={{ left: Math.min(selection.x, window.innerWidth - 190), top: selection.y + 14 }}
+          style={{
+            left: Math.max(12, Math.min(selection.x - 80, window.innerWidth - 190)),
+            top: selection.y > 60 ? selection.y - 42 : selection.bottom + 10,
+          }}
         >
-          <button className="ins-btn ins-btn-primary" style={{ padding: '5px 11px', fontSize: 12.5 }} onClick={redactSelection}>
-            Redact selection
+          <button className="ins-btn ins-btn-primary ins-selection-btn" onClick={redactSelection}>
+            Redact “{selection.surface.length > 22 ? `${selection.surface.slice(0, 21)}…` : selection.surface}”
           </button>
         </div>
       )}

@@ -2,32 +2,29 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 import { AUTHOR_TYPE_LABEL } from '../data/clinical/client1/docs.js'
 
 /**
- * Source panel. Spec 3.7: clicking a citation opens the document scrolled to
- * the cited passage with that passage highlighted.
+ * Source document viewer. Spec 3.7: clicking a citation opens the document
+ * scrolled to the cited passage, with that passage highlighted.
+ *
+ * Renders in two places. On a wide screen it lives docked in the right rail,
+ * so following a citation does not cover the analysis you were reading. On a
+ * narrow screen there is no rail and it opens as an overlay instead.
  *
  * Every document carries a visible Synthetic record marker. Spec section 8.
  */
-export default function SourcePanel({ request, docsById, onClose }) {
+
+export function SourceView({ request, docsById, onClose, docked }) {
   const markRef = useRef(null)
   const scrollRef = useRef(null)
-  const doc = request ? docsById[request.docId] : null
+  const doc = docsById[request.docId]
   const section = doc?.sections.find((s) => s.anchor === request.anchor)
-
-  useEffect(() => {
-    if (!request) return
-    const onKey = (e) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [request, onClose])
 
   useLayoutEffect(() => {
     if (!markRef.current || !scrollRef.current) return
-    const mark = markRef.current
     const box = scrollRef.current
-    box.scrollTop = Math.max(0, mark.offsetTop - box.clientHeight / 3)
+    box.scrollTop = Math.max(0, markRef.current.offsetTop - box.clientHeight / 3)
   }, [request])
 
-  if (!request || !doc) return null
+  if (!doc) return null
 
   const idx = section ? doc.text.indexOf(section.find) : -1
   const before = idx >= 0 ? doc.text.slice(0, idx) : doc.text
@@ -37,115 +34,67 @@ export default function SourcePanel({ request, docsById, onClose }) {
 
   return (
     <>
-      <div
-        onClick={onClose}
-        style={{ position: 'fixed', inset: 0, background: 'rgba(31,24,48,0.18)', zIndex: 80, animation: 'ins-veil-in 200ms ease both' }}
-      />
-      <aside
-        role="dialog"
-        aria-label={`Source document ${doc.id}`}
-        style={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: 'min(620px, 92vw)',
-          background: 'var(--surface)',
-          borderLeft: '1px solid var(--line-strong)',
-          boxShadow: '-8px 0 32px rgba(45,27,78,0.10)',
-          animation: 'ins-slide-in 260ms cubic-bezier(0.22,0.61,0.36,1) both',
-          zIndex: 81,
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <header style={{ padding: '18px 22px 14px', borderBottom: '1px solid var(--line)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
-            <div style={{ minWidth: 0 }}>
-              <div className="ins-mono" style={{ color: 'var(--ink-tertiary)', marginBottom: 3 }}>
-                DOCUMENT {doc.id}
-              </div>
-              <h3 style={{ fontSize: 19, margin: 0 }}>{doc.title}</h3>
-              <div style={{ fontSize: 12.5, color: 'var(--ink-tertiary)', marginTop: 5 }}>
-                {doc.author} · {AUTHOR_TYPE_LABEL[doc.authorType] || doc.authorType} · {dateLabel} · {doc.pages} pp
-              </div>
+      <header style={{ padding: docked ? '14px 16px 12px' : '18px 22px 14px', borderBottom: '1px solid var(--line)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
+          <div style={{ minWidth: 0 }}>
+            <div className="ins-mono" style={{ color: 'var(--ink-tertiary)', marginBottom: 3 }}>
+              DOCUMENT {doc.id}
             </div>
-            <button
-              onClick={onClose}
-              aria-label="Close source panel"
-              className="ins-btn"
-              style={{ padding: '4px 11px', alignSelf: 'flex-start', flexShrink: 0 }}
-            >
-              Close
-            </button>
+            <h3 style={{ fontSize: docked ? 15.5 : 19, margin: 0, lineHeight: 1.3 }}>{doc.title}</h3>
+            <div style={{ fontSize: 11.5, color: 'var(--ink-tertiary)', marginTop: 5 }}>
+              {doc.author} · {AUTHOR_TYPE_LABEL[doc.authorType] || doc.authorType} · {dateLabel}
+            </div>
           </div>
-          {section && (
-            <div
-              style={{
-                marginTop: 12,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                fontSize: 12.5,
-                color: 'var(--ink-secondary)',
-              }}
-            >
-              <span className="ins-mono" style={{ color: 'var(--plum)' }}>{section.anchor}</span>
-              <span>{section.label}</span>
-              {idx < 0 && (
-                <span style={{ color: 'var(--amber)' }}>passage not located</span>
-              )}
-            </div>
-          )}
-        </header>
-
-        <div
-          ref={scrollRef}
-          style={{ flex: 1, overflowY: 'auto', padding: '20px 22px', background: 'var(--bg)' }}
-        >
-          <pre
-            style={{
-              margin: 0,
-              fontFamily: 'var(--font-mono)',
-              fontSize: 12.5,
-              lineHeight: 1.72,
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-word',
-              color: 'var(--ink-secondary)',
-            }}
+          <button
+            onClick={onClose}
+            aria-label="Close source"
+            className="ins-btn"
+            style={{ padding: '3px 9px', fontSize: 12, alignSelf: 'flex-start', flexShrink: 0 }}
           >
-            {before}
-            {hit && (
-              <mark
-                ref={markRef}
-                style={{
-                  background: '#FFF1C2',
-                  color: 'var(--ink)',
-                  padding: '1px 2px',
-                  borderRadius: 3,
-                  boxShadow: '0 0 0 3px #FFF1C2',
-                }}
-              >
-                {hit}
-              </mark>
-            )}
-            {after}
-          </pre>
+            Close
+          </button>
         </div>
+        {section && (
+          <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--ink-secondary)', flexWrap: 'wrap' }}>
+            <span className="ins-mono" style={{ color: 'var(--plum)' }}>{section.anchor}</span>
+            <span>{section.label}</span>
+            {idx < 0 && <span style={{ color: 'var(--amber)' }}>passage not located</span>}
+          </div>
+        )}
+      </header>
 
-        <footer
-          style={{
-            padding: '11px 22px',
-            borderTop: '1px solid var(--line)',
-            fontSize: 12,
-            color: 'var(--ink-tertiary)',
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
-          <span>Synthetic record</span>
-          <span>Identifiers replaced with stable tokens</span>
-        </footer>
+      <div ref={scrollRef} className="ins-source-scroll">
+        <pre className="ins-doc-text">
+          {before}
+          {hit && <mark ref={markRef} className="ins-source-hit">{hit}</mark>}
+          {after}
+        </pre>
+      </div>
+
+      <footer className="ins-source-foot">
+        <span>Synthetic record</span>
+        <span>Identifiers tokenised</span>
+      </footer>
+    </>
+  )
+}
+
+/** Overlay wrapper, used when the rail is not on screen. */
+export default function SourcePanel({ request, docsById, onClose }) {
+  useEffect(() => {
+    if (!request) return
+    const onKey = (e) => e.key === 'Escape' && onClose()
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [request, onClose])
+
+  if (!request) return null
+
+  return (
+    <>
+      <div onClick={onClose} className="ins-veil" style={{ zIndex: 80 }} />
+      <aside role="dialog" aria-label={`Source document ${request.docId}`} className="ins-source-overlay">
+        <SourceView request={request} docsById={docsById} onClose={onClose} />
       </aside>
     </>
   )

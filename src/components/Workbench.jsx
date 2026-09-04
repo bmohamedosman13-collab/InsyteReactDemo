@@ -1,11 +1,25 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AuthorBadge, ConfidenceBadge, RichText, SourceProvider, renderInline, useSource } from './Citation.jsx'
-import SourcePanel from './SourcePanel.jsx'
+import SourcePanel, { SourceView } from './SourcePanel.jsx'
 import Sparkline from './Sparkline.jsx'
 import ExportModal from './ExportModal.jsx'
 import { TIMING, relativeTime, sleep, stamp } from '../lib/simulate.js'
 import { FALLBACK_COPY, routeQuery } from '../lib/queryRouting.js'
 import { AUTHOR_TYPE_LABEL } from '../data/clinical/client1/docs.js'
+
+/** True while the viewport is wide enough for the docked source rail. */
+function useWideScreen() {
+  const [wide, setWide] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 1280px)').matches
+  )
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1280px)')
+    const onChange = (e) => setWide(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  return wide
+}
 
 /**
  * Shared workbench. Spec 3.3 to 3.7 and section 4.
@@ -28,6 +42,7 @@ export default function Workbench({ corpus }) {
   const [notes, setNotes] = useState([])
   const [exportOpen, setExportOpen] = useState(false)
   const outputRef = useRef(null)
+  const wide = useWideScreen()
 
   const runModule = async (id) => {
     const btn = buttons.find((b) => b.id === id)
@@ -64,7 +79,7 @@ export default function Workbench({ corpus }) {
     <SourceProvider docsById={docsById}>
       {({ request, clear }) => (
         <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(215px, 255px) 1fr', minHeight: '100vh' }}>
+          <div className={`ins-workbench ${wide ? 'has-rail' : ''}`}>
             <Sidebar
               docs={docs}
               history={history}
@@ -75,7 +90,7 @@ export default function Workbench({ corpus }) {
               }}
             />
 
-            <main style={{ padding: '26px 30px 60px', maxWidth: 900 }}>
+            <main className="ins-main">
               <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 20, marginBottom: 22 }}>
                 <div>
                   <h1 style={{ fontSize: 26, marginBottom: 3 }}>{title}</h1>
@@ -107,6 +122,16 @@ export default function Workbench({ corpus }) {
                 {!loading && !active && !queryResult && <RestingState />}
               </div>
             </main>
+
+            {wide && (
+              <aside className="ins-rail">
+                {request ? (
+                  <SourceView request={request} docsById={docsById} onClose={clear} docked />
+                ) : (
+                  <GlancePanel glance={corpus.glance} />
+                )}
+              </aside>
+            )}
           </div>
 
           {notesOpen && (
@@ -117,10 +142,39 @@ export default function Workbench({ corpus }) {
             />
           )}
           {exportOpen && <ExportModal config={exportConfig} onClose={() => setExportOpen(false)} />}
-          <SourcePanel request={request} docsById={docsById} onClose={clear} />
+          {!wide && <SourcePanel request={request} docsById={docsById} onClose={clear} />}
         </>
       )}
     </SourceProvider>
+  )
+}
+
+/* --------------------------------------------------------------------- rail */
+
+/**
+ * What the right rail shows when no citation is open. The column exists to
+ * hold the source document; leaving it blank until someone clicks a citation
+ * wastes the space, so it carries the figures a reader would otherwise have to
+ * hunt for in the summary.
+ */
+function GlancePanel({ glance }) {
+  if (!glance) return null
+  return (
+    <div className="ins-glance">
+      <div className="ins-glance-head">{glance.title}</div>
+      <div className="ins-glance-stats">
+        {glance.stats.map((s) => (
+          <div key={s.label} className="ins-glance-row">
+            <div className="ins-glance-label">{s.label}</div>
+            <div className="ins-glance-value">{s.value}</div>
+            {s.note && <div className="ins-glance-note">{s.note}</div>}
+          </div>
+        ))}
+      </div>
+      <div className="ins-glance-foot">
+        {glance.footer}
+      </div>
+    </div>
   )
 }
 

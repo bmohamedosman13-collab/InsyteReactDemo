@@ -13,6 +13,18 @@ export const client1 = {
   subtitle: `7 documents · 330 days · 2 client-authored · ${redactionStats.spans} spans redacted`,
   sidebarLabel: '[CLIENT_1]',
   sidebarMeta: '7 documents · 330 days',
+  glance: {
+    title: 'Record at a glance',
+    stats: [
+      { label: 'Documents', value: '7', note: 'from 3 organizations' },
+      { label: 'Span of care', value: '330 days', note: '2025-01-14 intake to 2025-12-09 discharge' },
+      { label: 'Written by the client', value: '2 of 7', note: 'thought diary and wellness plan' },
+      { label: 'PHQ-9', value: '22 to 5', note: 'peak 26 on 2025-05-13' },
+      { label: 'Measurements', value: '15', note: 'no gaps except the day of the ED presentation' },
+      { label: 'Identifiers redacted', value: '96', note: 'across 20 distinct identities' },
+    ],
+    footer: 'Click any citation to open the source document here.',
+  },
   docs,
   docsById,
   spansByDoc: redactionSpans,

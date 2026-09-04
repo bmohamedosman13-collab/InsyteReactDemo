@@ -308,6 +308,18 @@ export const org = {
   subtitle: '15 documents · FY2025-26 · 4 programs · 2,417 spans redacted',
   sidebarLabel: 'Northbridge Youth',
   sidebarMeta: '15 documents · FY2025-26',
+  glance: {
+    title: 'Year at a glance',
+    stats: [
+      { label: 'Documents', value: '15', note: 'FY2025-26 with prior-year comparators' },
+      { label: 'Revenue', value: '$1,294,900', note: 'surplus $6,700' },
+      { label: 'Restricted funding', value: '80.8%', note: 'reserve 2.4 months against a 3.0 policy' },
+      { label: 'Walk-in contacts', value: '854 to 1,204', note: 'staffing unchanged at 14.2 FTE' },
+      { label: 'Post-measure completion', value: '22% to 78%', note: 'lowest in the largest program' },
+      { label: 'Open compliance items', value: '3', note: 'one open approximately seven months' },
+    ],
+    footer: 'Click any citation to open the source document here.',
+  },
   docs,
   docsById,
   spansByDoc: redactionSpans,

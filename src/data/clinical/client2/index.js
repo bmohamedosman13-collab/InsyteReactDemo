@@ -364,6 +364,18 @@ export const client2 = {
   subtitle: '4 documents · 41 days · WCB claim · exports include C-851',
   sidebarLabel: '[CLIENT_2]',
   sidebarMeta: '4 documents · 41 days',
+  glance: {
+    title: 'Record at a glance',
+    stats: [
+      { label: 'Documents', value: '4', note: '2 clinical, 2 external' },
+      { label: 'Span of record', value: '41 days', note: '2026-04-23 accident to 2026-06-04' },
+      { label: 'Sessions completed', value: '1 of 9', note: 'assessment done, treatment not started' },
+      { label: 'PCL-5', value: '52', note: 'above the provisional cut-off of 33' },
+      { label: 'Written by the client', value: 'none', note: 'client voice here is reported speech only' },
+      { label: 'Identifiers redacted', value: '53', note: 'across 17 distinct identities' },
+    ],
+    footer: 'Click any citation to open the source document here.',
+  },
   docs,
   docsById,
   spansByDoc: redactionSpans,
