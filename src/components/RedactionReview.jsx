@@ -24,6 +24,7 @@ const CLASS_HINT = {
   Contact: 'A telephone number or email address.',
   Identifier: 'A file, claim, health or registration number.',
   Date: 'A date that could narrow identity.',
+  'Reviewer added': 'You selected this. The detector did not flag it.',
 }
 
 /* ------------------------------------------------------------------ helpers */
@@ -252,9 +253,7 @@ export default function RedactionReview({
     // Position against the selection rectangle rather than the pointer, so the
     // button lands on the text however the selection was made and wherever the
     // pane happens to be scrolled.
-    const rect = sel.getRangeAt(0).getBoundingClientRect()
-    if (!rect.width && !rect.height) { setSelection(null); return }
-    setSelection({ start, end, surface, x: rect.left + rect.width / 2, y: rect.top, bottom: rect.bottom })
+    setSelection({ start, end, surface })
   }, [source, spans])
 
   // selectionchange rather than mouseup alone, so a selection made with the
@@ -272,8 +271,8 @@ export default function RedactionReview({
       end: selection.end,
       surface: selection.surface,
       token: `MANUAL_${selection.start}`,
-      cls: 'Person',
-      src: 'Reviewer',
+      cls: 'Reviewer added',
+      src: 'your selection',
       manual: true,
     }
     setManual((prev) => ({ ...prev, [activeId]: [...(prev[activeId] || []), entry] }))
@@ -490,15 +489,20 @@ export default function RedactionReview({
       </div>
 
       {selection && (
-        <div
-          className="ins-selection-tip"
-          style={{
-            left: Math.max(12, Math.min(selection.x - 80, window.innerWidth - 190)),
-            top: selection.y > 60 ? selection.y - 42 : selection.bottom + 10,
-          }}
-        >
-          <button className="ins-btn ins-btn-primary ins-selection-btn" onClick={redactSelection}>
-            Redact
+        // mousedown inside the panel would collapse the text selection, which
+        // unmounts this panel before the click lands. Preventing the default
+        // keeps the selection alive long enough for the button to fire.
+        <div className="ins-selection-dock" onMouseDown={(e) => e.preventDefault()}>
+          <div className="ins-selection-dock-label">Selected text</div>
+          <div className="ins-selection-dock-text">{selection.surface}</div>
+          <button className="ins-btn ins-btn-primary ins-selection-dock-btn" onClick={redactSelection}>
+            Redact this
+          </button>
+          <button
+            className="ins-btn ins-selection-dock-btn"
+            onClick={() => { window.getSelection()?.removeAllRanges(); setSelection(null) }}
+          >
+            Cancel
           </button>
         </div>
       )}
