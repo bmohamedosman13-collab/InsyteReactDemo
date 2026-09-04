@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/check-citations.mjs && node scripts/audit-coverage.mjs && vite build",
+    "build": "node scripts/check-citations.mjs && node scripts/audit-coverage.mjs && node scripts/test-selection.mjs && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "check:citations": "node scripts/check-citations.mjs",
     "audit:coverage": "node scripts/audit-coverage.mjs",
-    "smoke": "vite-node scripts/smoke-render.mjs"
+    "smoke": "vite-node scripts/smoke-render.mjs",
+    "test:selection": "node scripts/test-selection.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",

@@ -628,3 +628,12 @@ textarea:focus-visible,
   .ins-workbench, .ins-workbench.has-rail { grid-template-columns: 1fr; }
   .ins-main { padding: 20px 18px 60px; }
 }
+
+.ins-pane-hint {
+  float: right;
+  font-weight: 400;
+  color: var(--ink-tertiary);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.ins-doctabs-strip { scroll-behavior: smooth; }

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { APPROVAL_STEP_MS, runSequence } from '../lib/simulate.js'
+import { absoluteOffset, largestFreeRange, trimToWords } from '../lib/redactionSelection.js'
 
 /**
  * Redaction review and approval gate. Spec 3.1 and 3.2.
@@ -50,17 +51,9 @@ function segment(text, spans) {
   return out
 }
 
-/** Map a DOM selection point back to an absolute offset in the document text. */
-function absoluteOffset(node, offset) {
-  let el = node.nodeType === 3 ? node.parentElement : node
-  while (el && el.dataset?.o === undefined) el = el.parentElement
-  if (!el) return null
-  return Number(el.dataset.o) + offset
-}
-
 /* -------------------------------------------------------------------- chips */
 
-function RedactedChip({ span, onRemove, onRemoveAll, count }) {
+function RedactedChip({ span, onRemove, onRemoveAll, count, offsetProps }) {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -79,6 +72,7 @@ function RedactedChip({ span, onRemove, onRemoveAll, count }) {
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); setOpen((v) => !v) } }}
         title={span.cls}
         className="ins-chip-redacted"
+        {...offsetProps}
       >
         REDACTED
       </span>
@@ -104,7 +98,7 @@ function RedactedChip({ span, onRemove, onRemoveAll, count }) {
   )
 }
 
-function RestoredSpan({ span, onRedact, onRedactAll, count }) {
+function RestoredSpan({ span, onRedact, onRedactAll, count, offsetProps }) {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -123,6 +117,7 @@ function RestoredSpan({ span, onRedact, onRedactAll, count }) {
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); setOpen((v) => !v) } }}
         title={`Visible. Detected as ${span.cls}.`}
         className="ins-chip-restored"
+        {...offsetProps}
       >
         {span.surface}
       </span>
@@ -163,6 +158,8 @@ export default function RedactionReview({
   const leftRef = useRef(null)
   const rightRef = useRef(null)
   const syncing = useRef(false)
+  const stripRef = useRef(null)
+  const tabRefs = useRef({})
 
   const source = spansByDoc[activeId]
   const manualForDoc = manual[activeId] || []
@@ -196,6 +193,17 @@ export default function RedactionReview({
 
   const nextUnreviewed = docs.find((d) => !visited.has(d.id))
 
+  // Keep the active document visible in the strip. With fifteen documents most
+  // of them sit off screen, so moving to one has to bring it into view.
+  useEffect(() => {
+    const strip = stripRef.current
+    const tab = tabRefs.current[activeId]
+    if (!strip || !tab) return
+    const target = tab.offsetLeft - strip.clientWidth / 2 + tab.clientWidth / 2
+    const max = strip.scrollWidth - strip.clientWidth
+    strip.scrollTo({ left: Math.max(0, Math.min(target, max)), behavior: 'smooth' })
+  }, [activeId])
+
   const openDoc = (id) => {
     setActiveId(id)
     setVisited((prev) => new Set(prev).add(id))
@@ -219,31 +227,35 @@ export default function RedactionReview({
   }, [spansByDoc])
 
   /* -- text selection to redact ------------------------------------------- */
-  const captureSelection = () => {
+  const captureSelection = useCallback(() => {
     const sel = window.getSelection()
     if (!sel || sel.isCollapsed || sel.rangeCount === 0) { setSelection(null); return }
+
     const a = absoluteOffset(sel.anchorNode, sel.anchorOffset)
     const b = absoluteOffset(sel.focusNode, sel.focusOffset)
     if (a === null || b === null) { setSelection(null); return }
-    const start = Math.min(a, b)
-    const end = Math.max(a, b)
-    const surface = source.original.slice(start, end).trim()
-    if (!surface || end - start < 2) { setSelection(null); return }
-    const trimStart = start + source.original.slice(start, end).indexOf(surface)
-    if (spans.some((s) => !(end <= s.start || trimStart >= s.end))) { setSelection(null); return }
+
+    const free = largestFreeRange(Math.min(a, b), Math.max(a, b), spans)
+    if (!free) { setSelection(null); return }
+
+    const { start, end } = trimToWords(source.original, free.start, free.end)
+    const surface = source.original.slice(start, end)
+    if (surface.length < 2) { setSelection(null); return }
     // Position against the selection rectangle rather than the pointer, so the
     // button lands on the text however the selection was made and wherever the
     // pane happens to be scrolled.
     const rect = sel.getRangeAt(0).getBoundingClientRect()
-    setSelection({
-      start: trimStart,
-      end: trimStart + surface.length,
-      surface,
-      x: rect.left + rect.width / 2,
-      y: rect.top,
-      bottom: rect.bottom,
-    })
-  }
+    if (!rect.width && !rect.height) { setSelection(null); return }
+    setSelection({ start, end, surface, x: rect.left + rect.width / 2, y: rect.top, bottom: rect.bottom })
+  }, [source, spans])
+
+  // selectionchange rather than mouseup alone, so a selection made with the
+  // keyboard, or adjusted after the mouse is released, is picked up too.
+  useEffect(() => {
+    const onChange = () => captureSelection()
+    document.addEventListener('selectionchange', onChange)
+    return () => document.removeEventListener('selectionchange', onChange)
+  }, [captureSelection])
 
   const redactSelection = () => {
     const entry = {
@@ -381,13 +393,14 @@ export default function RedactionReview({
             </button>
           )}
         </div>
-        <div className="ins-doctabs-strip">
+        <div className="ins-doctabs-strip" ref={stripRef}>
           {docs.map((d) => {
             const seen = visited.has(d.id)
             const active = d.id === activeId
             return (
               <button
                 key={d.id}
+                ref={(el) => { tabRefs.current[d.id] = el }}
                 onClick={() => openDoc(d.id)}
                 className="ins-doctab"
                 style={{
@@ -415,9 +428,14 @@ export default function RedactionReview({
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 18 }}>
         <div className="ins-card" style={{ overflow: 'hidden' }}>
-          <div className="ins-pane-head">Original, as uploaded</div>
-          <div ref={leftRef} onScroll={() => syncFrom('left')} className="ins-pane-body">
-            <pre className="ins-doc-text">{source.original}</pre>
+          <div className="ins-pane-head">
+            Original, as uploaded
+            <span className="ins-pane-hint">select any text to redact it</span>
+          </div>
+          <div ref={leftRef} onScroll={() => syncFrom('left')} onMouseUp={captureSelection} className="ins-pane-body">
+            <pre className="ins-doc-text">
+              <span data-o={0} data-len={source.original.length}>{source.original}</span>
+            </pre>
           </div>
         </div>
 
@@ -437,11 +455,12 @@ export default function RedactionReview({
             <pre className="ins-doc-text">
               {segments.map((seg) =>
                 seg.kind === 'text' ? (
-                  <span key={seg.start} data-o={seg.start}>{seg.value}</span>
+                  <span key={seg.start} data-o={seg.start} data-len={seg.value.length}>{seg.value}</span>
                 ) : released.has(seg.span.id) ? (
                   <RestoredSpan
                     key={seg.span.id}
                     span={seg.span}
+                    offsetProps={{ 'data-o': seg.span.start, 'data-len': seg.span.end - seg.span.start, 'data-chip': '' }}
                     count={tokenCounts[seg.span.token] || 1}
                     onRedact={() => setReleasedFor([seg.span.id], false)}
                     onRedactAll={() => setReleasedFor(idsForToken(seg.span.token), false)}
@@ -450,6 +469,7 @@ export default function RedactionReview({
                   <RedactedChip
                     key={seg.span.id}
                     span={seg.span}
+                    offsetProps={{ 'data-o': seg.span.start, 'data-len': seg.span.end - seg.span.start, 'data-chip': '' }}
                     count={tokenCounts[seg.span.token] || 1}
                     onRemove={() => setReleasedFor([seg.span.id], true)}
                     onRemoveAll={() => setReleasedFor(idsForToken(seg.span.token), true)}
@@ -470,7 +490,7 @@ export default function RedactionReview({
           }}
         >
           <button className="ins-btn ins-btn-primary ins-selection-btn" onClick={redactSelection}>
-            Redact “{selection.surface.length > 22 ? `${selection.surface.slice(0, 21)}…` : selection.surface}”
+            Redact
           </button>
         </div>
       )}
