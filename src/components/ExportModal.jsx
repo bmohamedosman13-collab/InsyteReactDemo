@@ -57,7 +57,7 @@ export default function ExportModal({ config, onClose }) {
 
   return (
     <>
-      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(31,24,48,0.28)', zIndex: 90 }} />
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(31,24,48,0.28)', zIndex: 90, animation: 'ins-veil-in 200ms ease both' }} />
       <div
         role="dialog"
         aria-label="Export"
@@ -66,6 +66,7 @@ export default function ExportModal({ config, onClose }) {
           width: 'min(820px, 94vw)', maxHeight: '94vh', background: 'var(--surface)',
           border: '1px solid var(--line-strong)', borderRadius: 'var(--radius)',
           boxShadow: 'var(--shadow-pop)', zIndex: 91, display: 'flex', flexDirection: 'column',
+          animation: 'ins-fade-up 260ms cubic-bezier(0.22,0.61,0.36,1) both',
         }}
       >
         <header style={{ padding: '17px 22px', borderBottom: '1px solid var(--line)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -131,12 +132,21 @@ export default function ExportModal({ config, onClose }) {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 14, marginBottom: 14, flexWrap: 'wrap' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, color: 'var(--ink-secondary)', cursor: 'pointer' }}>
                   <input type="checkbox" checked={provenance} onChange={(e) => setProvenance(e.target.checked)} />
-                  Show provenance
+                  Show citations
                 </label>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <button className="ins-btn" onClick={copy}>{copied ? 'Copied' : 'Copy'}</button>
                   <button className="ins-btn" onClick={() => setStage('choose')}>Back</button>
                 </div>
+              </div>
+
+              <div className="ins-export-note">
+                <strong>Identifiers are restored in the exported file.</strong>
+                Export writes a file to this machine and puts the real names, dates and
+                numbers back, because the file is going into your own record system where
+                those values belong. Tokens exist to keep identities out of the analysis
+                layer, not out of your records. Nothing is uploaded and nothing leaves
+                this machine.
               </div>
 
               {doc.banner && (

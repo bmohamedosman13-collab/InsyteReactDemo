@@ -55,7 +55,7 @@ export const patterns = {
     },
     {
       id: 'p2',
-      heading: 'Homework completion tracks severity, and the tracking became part of the problem.',
+      heading: 'Homework completion tracks severity, and the tracking became part of the presenting concern.',
       confidence: 'High',
       body: `Completion falls as PHQ-9 rises: three of seven log days at session 2 [[02 §S2-S]], one of two thought records at session 5 [[02 §S5-S]], none at session 6 [[02 §S6-S]], homework reduced to activity log only at session 7 [[02 §S7-P]], refusal in session at session 9 [[02 §S9-O]]. The episode summary states this directly, that repeated failure to complete homework had itself become confirmatory evidence for the client's core belief of incompetence [[05 §Psychological treatment]]. When homework was suspended and reintroduced at a lower threshold, the client completed one independently for the first time in the episode [[05 §Psychological treatment]] [[06 §Client note]].`,
     },

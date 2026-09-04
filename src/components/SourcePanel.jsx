@@ -39,7 +39,7 @@ export default function SourcePanel({ request, docsById, onClose }) {
     <>
       <div
         onClick={onClose}
-        style={{ position: 'fixed', inset: 0, background: 'rgba(31,24,48,0.18)', zIndex: 80 }}
+        style={{ position: 'fixed', inset: 0, background: 'rgba(31,24,48,0.18)', zIndex: 80, animation: 'ins-veil-in 200ms ease both' }}
       />
       <aside
         role="dialog"
@@ -53,6 +53,7 @@ export default function SourcePanel({ request, docsById, onClose }) {
           background: 'var(--surface)',
           borderLeft: '1px solid var(--line-strong)',
           boxShadow: '-8px 0 32px rgba(45,27,78,0.10)',
+          animation: 'ins-slide-in 260ms cubic-bezier(0.22,0.61,0.36,1) both',
           zIndex: 81,
           display: 'flex',
           flexDirection: 'column',

@@ -7,8 +7,8 @@
  *
  *   - SOAP and DAP stay session-scoped. Default session 2025-11-25, the most
  *     recent in the record. 2025-08-05 stays selectable.
- *   - Episode summary is a fourth card and is the genuine full-episode
- *     artifact. The modal opens on it.
+ *   - Complete Clinical File is a fourth card and is the genuine
+ *     whole-record artifact. The modal opens on it.
  *
  * Field states, spec 4.9:
  *   populated        rendered with citations
@@ -17,14 +17,14 @@
  */
 
 export const exportCards = [
-  { id: 'episode', label: 'Episode summary', blurb: 'Full episode, all 7 documents', scope: 'episode', default: true },
+  { id: 'episode', label: 'Complete Clinical File', blurb: 'Every document, full course of care', scope: 'episode', default: true },
   { id: 'soap', label: 'SOAP note', blurb: 'Standard four-part clinical note', scope: 'session' },
   { id: 'dap', label: 'DAP note', blurb: 'Data, Assessment, Plan', scope: 'session' },
 ]
 
 export const sessionOptions = [
-  { id: '2025-11-25', label: '2025-11-25 · Session 22, wellness plan review', default: true },
-  { id: '2025-08-05', label: '2025-08-05 · Session 16, first independent thought record' },
+  { id: '2025-11-25', label: 'Most recent session · 2025-11-25 · wellness plan review', default: true },
+  { id: '2025-08-05', label: 'Session 16 · 2025-08-05 · first independent thought record' },
 ]
 
 /* ------------------------------------------------------------- SOAP, by session */
@@ -211,14 +211,14 @@ Next session: __CLINICIAN_ENTRY__`,
 /* ------------------------------------------------------------- episode summary */
 
 export const episodeSummary = {
-  title: 'EPISODE SUMMARY',
+  title: 'COMPLETE CLINICAL FILE',
   meta: [
     'Client: [CLIENT_1]   File: [ID_1]   Episode: 2025-01-14 to 2025-12-09   330 days',
     'Prepared from 7 documents across 3 organizations',
     'Treating clinician: [PSYCHOLOGIST_1]   Prescribing at close: [GP_1]',
   ],
   banner:
-    'This is an episode-level summary, not a session note. It draws on every document in the record. SOAP and DAP remain available for individual sessions.',
+    'This covers the full course of care, not a single session. It draws on every document in the record. SOAP and DAP remain available for individual sessions.',
   blocks: [
     {
       key: '1',

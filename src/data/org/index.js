@@ -1,4 +1,5 @@
 import { docs, docsById } from './documentText.js'
+import { redactionSpans } from './redactionSpans.js'
 
 /**
  * Org analysis fixtures. From INSYTE_DEMO_ORG_FIXTURES.md.
@@ -309,21 +310,16 @@ export const org = {
   sidebarMeta: '15 documents · FY2025-26',
   docs,
   docsById,
-  documentOriginal: Object.fromEntries(docs.map((d) => [d.id, d.text])),
+  spansByDoc: redactionSpans,
   summary,
   outcomeSeries: null,
   redaction: {
     header: {
-      line1: '15 documents · 2,417 entity spans detected · 94 unique identities resolved',
+      line1: '15 documents · 2,417 entity spans detected · 157 held as identifying across 33 distinct identities',
       line2: 'Cross-document identity resolution: 4 surface forms of the same organisation merged to one token',
       caption: 'Insyte over-redacts by design. You decide what comes back.',
     },
     stats: { documents: 15, spans: 2417 },
-    restoreCandidates: [
-      { id: 'o-or1', surface: 'Family and Community Support Services', entityClass: 'Organization', why: 'Public municipal program named in the funder report header.' },
-      { id: 'o-or2', surface: '2026-03-31', entityClass: 'Date', why: 'Fiscal year end. The financials are not legible without it.' },
-      { id: 'o-or3', surface: '11408 - 95 Street NW', entityClass: 'Location', why: "The organisation's own operating address, on its public website, and required for the grant export." },
-    ],
     mergedIdentity: {
       token: '[ORG_1]',
       forms: [

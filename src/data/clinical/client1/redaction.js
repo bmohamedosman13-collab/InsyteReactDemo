@@ -30,7 +30,7 @@ export const redactionStats = {
 
 /** Header stats bar copy. Spec 3.1. */
 export const redactionHeader = {
-  line1: `${redactionStats.documents} documents · ${redactionStats.spans.toLocaleString()} entity spans detected · ${redactionStats.uniqueEntities} unique entities resolved`,
+  line1: `7 documents · ${redactionStats.spans.toLocaleString()} entity spans detected · 96 held as identifying across 20 distinct identities`,
   line2: `Cross-document identity resolution: ${redactionStats.mergedSurfaceForms} surface forms of the same person merged to one token`,
   /** [VERBATIM] spec 3.1 */
   caption: 'Insyte over-redacts by design. You decide what comes back.',
@@ -75,53 +75,19 @@ export const mergedIdentity = {
  * the instrument names out of a clinical record is not a product feature to
  * exercise. See INSYTE_DEMO_REDACTION_AUDIT.md section 4.3.
  */
-export const restoreCandidates = [
-  {
-    id: 'or-millwoods',
-    surface: 'Millwoods library',
-    entityClass: 'Location',
-    source: 'NER model',
-    docIds: ['03'],
-    occurrences: 1,
-    why: 'Public facility named in the safety plan, step 3.',
-  },
-  {
-    id: 'or-access247',
-    surface: 'Access 24/7',
-    entityClass: 'Phone',
-    source: 'Pattern rule',
-    docIds: ['02', '03', '05', '07'],
-    occurrences: 4,
-    why: 'Public crisis line. The digits trip the phone pattern rule.',
-  },
-  {
-    id: 'or-988',
-    surface: '988',
-    entityClass: 'Phone',
-    source: 'Pattern rule',
-    docIds: ['03', '07'],
-    occurrences: 2,
-    why: 'Public crisis line.',
-  },
-  {
-    id: 'or-811',
-    surface: '811',
-    entityClass: 'Phone',
-    source: 'Pattern rule',
-    docIds: ['02', '03'],
-    occurrences: 2,
-    why: 'Public health line, Alberta.',
-  },
-  {
-    id: 'or-diarydate',
-    surface: '2025-08-05',
-    entityClass: 'Date',
-    source: 'Presidio recognizer',
-    docIds: ['06'],
-    occurrences: 1,
-    why: "In the client's own handwriting header. The clinical meaning depends on the sequence.",
-  },
-]
+/*
+ * The list of entities flagged for reviewer judgement is derived from the
+ * spans themselves, in redactionSpans.js, where each carries `over: true` and
+ * the reason. It is not duplicated here.
+ *
+ * What qualifies: genuinely ambiguous public entities, correctly detected.
+ * Millwoods library, Access 24/7, 988, 811, Health Link, and the diary date.
+ *
+ * What does not: detector faults on clinical vocabulary. The audit run flagged
+ * PHQ-9 and GAD-7 as Location and Person. Those are bugs, not judgement calls,
+ * and a demo of the finished product does not offer them to the reviewer.
+ * See INSYTE_DEMO_REDACTION_AUDIT.md section 4.3.
+ */
 
 /** Detection sources for the "Why did this get flagged?" expander. Spec 3.1. */
 export const DETECTION_SOURCES = ['NER model', 'Pattern rule', 'Presidio recognizer']

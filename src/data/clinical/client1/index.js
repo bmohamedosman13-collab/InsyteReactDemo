@@ -1,8 +1,8 @@
 import { docs, docsById, clientCode, displayName } from './docs.js'
-import { documentOriginal } from './documentOriginal.js'
+import { redactionSpans } from './redactionSpans.js'
 import { analyses, outcomeSeries, summary } from './analyses.js'
 import { queryPresets } from './queries.js'
-import { mergedIdentity, redactionHeader, redactionStats, restoreCandidates } from './redaction.js'
+import { mergedIdentity, redactionHeader, redactionStats } from './redaction.js'
 import { dap, episodeSummary, exportCards, sessionOptions, soap } from './exports.js'
 
 /** Assembled corpus for [CLIENT_1]. One object per track, consumed by Workbench. */
@@ -15,10 +15,10 @@ export const client1 = {
   sidebarMeta: '7 documents · 330 days',
   docs,
   docsById,
-  documentOriginal,
+  spansByDoc: redactionSpans,
   summary,
   outcomeSeries,
-  redaction: { header: redactionHeader, stats: redactionStats, restoreCandidates, mergedIdentity },
+  redaction: { header: redactionHeader, stats: redactionStats, mergedIdentity },
   buttons: [
     { id: 'patterns', label: 'Patterns', blurb: 'Cross-document themes', fixture: analyses.patterns },
     { id: 'timeline', label: 'Timeline', blurb: '330 days, 4 phases', fixture: analyses.timeline },

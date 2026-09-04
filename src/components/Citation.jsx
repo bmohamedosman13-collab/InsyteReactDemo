@@ -54,24 +54,7 @@ export function CitationChip({ docId, anchor }) {
         onFocus={() => setHover(true)}
         onBlur={() => setHover(false)}
         aria-label={`Source: ${doc.title}, ${section.label}`}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 3,
-          background: 'var(--redact-bg)',
-          border: '1px solid var(--redact-line)',
-          borderRadius: 4,
-          padding: '0px 5px',
-          margin: '0 1px',
-          fontFamily: 'var(--font-mono)',
-          fontSize: 11,
-          lineHeight: '17px',
-          color: 'var(--plum)',
-          verticalAlign: 'baseline',
-          transition: 'background 0.12s ease',
-        }}
-        onMouseOver={(e) => { e.currentTarget.style.background = '#E1D6F5' }}
-        onMouseOut={(e) => { e.currentTarget.style.background = 'var(--redact-bg)' }}
+        className="ins-cite"
       >
         {docId} {anchor}
       </button>
@@ -120,21 +103,54 @@ export function RichText({ text, style }) {
   return (
     <>
       {paragraphs.map((para, pi) => (
-        <p
-          key={pi}
-          style={{
-            margin: pi === 0 ? '0 0 0' : '13px 0 0',
-            fontSize: 14.5,
-            lineHeight: 1.68,
-            color: 'var(--ink-secondary)',
-            whiteSpace: 'pre-wrap',
-            ...style,
-          }}
-        >
-          {renderInline(para)}
-        </p>
+        <Paragraph key={pi} text={para} first={pi === 0} style={style} />
       ))}
     </>
+  )
+}
+
+/**
+ * One paragraph. Citations are lifted out of the prose and shown as a small
+ * source line above it, so the sentence reads cleanly and the evidence still
+ * sits with the claim.
+ */
+function Paragraph({ text, first, style }) {
+  const cites = []
+  const re = citePattern()
+  let m
+  while ((m = re.exec(text)) !== null) {
+    const key = `${m[1]}|${m[2].trim()}`
+    if (!cites.some((c) => c.key === key)) cites.push({ key, docId: m[1], anchor: m[2].trim() })
+  }
+  const prose = text
+    .replace(citePattern(), '')
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/\s+([.,;:])/g, '$1')
+    .trim()
+
+  return (
+    <div style={{ marginTop: first ? 0 : 14 }}>
+      {cites.length > 0 && (
+        <div className="ins-cite-line">
+          <span className="ins-cite-line-label">Source</span>
+          {cites.map((c) => (
+            <CitationChip key={c.key} docId={c.docId} anchor={c.anchor} />
+          ))}
+        </div>
+      )}
+      <p
+        style={{
+          margin: 0,
+          fontSize: 14.5,
+          lineHeight: 1.68,
+          color: 'var(--ink-secondary)',
+          whiteSpace: 'pre-wrap',
+          ...style,
+        }}
+      >
+        {renderPlain(prose, 0)}
+      </p>
+    </div>
   )
 }
 

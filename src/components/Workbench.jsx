@@ -229,7 +229,7 @@ function ButtonBar({ buttons, active, loading, ranAt, onRun }) {
             key={b.id}
             onClick={() => onRun(b.id)}
             disabled={!!loading}
-            className="ins-card"
+            className="ins-card ins-analysis-btn"
             style={{
               padding: '13px 14px', textAlign: 'left', cursor: loading ? 'wait' : 'pointer',
               borderColor: isActive ? (amber ? 'var(--amber)' : 'var(--violet)') : 'var(--line)',
@@ -276,8 +276,8 @@ function QueryBar({ open, setOpen, presets, onRun, busy }) {
         Ask about these documents
         <span style={{ color: 'var(--ink-faint)', fontSize: 12 }}>{open ? 'Hide' : 'Show 5 questions'}</span>
       </button>
-      {open && (
-        <div style={{ padding: '0 18px 16px', borderTop: '1px solid var(--line)' }}>
+      <div className={`ins-collapse ${open ? 'open' : ''}`}>
+        <div style={{ padding: open ? '0 18px 16px' : '0 18px', borderTop: '1px solid var(--line)' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, margin: '13px 0' }}>
             {presets.map((p) => (
               <button
@@ -305,7 +305,7 @@ function QueryBar({ open, setOpen, presets, onRun, busy }) {
             <button type="submit" className="ins-btn" disabled={busy}>Ask</button>
           </form>
         </div>
-      )}
+      </div>
     </section>
   )
 }
@@ -330,7 +330,7 @@ function ModuleOutput({ fixture, ranAt }) {
 function OutputShell({ header, subhead, ranAt, children, tone }) {
   return (
     <section
-      className="ins-card"
+      className="ins-card ins-fade"
       style={{
         padding: '22px 24px',
         borderColor: tone === 'amber' ? 'var(--amber-line)' : 'var(--line)',
@@ -501,7 +501,7 @@ function DataTable({ table }) {
 function QueryOutput({ result, onPick, presets }) {
   if (result.fallback) {
     return (
-      <section className="ins-card" style={{ padding: '22px 24px' }}>
+      <section className="ins-card ins-fade" style={{ padding: '22px 24px' }}>
         <RichText text={FALLBACK_COPY} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 15 }}>
           {presets.map((p) => (
@@ -540,7 +540,7 @@ function RestingState() {
 
 function Skeleton() {
   return (
-    <section className="ins-card" style={{ padding: '22px 24px' }}>
+    <section className="ins-card ins-fade" style={{ padding: '22px 24px' }}>
       {[92, 100, 100, 74].map((w, i) => (
         <div key={i} style={{
           height: 11, width: `${w}%`, borderRadius: 4, marginBottom: 10,
@@ -576,11 +576,12 @@ function NotesPanel({ onClose, onSave, notes }) {
 
   return (
     <>
-      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(31,24,48,0.18)', zIndex: 70 }} />
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(31,24,48,0.18)', zIndex: 70, animation: 'ins-veil-in 200ms ease both' }} />
       <aside style={{
         position: 'fixed', top: 0, right: 0, bottom: 0, width: 'min(460px, 92vw)',
         background: 'var(--surface)', borderLeft: '1px solid var(--line-strong)', zIndex: 71,
         display: 'flex', flexDirection: 'column', boxShadow: '-8px 0 32px rgba(45,27,78,0.10)',
+          animation: 'ins-slide-in 260ms cubic-bezier(0.22,0.61,0.36,1) both',
       }}>
         <header style={{ padding: '18px 22px', borderBottom: '1px solid var(--line)', display: 'flex', justifyContent: 'space-between' }}>
           <h3 style={{ fontSize: 18 }}>Practitioner note</h3>

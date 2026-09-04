@@ -38,9 +38,8 @@ export default function CaseWorkbench() {
         <RedactionReview
           key={clientId}
           docs={corpus.docs}
-          original={corpus.documentOriginal}
+          spansByDoc={corpus.spansByDoc}
           header={corpus.redaction.header}
-          restoreCandidates={corpus.redaction.restoreCandidates}
           mergedIdentity={corpus.redaction.mergedIdentity}
           onApprove={() => setApproved((prev) => ({ ...prev, [clientId]: true }))}
         />

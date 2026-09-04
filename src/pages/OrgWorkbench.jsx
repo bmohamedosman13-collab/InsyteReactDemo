@@ -18,9 +18,8 @@ export default function OrgWorkbench() {
       ) : (
         <RedactionReview
           docs={org.docs}
-          original={org.documentOriginal}
+          spansByDoc={org.spansByDoc}
           header={org.redaction.header}
-          restoreCandidates={org.redaction.restoreCandidates}
           mergedIdentity={org.redaction.mergedIdentity}
           callout={org.redaction.callout}
           calloutDoc={org.redaction.calloutDoc}

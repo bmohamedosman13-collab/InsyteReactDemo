@@ -1,4 +1,5 @@
-import { docs, docsById, documentText } from './docs.js'
+import { docs, docsById } from './docs.js'
+import { redactionSpans } from './redactionSpans.js'
 
 /**
  * Analysis fixtures and C-851 export for [CLIENT_2].
@@ -25,7 +26,7 @@ const patterns = {
   findings: [
     {
       id: 'c2p1',
-      heading: "The worker's central maintaining cognition is contradicted in writing by his own employer.",
+      heading: "The client's central maintaining cognition is contradicted in writing by his own employer.",
       confidence: 'High',
       body: `He holds that he caused the incident because he called the lift, repeating it three times in session [[W3 §2]] [[W3 §3]]. The employer's incident report states he followed lift procedure as written, that the strap was within its inspection date, and that no fault has been attributed to any worker [[W2 §6]]. The document that would most directly challenge the belief was in the referral package before the first session.`,
     },
@@ -88,10 +89,12 @@ const sentiment = {
   findings: [
     {
       id: 'c2s1', scope: 'clinician', authorBadge: 'CLIENT REPORTED', confidence: 'High',
-      heading: 'Four words, repeated three times',
-      body: `The reported speech that carries this record is "I said go", repeated three times in a single session and recorded as the most prominent feature of the presentation [[W3 §2]] [[W3 §3]]. It stands against a written employer finding of no fault [[W2 §6]].
+      heading: 'One attribution of blame, returned to repeatedly',
+      body: `The clinician records that the client returned to having called the lift three times during the session, and quotes his own words for it once, as "I said go" [[W3 §2]] [[W3 §3]]. The count is the clinician's observation of the session, not a transcript, and should be read as such.
 
-Register in the worker's reported speech is flat and factual during the account of the event and shifts only around responsibility. The clinician records the account as delivered in a flat register with several pauses [[W3 §2]].`,
+Guilt centred on causal responsibility is named as the most prominent feature of the presentation [[W3 §10]]. It stands against a written employer finding that he followed procedure and that no fault has been attributed [[W2 §6]].
+
+Register in the client's reported speech is flat and factual during the account of the event and shifts only around responsibility [[W3 §2]].`,
     },
     {
       id: 'c2s2', scope: 'clinician', authorBadge: 'CLINICIAN', confidence: 'Moderate',
@@ -101,7 +104,7 @@ Register in the worker's reported speech is flat and factual during the account 
     {
       id: 'c2s3', scope: 'external', authorBadge: 'CLINICIAN', confidence: 'High',
       heading: 'The external documents agree with each other and disagree with the worker',
-      body: `The employer's report and the case manager's referral both record the same facts and neither attributes fault [[W2 §6]] [[W1 §6]]. The only source in the record placing responsibility on the worker is the worker [[W3 §2]].`,
+      body: `The employer's report and the case manager's referral both record the same facts and neither attributes fault [[W2 §6]] [[W1 §6]]. The only source in the record placing responsibility on the client is the client himself [[W3 §2]].`,
     },
   ],
 }
@@ -119,10 +122,6 @@ This panel surfaces risk content as written in the source documents. It is not a
   },
   sections: [
     {
-      id: 'c2r1', heading: 'Note on this field',
-      body: `Insyte reproduces a risk level here because a clinician recorded one [[W3 §9]]. In the [CLIENT_1] folder the same field is left for clinician entry, because no clinician recorded a level there. Same rule, opposite output.`,
-    },
-    {
       id: 'c2r2', heading: 'Two items to surface for the reviewer', tone: 'amber',
       body: `Alcohol has risen from approximately four to approximately ten standard drinks weekly since the incident, with AUDIT-C at 5, at or above cut-off [[W3 §7]] [[W4 §1]].
 
@@ -136,7 +135,7 @@ Both are named in the record as maintaining factors and both are listed among th
 
 Protective factors: engaged partner, intact employment relationship with modified duties available, strong stated motivation to return to work, no history of self-harm or ideation, help-seeking maintained, no substance dependence [[W3 §9]].
 
-Management plan: risk re-screened at every session and on any change in alcohol use or sleep. Practice number, Health Link 811 and Access 24/7 provided. Partner identified by the worker as his first contact, with consent [[W3 §9]].`,
+Management plan: risk re-screened at every session and on any change in alcohol use or sleep. Practice number, Health Link 811 and Access 24/7 provided. Partner identified by the client as his first contact, with consent [[W3 §9]].`,
     },
   ],
   footer: 'Every row links to the source passage. Insyte does not score risk and does not rank clients.',
@@ -147,9 +146,9 @@ const queryPresets = [
     id: 'c2q1',
     chipLabel: 'What is the central maintaining belief, and what contradicts it?',
     matchTokens: ['belief', 'guilt', 'blame', 'fault', 'responsibility', 'maintaining', 'contradicts', 'cognition'],
-    answer: `The worker holds that he caused the incident because he called the lift. He said so three times in one session, and the clinician records guilt centred on causal responsibility as the most prominent feature of the presentation [[W3 §2]] [[W3 §3]] [[W3 §10]].
+    answer: `The client holds that he caused the incident because he called the lift. He said so three times in one session, and the clinician records guilt centred on causal responsibility as the most prominent feature of the presentation [[W3 §2]] [[W3 §3]] [[W3 §10]].
 
-Two documents contradict it directly. The employer's incident report states that the worker followed lift procedure as written, that the strap was within its inspection date, and that no fault has been attributed to any worker [[W2 §6]]. The case manager's referral records the rigging investigation as open with findings unavailable, so no source in the record attributes fault to him [[W1 §6]].
+Two documents contradict it directly. The employer's incident report states that the client followed lift procedure as written, that the strap was within its inspection date, and that no fault has been attributed to any worker [[W2 §6]]. The case manager's referral records the rigging investigation as open with findings unavailable, so no source in the record attributes fault to him [[W1 §6]].
 
 Both documents were in the referral package before the first session [[W1 §header]] [[W2 §1]].`,
   },
@@ -161,7 +160,7 @@ Both documents were in the referral package before the first session [[W1 §head
 
 The employer can offer tool crib and yard duties away from the fabrication bay, day shift only, with no overhead crane involvement, and has confirmed the position is held open [[W4 §4]].
 
-The worker agreed to a graduated return beginning in the yard and tool crib, four hours per day, three days per week, with progression tied to session-by-session review rather than a fixed calendar. He was clear he does not feel able to enter the fabrication bay at present [[W4 §5]].
+The client agreed to a graduated return beginning in the yard and tool crib, four hours per day, three days per week, with progression tied to session-by-session review rather than a fixed calendar. He was clear he does not feel able to enter the fabrication bay at present [[W4 §5]].
 
 Estimated return to pre-accident level is 12 to 16 weeks from the start of treatment, approximately 2026-09-28, to be revised at the session six review [[W4 §6]].`,
   },
@@ -233,7 +232,7 @@ const c851 = {
     },
     {
       label: 'How and when it occurred',
-      value: 'On 2026-04-23 at approximately 14:15 a rigging strap failed during an overhead crane lift of an approximately 900 kg steel beam section. The worker was the designated spotter standing about 1.5 metres from the load. A coworker at the assembly jig was struck and sustained an open fracture of the lower leg. The worker was struck on the left forearm by displaced dunnage and knocked to the floor. He reached the coworker and applied pressure to the leg until paramedics arrived. The employer report records that the worker followed lift procedure as written and that no fault has been attributed to any worker. [[W2 §2]] [[W2 §3]] [[W2 §6]] [[W3 §2]]',
+      value: 'On 2026-04-23 at approximately 14:15 a rigging strap failed during an overhead crane lift of an approximately 900 kg steel beam section. The client was the designated spotter standing about 1.5 metres from the load. A coworker at the assembly jig was struck and sustained an open fracture of the lower leg. The client was struck on the left forearm by displaced dunnage and knocked to the floor. He reached the coworker and applied pressure to the leg until paramedics arrived. The employer report records that the client followed lift procedure as written and that no fault has been attributed to any worker. [[W2 §2]] [[W2 §3]] [[W2 §6]] [[W3 §2]]',
       state: 'populated',
     },
 
@@ -273,7 +272,7 @@ const c851 = {
     { label: 'Barriers identified?', value: 'Yes [[W3 §12]]', state: 'populated' },
     {
       label: 'Employment concerns',
-      value: "Open investigation into the rigging failure. The injured coworker remains off work and the worker's guilt is anchored to that fact. The worker holds a belief of causal responsibility despite the employer's written statement that he followed procedure. [[W1 §6]] [[W3 §12]] [[W2 §6]]",
+      value: "Open investigation into the rigging failure. The injured coworker remains off work and the client's guilt is anchored to that fact. The client holds a belief of causal responsibility despite the employer's written statement that he followed procedure. [[W1 §6]] [[W3 §12]] [[W2 §6]]",
       state: 'populated',
     },
     {
@@ -290,12 +289,12 @@ const c851 = {
     { label: 'Anticipated treatment', value: '__CLINICIAN_ENTRY__ (fixed dropdown, not populated by Insyte)', state: 'clinician-entry' },
     {
       label: 'Treatment plan',
-      value: 'Trauma-focused CBT, weekly, eight sessions with review at session six. Sessions 1 to 2 psychoeducation, stabilisation and sleep intervention. Sessions 3 to 6 trauma processing with cognitive work on responsibility appraisal. Sessions 6 to 8 graded in-vivo exposure to the worksite, coordinated with the employer, from site perimeter to yard to bay. Alcohol monitored with a reduction target agreed with the worker. Sleep intervention in session 2 with a view to reducing reliance on zopiclone, coordinated with the family physician by letter. [[W3 §11]]',
+      value: 'Trauma-focused CBT, weekly, eight sessions with review at session six. Sessions 1 to 2 psychoeducation, stabilisation and sleep intervention. Sessions 3 to 6 trauma processing with cognitive work on responsibility appraisal. Sessions 6 to 8 graded in-vivo exposure to the worksite, coordinated with the employer, from site perimeter to yard to bay. Alcohol monitored with a reduction target agreed with the client. Sleep intervention in session 2 with a view to reducing reliance on zopiclone, coordinated with the family physician by letter. [[W3 §11]]',
       state: 'populated',
     },
     {
       label: 'Presentation affecting return to work',
-      value: 'Avoidance of the fabrication bay is the central functional barrier. The worker returned to light duties on 2026-04-27, worked ten days, and left the bay during a lift on two occasions before going off work on 2026-05-11. Concentration difficulty and exaggerated startle to overhead noise are directly relevant to safety-sensitive work. Social withdrawal includes not answering calls from coworkers. [[W3 §3]] [[W3 §4]] [[W3 §8]]',
+      value: 'Avoidance of the fabrication bay is the central functional barrier. The client returned to light duties on 2026-04-27, worked ten days, and left the bay during a lift on two occasions before going off work on 2026-05-11. Concentration difficulty and exaggerated startle to overhead noise are directly relevant to safety-sensitive work. Social withdrawal includes not answering calls from coworkers. [[W3 §3]] [[W3 §4]] [[W3 §8]]',
       state: 'populated',
     },
     { label: 'Percentage of treatment goals met', value: '__CLINICIAN_ENTRY__', state: 'clinician-entry' },
@@ -316,12 +315,12 @@ const c851 = {
     { label: 'Current prescribed medication', value: 'Yes. Zopiclone 5 mg PRN at bedtime, started 2026-05-19 by family physician, used 4 to 5 nights weekly. [[W3 §6]]', state: 'populated' },
     {
       label: 'Substance use concerns',
-      value: 'Yes. Alcohol increased from approximately four standard drinks weekly before the incident to approximately ten weekly since, concentrated in the evening and described by the worker as being for sleep. The worker raised this himself. AUDIT-C 5, at or above cut-off. Addressed in session as a maintaining factor for both sleep disruption and arousal symptoms. Worker agreed to record intake for two weeks and to a reduction target. No indication of dependence at this time and no withdrawal history. [[W3 §7]] [[W4 §1]]',
+      value: 'Yes. Alcohol increased from approximately four standard drinks weekly before the incident to approximately ten weekly since, concentrated in the evening and described by the worker as being for sleep. The client raised this himself. AUDIT-C 5, at or above cut-off. Addressed in session as a maintaining factor for both sleep disruption and arousal symptoms. Client agreed to record intake for two weeks and to a reduction target. No indication of dependence at this time and no withdrawal history. [[W3 §7]] [[W4 §1]]',
       state: 'populated',
     },
 
     { section: 'SUICIDE RISK' },
-    { label: 'Risk level', value: 'Low, as documented by the treating psychologist on 2026-06-02. [[W3 §9]]', state: 'populated' },
+    { label: 'Risk level', value: 'Low, as documented by the treating psychologist on 2026-06-02. Reproduced from the record, not assigned by Insyte. Where no clinician has recorded a level, this field is left for clinician entry. [[W3 §9]]', state: 'populated' },
     { label: 'Risk factors', value: 'Sleep deprivation, increased alcohol use, guilt cognitions, occupational disruption, social withdrawal. [[W3 §9]]', state: 'populated' },
     { label: 'Protective factors', value: 'Engaged partner, employment relationship intact with modified duties available, strong stated motivation to return to work, no history of self-harm or ideation, help-seeking, no substance dependence. [[W3 §9]]', state: 'populated' },
     { label: 'Risk management plan', value: 'Risk re-screened at every session and on any change in alcohol use or sleep. Worker provided with the practice number, Health Link 811 and Access 24/7, and advised to attend emergency without delay if his situation changes. Partner identified by the worker as his first contact, with his consent. [[W3 §9]]', state: 'populated' },
@@ -331,7 +330,7 @@ const c851 = {
     { label: 'Has the worker returned to work?', value: 'Not at the date of this report. Returned to light duties 2026-04-27 for ten days, off again from 2026-05-11. [[W3 §4]]', state: 'populated' },
     { label: 'Accommodations needed?', value: 'Yes. Tool crib and yard duties away from the fabrication bay, day shift only, no overhead crane involvement. [[W4 §4]]', state: 'populated' },
     { label: 'Proposed schedule', value: 'Four hours per day, three days per week, progression tied to session-by-session review rather than a fixed calendar. [[W4 §5]]', state: 'populated' },
-    { label: 'Worker in agreement with RTW?', value: 'Yes, and the details were agreed in session. [[W4 §5]]', state: 'populated' },
+    { label: 'Client in agreement with return to work?', value: 'Yes, and the details were agreed in session. [[W4 §5]]', state: 'populated' },
     { label: 'Estimated return to pre-accident level', value: '12 to 16 weeks from the start of treatment, approximately 2026-09-28, contingent on treatment response and graded worksite exposure. To be revised at the session six review. Neither long-term nor permanent restriction anticipated. [[W4 §6]]', state: 'populated' },
 
     { section: 'PROVIDER' },
@@ -352,7 +351,7 @@ const soap = {
       { key: 'S', label: 'S — SUBJECTIVE', body: `Worker described the incident of 2026-04-23 in a flat, factual register with several pauses, and repeated three times that he called the lift. [[W3 §2]]\nReports daily intrusive re-experiencing triggered most reliably by metal-on-metal sound, nightmares four to five nights weekly, and avoidance of the fabrication bay since 2026-04-27. [[W3 §3]]\nReports sleep averaging four hours nightly, irritability, and concentration difficulty, continuous for six weeks. [[W3 §3]]\nRaised his own alcohol use, increased from about four to about ten standard drinks weekly since the incident, described as being for sleep. [[W3 §7]]\nStates he wants to work and does not want to be off. [[W3 §4]]` },
       { key: 'O', label: 'O — OBJECTIVE', body: `Psychomotor activity mildly increased, scanning the room twice when a door closed elsewhere in the building. Speech reduced during the account of the event. Affect anxious, congruent, constricted during trauma content. Insight good, judgment intact. [[W3 §8]]\nPCL-5 52, PHQ-9 16, GAD-7 14, ISI 21, AUDIT-C 5, all initial-status administrations. [[W4 §1]]\nRisk screened directly and assessed as low, with no ideation, plan, intent or preparatory behaviour. [[W3 §9]]` },
       { key: 'A', label: 'A — ASSESSMENT', body: `Posttraumatic Stress Disorder (F43.1), provisional, arising from the workplace accident of 2026-04-23. Criteria met across all four clusters with duration exceeding one month and clear functional impairment. [[W3 §10]]\nGuilt cognitions centred on causal responsibility are the most prominent feature and are contradicted in writing by the employer's own incident report. [[W3 §10]] [[W2 §6]]\nSecondary insomnia disorder, provisional. Increased alcohol use is a maintaining factor rather than an independent condition at this stage. [[W3 §10]]` },
-      { key: 'P', label: 'P — PLAN', body: `Trauma-focused CBT, weekly, eight sessions with review at session six. [[W3 §11]]\nSessions 6 to 8 graded in-vivo exposure to the worksite coordinated with the employer, from perimeter to yard to bay. [[W3 §11]]\nAlcohol monitored with an agreed reduction target; worker to record intake for two weeks. [[W3 §7]] [[W3 §11]]\nSleep intervention session 2, coordinated with the family physician by letter regarding the hypnotic. [[W3 §11]]\nNext appointment 2026-06-09. [[W3 §13]]` },
+      { key: 'P', label: 'P — PLAN', body: `Trauma-focused CBT, weekly, eight sessions with review at session six. [[W3 §11]]\nSessions 6 to 8 graded in-vivo exposure to the worksite coordinated with the employer, from perimeter to yard to bay. [[W3 §11]]\nAlcohol monitored with an agreed reduction target; client to record intake for two weeks. [[W3 §7]] [[W3 §11]]\nSleep intervention session 2, coordinated with the family physician by letter regarding the hypnotic. [[W3 §11]]\nNext appointment 2026-06-09. [[W3 §13]]` },
     ],
     footer: 'Generated by Insyte from 4 source documents. Clinician review required before this note enters the record.',
   },
@@ -367,21 +366,16 @@ export const client2 = {
   sidebarMeta: '4 documents · 41 days',
   docs,
   docsById,
-  documentOriginal: documentText,
+  spansByDoc: redactionSpans,
   summary,
   outcomeSeries: null,
   redaction: {
     header: {
-      line1: '4 documents · 212 entity spans detected · 138 unique entities resolved',
-      line2: 'Cross-document identity resolution: 3 surface forms of the same worker merged to one token',
+      line1: '4 documents · 53 identifying spans held across 17 distinct identities',
+      line2: 'Cross-document identity resolution: 3 surface forms of the same client merged to one identity',
       caption: 'Insyte over-redacts by design. You decide what comes back.',
     },
     stats: { documents: 4, spans: 212 },
-    restoreCandidates: [
-      { id: 'c2-or1', surface: 'Access 24/7', entityClass: 'Phone', why: 'Public crisis line named in the risk management plan.' },
-      { id: 'c2-or2', surface: 'Health Link 811', entityClass: 'Phone', why: 'Public health line, Alberta.' },
-      { id: 'c2-or3', surface: 'Fort Saskatchewan', entityClass: 'Location', why: 'Employer municipality, required on the C-851 employer block.' },
-    ],
     mergedIdentity: {
       token: '[CLIENT_2]',
       forms: [
