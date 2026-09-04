@@ -61,3 +61,26 @@ export function trimToWords(text, start, end) {
   while (b > a && /\s/.test(text[b - 1])) b -= 1
   return { start: a, end: b }
 }
+
+/**
+ * Where to put the redact control for a given selection.
+ *
+ * Takes the FIRST client rect of the range, not its bounding box. A selection
+ * spanning several lines has a bounding box covering all of them, so its
+ * centre is nowhere near the text; the first rect is the line the highlight
+ * starts on.
+ *
+ * Sits above that line, unless there is no room, in which case it drops below.
+ * Clamped so it never leaves the viewport on a narrow screen.
+ *
+ * @param {DOMRect[]|DOMRectList} rects  range.getClientRects()
+ * @returns {{left: number, top: number}|null}
+ */
+export function anchorPosition(rects, viewportWidth, controlWidth = 100, offset = 36) {
+  const first = rects && rects[0]
+  if (!first || (!first.width && !first.height)) return null
+  return {
+    left: Math.max(8, Math.min(first.left, viewportWidth - controlWidth - 8)),
+    top: first.top > offset + 8 ? first.top - offset : first.bottom + 8,
+  }
+}

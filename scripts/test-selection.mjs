@@ -8,7 +8,7 @@
  */
 import { JSDOM } from 'jsdom'
 import process from 'node:process'
-import { absoluteOffset, largestFreeRange, trimToWords } from '../src/lib/redactionSelection.js'
+import { absoluteOffset, anchorPosition, largestFreeRange, trimToWords } from '../src/lib/redactionSelection.js'
 
 const dom = new JSDOM('<!doctype html><body></body>')
 globalThis.window = dom.window
@@ -58,6 +58,23 @@ check('selection spanning two spans takes the widest gap',
 const text = '   hello world   '
 check('trims whitespace to the words', trimToWords(text, 0, text.length), { start: 3, end: 14 })
 check('leaves tight ranges alone', trimToWords('abc', 0, 3), { start: 0, end: 3 })
+
+/* Where the redact control lands. */
+const line = (left, top, width = 120, height = 16) =>
+  ({ left, top, width, height, bottom: top + height, right: left + width })
+
+check('anchors to the first line, not the bounding box',
+  anchorPosition([line(300, 400), line(100, 420), line(100, 440)], 1600),
+  { left: 300, top: 364 })
+check('drops below when there is no room above',
+  anchorPosition([line(300, 20)], 1600), { left: 300, top: 44 })
+check('clamps to the left edge',
+  anchorPosition([line(-40, 400)], 1600), { left: 8, top: 364 })
+check('clamps to the right edge on a narrow screen',
+  anchorPosition([line(760, 400)], 800), { left: 692, top: 364 })
+check('no rects means no control', anchorPosition([], 1600), null)
+check('a zero-size rect means no control',
+  anchorPosition([{ left: 0, top: 0, width: 0, height: 0, bottom: 0 }], 1600), null)
 
 console.log(failed === 0 ? '\nselection tests passed\n' : `\nselection tests FAILED: ${failed}\n`)
 process.exit(failed ? 1 : 0)

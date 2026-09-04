@@ -628,69 +628,20 @@ textarea:focus-visible,
 .ins-doctabs-strip { scroll-behavior: smooth; }
 
 /* ------------------------------------------------------ selection to redact */
-/* Docked in one fixed place rather than following the selection. A multi-line
-   selection's bounding rectangle spans every line it covers, so its centre is
-   nowhere near any particular word, and a tooltip positioned from it lands
-   somewhere arbitrary. A predictable position beats an approximate one. */
-.ins-selection-dock {
+/* Anchored to the first line of the highlight. Positioned from the range's
+   first client rect rather than its bounding box: on a selection spanning
+   several lines the bounding box covers all of them, so its centre is nowhere
+   near the text and the control lands somewhere arbitrary. */
+.ins-selection-tip {
   position: fixed;
-  right: 22px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 70;
-  width: 208px;
-  background: var(--surface);
-  border: 1px solid var(--violet);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-pop);
-  padding: 14px;
-  animation: ins-dock-in var(--fast) var(--ease) both;
+  z-index: 75;
+  animation: ins-pop-in var(--fast) var(--ease) both;
 }
 
-/* Keyframes carry the centring translate. Animating plain `transform` here
-   would drop translateY(-50%) once the animation fills forwards. */
-@keyframes ins-dock-in {
-  from { opacity: 0; transform: translateY(-50%) translateX(10px); }
-  to   { opacity: 1; transform: translateY(-50%); }
-}
-
-.ins-selection-dock-label {
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: 6px;
-}
-.ins-selection-dock-text {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  line-height: 1.5;
-  color: var(--ink);
-  background: var(--surface-sunk);
-  border-radius: var(--radius-sm);
-  padding: 7px 9px;
-  margin-bottom: 10px;
-  max-height: 88px;
-  overflow-y: auto;
-  overflow-wrap: anywhere;
-}
-.ins-selection-dock-btn {
-  width: 100%;
-  padding: 7px 10px;
+.ins-selection-btn {
+  padding: 5px 14px;
   font-size: 12.5px;
-  margin-top: 5px;
-}
-.ins-selection-dock-btn:first-of-type { margin-top: 0; }
-
-@media (max-width: 900px) {
-  .ins-selection-dock {
-    right: 12px;
-    left: 12px;
-    width: auto;
-    top: auto;
-    bottom: 96px;
-    transform: none;
-    animation: ins-pop-in var(--fast) var(--ease) both;
-  }
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(45, 27, 78, 0.18), 0 8px 20px rgba(45, 27, 78, 0.16);
 }

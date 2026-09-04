@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { APPROVAL_STEP_MS, runSequence } from '../lib/simulate.js'
-import { absoluteOffset, largestFreeRange, trimToWords } from '../lib/redactionSelection.js'
+import { absoluteOffset, anchorPosition, largestFreeRange, trimToWords } from '../lib/redactionSelection.js'
 
 /**
  * Redaction review and approval gate. Spec 3.1 and 3.2.
@@ -253,8 +253,24 @@ export default function RedactionReview({
     // Position against the selection rectangle rather than the pointer, so the
     // button lands on the text however the selection was made and wherever the
     // pane happens to be scrolled.
-    setSelection({ start, end, surface })
+    const at = anchorPosition(sel.getRangeAt(0).getClientRects(), window.innerWidth)
+    if (!at) { setSelection(null); return }
+    setSelection({ start, end, surface, ...at })
   }, [source, spans])
+
+  // Clicking anywhere else dismisses the control. selectionchange covers most
+  // of this already, but not every browser fires it for every collapse, and a
+  // stale button floating over the document is worse than one that is eager to
+  // leave. The control prevents default on mousedown, so a press on the button
+  // itself is excluded here rather than racing the click.
+  useEffect(() => {
+    const onDown = (e) => {
+      if (e.target?.closest?.('.ins-selection-tip')) return
+      setSelection(null)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [])
 
   // selectionchange rather than mouseup alone, so a selection made with the
   // keyboard, or adjusted after the mouse is released, is picked up too.
@@ -439,7 +455,12 @@ export default function RedactionReview({
             Original, as uploaded
             <span className="ins-pane-hint">select any text to redact it</span>
           </div>
-          <div ref={leftRef} onScroll={() => syncFrom('left')} onMouseUp={captureSelection} className="ins-pane-body">
+          <div
+            ref={leftRef}
+            onScroll={() => { syncFrom('left'); captureSelection() }}
+            onMouseUp={captureSelection}
+            className="ins-pane-body"
+          >
             <pre className="ins-doc-text">
               <span data-o={0} data-len={source.original.length}>{source.original}</span>
             </pre>
@@ -455,7 +476,7 @@ export default function RedactionReview({
           </div>
           <div
             ref={rightRef}
-            onScroll={() => syncFrom('right')}
+            onScroll={() => { syncFrom('right'); captureSelection() }}
             onMouseUp={captureSelection}
             className="ins-pane-body"
           >
@@ -489,20 +510,20 @@ export default function RedactionReview({
       </div>
 
       {selection && (
-        // mousedown inside the panel would collapse the text selection, which
-        // unmounts this panel before the click lands. Preventing the default
-        // keeps the selection alive long enough for the button to fire.
-        <div className="ins-selection-dock" onMouseDown={(e) => e.preventDefault()}>
-          <div className="ins-selection-dock-label">Selected text</div>
-          <div className="ins-selection-dock-text">{selection.surface}</div>
-          <button className="ins-btn ins-btn-primary ins-selection-dock-btn" onClick={redactSelection}>
-            Redact this
-          </button>
+        // mousedown inside the control would collapse the text selection,
+        // which unmounts the control before the click lands. Preventing the
+        // default keeps the selection alive long enough for the button to fire.
+        <div
+          className="ins-selection-tip"
+          onMouseDown={(e) => e.preventDefault()}
+          style={{ left: selection.left, top: selection.top }}
+        >
           <button
-            className="ins-btn ins-selection-dock-btn"
-            onClick={() => { window.getSelection()?.removeAllRanges(); setSelection(null) }}
+            className="ins-btn ins-btn-primary ins-selection-btn"
+            onClick={redactSelection}
+            title={`Redact "${selection.surface}"`}
           >
-            Cancel
+            Redact
           </button>
         </div>
       )}
