@@ -1,7 +1,10 @@
 /**
- * Original text and entity spans for [CLIENT_1], from the seven source PDFs.
+ * Original text and entity spans for [CLIENT_1].
  *
- * Generated, do not hand-edit. Regenerate with scratchpad/redact/emit_spans.py
+ * Produced by the Presidio and spaCy pipeline over the seven source PDFs,
+ * with clinical vocabulary denied and surface forms resolved to stable
+ * tokens. Generated, do not hand-edit.
+ * Regenerate with scratchpad/redact/emit_client1.py
  */
 
 export const redactionSpans = {
@@ -21,46 +24,145 @@ export const redactionSpans = {
     "start": 17,
     "end": 30,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
     "id": "01-s1"
    },
    {
-    "start": 295,
-    "end": 300,
-    "surface": "Priya",
+    "start": 93,
+    "end": 127,
+    "surface": "NORTHBRIDGE PSYCHOLOGICAL SERVICES",
+    "token": "ORG_1",
+    "cls": "Organization",
+    "src": "NER model",
+    "id": "01-s2"
+   },
+   {
+    "start": 128,
+    "end": 165,
+    "surface": "Suite 340, 10123 Whitemud Crossing NW",
+    "token": "STREET_7570",
+    "cls": "Location",
+    "src": "Pattern rule",
+    "id": "01-s3"
+   },
+   {
+    "start": 180,
+    "end": 187,
+    "surface": "T6J 2R4",
+    "token": "POSTAL_798",
+    "cls": "Location",
+    "src": "Pattern rule",
+    "id": "01-s4"
+   },
+   {
+    "start": 193,
+    "end": 207,
+    "surface": "(780) 555-0148",
+    "token": "CA_PHONE_8274",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "id": "01-s5"
+   },
+   {
+    "start": 213,
+    "end": 227,
+    "surface": "(780) 555-0149",
+    "token": "CA_PHONE_7431",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "id": "01-s6"
+   },
+   {
+    "start": 283,
+    "end": 303,
+    "surface": "RAMANATHAN, Priya S.",
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "01-s2"
+    "id": "01-s7"
    },
    {
     "start": 313,
     "end": 326,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
-    "id": "01-s3"
+    "id": "01-s8"
+   },
+   {
+    "start": 332,
+    "end": 342,
+    "surface": "1989-04-17",
+    "token": "DOB_8888",
+    "cls": "Date",
+    "src": "Presidio recognizer",
+    "id": "01-s9"
+   },
+   {
+    "start": 357,
+    "end": 368,
+    "surface": "6047-2231-9",
+    "token": "AB_PHN_1549",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "01-s10"
+   },
+   {
+    "start": 378,
+    "end": 398,
+    "surface": "8842 - 112 Street NW",
+    "token": "STREET_420",
+    "cls": "Location",
+    "src": "Pattern rule",
+    "id": "01-s11"
+   },
+   {
+    "start": 420,
+    "end": 434,
+    "surface": "(587) 555-0273",
+    "token": "CA_PHONE_7076",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "id": "01-s12"
    },
    {
     "start": 473,
-    "end": 492,
-    "surface": "H. Okonjo, MD, CCFP",
+    "end": 482,
+    "surface": "H. Okonjo",
     "token": "GP_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "01-s4"
+    "id": "01-s13"
+   },
+   {
+    "start": 494,
+    "end": 503,
+    "surface": "Millwoods",
+    "token": "KNOWN_ORG_4019",
+    "cls": "Organization",
+    "src": "NER model",
+    "id": "01-s14"
    },
    {
     "start": 606,
-    "end": 639,
-    "surface": "L. Fontaine-Berg, R.Psych (#4471)",
+    "end": 622,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "01-s5"
+    "id": "01-s15"
+   },
+   {
+    "start": 624,
+    "end": 639,
+    "surface": "R.Psych (#4471)",
+    "token": "REG_NO_6709",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "01-s16"
    },
    {
     "start": 679,
@@ -69,16 +171,25 @@ export const redactionSpans = {
     "token": "SPOUSE_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "01-s6"
+    "id": "01-s17"
    },
    {
-    "start": 779,
+    "start": 703,
+    "end": 717,
+    "surface": "(587) 555-0311",
+    "token": "CA_PHONE_5578",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "id": "01-s18"
+   },
+   {
+    "start": 783,
     "end": 793,
-    "surface": "Ms. Ramanathan",
+    "surface": "Ramanathan",
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "01-s7"
+    "id": "01-s19"
    },
    {
     "start": 1731,
@@ -87,16 +198,16 @@ export const redactionSpans = {
     "token": "EMPLOYER_1",
     "cls": "Organization",
     "src": "NER model",
-    "id": "01-s8"
+    "id": "01-s20"
    },
    {
-    "start": 3170,
+    "start": 3174,
     "end": 3180,
-    "surface": "Dr. Okonjo",
+    "surface": "Okonjo",
     "token": "GP_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "01-s9"
+    "id": "01-s21"
    },
    {
     "start": 3850,
@@ -105,34 +216,34 @@ export const redactionSpans = {
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "01-s10"
+    "id": "01-s22"
    },
    {
     "start": 3867,
     "end": 3880,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
-    "id": "01-s11"
+    "id": "01-s23"
    },
    {
     "start": 6488,
-    "end": 6513,
-    "surface": "L. Fontaine-Berg, R.Psych",
+    "end": 6504,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "01-s12"
+    "id": "01-s24"
    },
    {
     "start": 6515,
     "end": 6533,
     "surface": "Registration #4471",
-    "token": "PSYCHOLOGIST_1",
-    "cls": "Person",
-    "src": "NER model",
-    "id": "01-s13"
+    "token": "REG_NO_2943",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "01-s25"
    }
   ]
  },
@@ -152,37 +263,91 @@ export const redactionSpans = {
     "start": 17,
     "end": 30,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
     "id": "02-s1"
    },
    {
-    "start": 275,
-    "end": 280,
-    "surface": "Priya",
+    "start": 89,
+    "end": 123,
+    "surface": "NORTHBRIDGE PSYCHOLOGICAL SERVICES",
+    "token": "ORG_1",
+    "cls": "Organization",
+    "src": "NER model",
+    "id": "02-s2"
+   },
+   {
+    "start": 124,
+    "end": 161,
+    "surface": "Suite 340, 10123 Whitemud Crossing NW",
+    "token": "STREET_7570",
+    "cls": "Location",
+    "src": "Pattern rule",
+    "id": "02-s3"
+   },
+   {
+    "start": 176,
+    "end": 183,
+    "surface": "T6J 2R4",
+    "token": "POSTAL_798",
+    "cls": "Location",
+    "src": "Pattern rule",
+    "id": "02-s4"
+   },
+   {
+    "start": 189,
+    "end": 203,
+    "surface": "(780) 555-0148",
+    "token": "CA_PHONE_8274",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "id": "02-s5"
+   },
+   {
+    "start": 263,
+    "end": 283,
+    "surface": "RAMANATHAN, Priya S.",
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "02-s2"
+    "id": "02-s6"
    },
    {
     "start": 293,
     "end": 306,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
-    "id": "02-s3"
+    "id": "02-s7"
+   },
+   {
+    "start": 312,
+    "end": 323,
+    "surface": "6047-2231-9",
+    "token": "AB_PHN_1549",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "02-s8"
    },
    {
     "start": 376,
-    "end": 409,
-    "surface": "L. Fontaine-Berg, R.Psych (#4471)",
+    "end": 392,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "02-s4"
+    "id": "02-s9"
+   },
+   {
+    "start": 394,
+    "end": 409,
+    "surface": "R.Psych (#4471)",
+    "token": "REG_NO_6709",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "02-s10"
    },
    {
     "start": 3190,
@@ -191,25 +356,25 @@ export const redactionSpans = {
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "02-s5"
+    "id": "02-s11"
    },
    {
     "start": 3207,
     "end": 3220,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
-    "id": "02-s6"
+    "id": "02-s12"
    },
    {
-    "start": 4525,
+    "start": 4529,
     "end": 4535,
-    "surface": "Dr. Okonjo",
+    "surface": "Okonjo",
     "token": "GP_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "02-s7"
+    "id": "02-s13"
    },
    {
     "start": 4587,
@@ -218,16 +383,16 @@ export const redactionSpans = {
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "02-s8"
+    "id": "02-s14"
    },
    {
     "start": 4604,
     "end": 4617,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
-    "id": "02-s9"
+    "id": "02-s15"
    },
    {
     "start": 5515,
@@ -235,19 +400,19 @@ export const redactionSpans = {
     "surface": "811",
     "token": "CRISIS_LINE_3",
     "cls": "Contact",
-    "src": "NER model",
+    "src": "Pattern rule",
     "over": true,
     "why": "Public health line, Alberta.",
-    "id": "02-s10"
+    "id": "02-s16"
    },
    {
-    "start": 5553,
+    "start": 5557,
     "end": 5563,
-    "surface": "Dr. Okonjo",
+    "surface": "Okonjo",
     "token": "GP_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "02-s11"
+    "id": "02-s17"
    },
    {
     "start": 7370,
@@ -255,19 +420,28 @@ export const redactionSpans = {
     "surface": "Access 24/7",
     "token": "CRISIS_LINE_1",
     "cls": "Contact",
-    "src": "NER model",
+    "src": "Pattern rule",
     "over": true,
-    "why": "Public crisis line. The digits trip the phone pattern rule.",
-    "id": "02-s12"
+    "why": "Public crisis line.",
+    "id": "02-s18"
    },
    {
     "start": 7901,
-    "end": 7932,
-    "surface": "L. Fontaine-Berg, R.Psych #4471",
+    "end": 7917,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "02-s13"
+    "id": "02-s19"
+   },
+   {
+    "start": 7919,
+    "end": 7932,
+    "surface": "R.Psych #4471",
+    "token": "REG_NO_2195",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "02-s20"
    }
   ]
  },
@@ -287,57 +461,129 @@ export const redactionSpans = {
     "start": 17,
     "end": 30,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
     "id": "03-s1"
    },
    {
-    "start": 295,
-    "end": 300,
-    "surface": "Priya",
+    "start": 113,
+    "end": 147,
+    "surface": "NORTHBRIDGE PSYCHOLOGICAL SERVICES",
+    "token": "ORG_1",
+    "cls": "Organization",
+    "src": "NER model",
+    "id": "03-s2"
+   },
+   {
+    "start": 148,
+    "end": 185,
+    "surface": "Suite 340, 10123 Whitemud Crossing NW",
+    "token": "STREET_7570",
+    "cls": "Location",
+    "src": "Pattern rule",
+    "id": "03-s3"
+   },
+   {
+    "start": 200,
+    "end": 207,
+    "surface": "T6J 2R4",
+    "token": "POSTAL_798",
+    "cls": "Location",
+    "src": "Pattern rule",
+    "id": "03-s4"
+   },
+   {
+    "start": 213,
+    "end": 227,
+    "surface": "(780) 555-0148",
+    "token": "CA_PHONE_8274",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "id": "03-s5"
+   },
+   {
+    "start": 283,
+    "end": 303,
+    "surface": "RAMANATHAN, Priya S.",
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s2"
+    "id": "03-s6"
    },
    {
     "start": 313,
     "end": 326,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
-    "id": "03-s3"
+    "id": "03-s7"
+   },
+   {
+    "start": 348,
+    "end": 359,
+    "surface": "6047-2231-9",
+    "token": "AB_PHN_1549",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "03-s8"
    },
    {
     "start": 445,
-    "end": 478,
-    "surface": "L. Fontaine-Berg, R.Psych (#4471)",
+    "end": 461,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s4"
+    "id": "03-s9"
+   },
+   {
+    "start": 463,
+    "end": 478,
+    "surface": "R.Psych (#4471)",
+    "token": "REG_NO_6709",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "03-s10"
    },
    {
     "start": 492,
-    "end": 514,
-    "surface": "M. Osei-Bonsu, R.Psych",
+    "end": 505,
+    "surface": "M. Osei-Bonsu",
     "token": "SUPERVISOR_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s5"
+    "id": "03-s11"
    },
    {
     "start": 3327,
     "end": 3344,
     "surface": "Millwoods library",
     "token": "PUBLIC_FACILITY_1",
-    "cls": "Location",
-    "src": "NER model",
+    "cls": "Contact",
+    "src": "Pattern rule",
     "over": true,
     "why": "Public facility named in the safety plan.",
-    "id": "03-s6"
+    "id": "03-s12"
+   },
+   {
+    "start": 3387,
+    "end": 3401,
+    "surface": "(587) 555-0311",
+    "token": "CA_PHONE_5578",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "id": "03-s13"
+   },
+   {
+    "start": 3411,
+    "end": 3425,
+    "surface": "(780) 555-0192",
+    "token": "CA_PHONE_2210",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "id": "03-s14"
    },
    {
     "start": 3428,
@@ -346,25 +592,34 @@ export const redactionSpans = {
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s7"
+    "id": "03-s15"
    },
    {
     "start": 3445,
     "end": 3458,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
-    "id": "03-s8"
+    "id": "03-s16"
    },
    {
     "start": 3603,
-    "end": 3628,
-    "surface": "L. Fontaine-Berg, R.Psych",
+    "end": 3619,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s9"
+    "id": "03-s17"
+   },
+   {
+    "start": 3629,
+    "end": 3643,
+    "surface": "(780) 555-0148",
+    "token": "CA_PHONE_8274",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "id": "03-s18"
    },
    {
     "start": 3645,
@@ -372,10 +627,21 @@ export const redactionSpans = {
     "surface": "Access 24/7",
     "token": "CRISIS_LINE_1",
     "cls": "Contact",
-    "src": "NER model",
+    "src": "Pattern rule",
     "over": true,
-    "why": "Public crisis line. The digits trip the phone pattern rule.",
-    "id": "03-s10"
+    "why": "Public crisis line.",
+    "id": "03-s19"
+   },
+   {
+    "start": 3657,
+    "end": 3671,
+    "surface": "(780) 424-2424",
+    "token": "CRISIS_LINE_1",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "over": true,
+    "why": "Public crisis line number.",
+    "id": "03-s20"
    },
    {
     "start": 3673,
@@ -383,21 +649,21 @@ export const redactionSpans = {
     "surface": "988",
     "token": "CRISIS_LINE_2",
     "cls": "Contact",
-    "src": "NER model",
+    "src": "Pattern rule",
     "over": true,
     "why": "Public crisis line.",
-    "id": "03-s11"
+    "id": "03-s21"
    },
    {
     "start": 3702,
     "end": 3713,
     "surface": "Health Link",
-    "token": "CRISIS_LINE_4",
+    "token": "CRISIS_LINE_3",
     "cls": "Contact",
-    "src": "NER model",
+    "src": "Pattern rule",
     "over": true,
     "why": "Public health line, Alberta.",
-    "id": "03-s12"
+    "id": "03-s22"
    },
    {
     "start": 3714,
@@ -405,10 +671,10 @@ export const redactionSpans = {
     "surface": "811",
     "token": "CRISIS_LINE_3",
     "cls": "Contact",
-    "src": "NER model",
+    "src": "Pattern rule",
     "over": true,
     "why": "Public health line, Alberta.",
-    "id": "03-s13"
+    "id": "03-s23"
    },
    {
     "start": 4070,
@@ -417,7 +683,7 @@ export const redactionSpans = {
     "token": "SPOUSE_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s14"
+    "id": "03-s24"
    },
    {
     "start": 4194,
@@ -426,43 +692,61 @@ export const redactionSpans = {
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s15"
+    "id": "03-s25"
    },
    {
     "start": 4211,
     "end": 4224,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
-    "id": "03-s16"
+    "id": "03-s26"
    },
    {
-    "start": 4598,
+    "start": 4389,
+    "end": 4398,
+    "surface": "b. Spouse",
+    "token": "PERSON_846",
+    "cls": "Person",
+    "src": "NER model",
+    "id": "03-s27"
+   },
+   {
+    "start": 4602,
     "end": 4608,
-    "surface": "Dr. Okonjo",
+    "surface": "Okonjo",
     "token": "GP_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s17"
+    "id": "03-s28"
    },
    {
     "start": 4763,
-    "end": 4785,
-    "surface": "M. Osei-Bonsu, R.Psych",
+    "end": 4776,
+    "surface": "M. Osei-Bonsu",
     "token": "SUPERVISOR_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s18"
+    "id": "03-s29"
    },
    {
     "start": 5164,
-    "end": 5197,
-    "surface": "L. Fontaine-Berg, R.Psych (#4471)",
+    "end": 5180,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s19"
+    "id": "03-s30"
+   },
+   {
+    "start": 5182,
+    "end": 5197,
+    "surface": "R.Psych (#4471)",
+    "token": "REG_NO_6709",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "03-s31"
    },
    {
     "start": 5871,
@@ -471,25 +755,34 @@ export const redactionSpans = {
     "token": "ORG_2",
     "cls": "Organization",
     "src": "NER model",
-    "id": "03-s20"
+    "id": "03-s32"
    },
    {
     "start": 6364,
-    "end": 6395,
-    "surface": "L. Fontaine-Berg, R.Psych #4471",
+    "end": 6380,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s21"
+    "id": "03-s33"
+   },
+   {
+    "start": 6382,
+    "end": 6395,
+    "surface": "R.Psych #4471",
+    "token": "REG_NO_2195",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "03-s34"
    },
    {
     "start": 6431,
-    "end": 6453,
-    "surface": "M. Osei-Bonsu, R.Psych",
+    "end": 6444,
+    "surface": "M. Osei-Bonsu",
     "token": "SUPERVISOR_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "03-s22"
+    "id": "03-s35"
    }
   ]
  },
@@ -506,31 +799,85 @@ export const redactionSpans = {
     "id": "04-s0"
    },
    {
-    "start": 333,
-    "end": 346,
-    "surface": "Priya Sunitha",
-    "token": "CLIENT_1",
-    "cls": "Person",
-    "src": "NER model",
+    "start": 19,
+    "end": 36,
+    "surface": "RAH-25-0522-88413",
+    "token": "FILE_NO_6755",
+    "cls": "Identifier",
+    "src": "Pattern rule",
     "id": "04-s1"
    },
    {
-    "start": 524,
-    "end": 539,
-    "surface": "K. Devereux, RN",
-    "token": "RN_1",
-    "cls": "Person",
+    "start": 132,
+    "end": 156,
+    "surface": "ROYAL ALEXANDRA HOSPITAL",
+    "token": "ORG_2",
+    "cls": "Organization",
     "src": "NER model",
     "id": "04-s2"
    },
    {
-    "start": 1160,
-    "end": 1190,
-    "surface": "Dr. A. Villanueva, MD, CCFP-EM",
+    "start": 157,
+    "end": 178,
+    "surface": "10240 Kingsway Ave NW",
+    "token": "STREET_3499",
+    "cls": "Location",
+    "src": "Pattern rule",
+    "id": "04-s3"
+   },
+   {
+    "start": 193,
+    "end": 200,
+    "surface": "T5H 3V9",
+    "token": "POSTAL_8395",
+    "cls": "Location",
+    "src": "Pattern rule",
+    "id": "04-s4"
+   },
+   {
+    "start": 321,
+    "end": 340,
+    "surface": "RAMANATHAN, Priya S",
+    "token": "CLIENT_1",
+    "cls": "Person",
+    "src": "NER model",
+    "id": "04-s5"
+   },
+   {
+    "start": 361,
+    "end": 378,
+    "surface": "RAH-25-0522-88413",
+    "token": "FILE_NO_6755",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "04-s6"
+   },
+   {
+    "start": 401,
+    "end": 412,
+    "surface": "6047-2231-9",
+    "token": "AB_PHN_1549",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "04-s7"
+   },
+   {
+    "start": 524,
+    "end": 535,
+    "surface": "K. Devereux",
+    "token": "RN_1",
+    "cls": "Person",
+    "src": "NER model",
+    "id": "04-s8"
+   },
+   {
+    "start": 1164,
+    "end": 1177,
+    "surface": "A. Villanueva",
     "token": "ED_PHYSICIAN_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "04-s3"
+    "id": "04-s9"
    },
    {
     "start": 2571,
@@ -539,16 +886,25 @@ export const redactionSpans = {
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "04-s4"
+    "id": "04-s10"
    },
    {
-    "start": 2711,
-    "end": 2739,
-    "surface": "Dr. S. Achterberg, MD, FRCPC",
+    "start": 2590,
+    "end": 2607,
+    "surface": "RAH-25-0522-88413",
+    "token": "FILE_NO_6755",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "04-s11"
+   },
+   {
+    "start": 2715,
+    "end": 2728,
+    "surface": "S. Achterberg",
     "token": "PSYCHIATRIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "04-s5"
+    "id": "04-s12"
    },
    {
     "start": 5869,
@@ -557,25 +913,25 @@ export const redactionSpans = {
     "token": "ORG_3",
     "cls": "Organization",
     "src": "NER model",
-    "id": "04-s6"
+    "id": "04-s13"
    },
    {
-    "start": 6857,
+    "start": 6854,
     "end": 6867,
-    "surface": "Achterberg",
+    "surface": "S. Achterberg",
     "token": "PSYCHIATRIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "04-s7"
+    "id": "04-s14"
    },
    {
-    "start": 6947,
-    "end": 6953,
-    "surface": "Okonjo",
+    "start": 6944,
+    "end": 6956,
+    "surface": "H. Okonjo MD",
     "token": "GP_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "04-s8"
+    "id": "04-s15"
    },
    {
     "start": 6958,
@@ -584,7 +940,7 @@ export const redactionSpans = {
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "04-s9"
+    "id": "04-s16"
    }
   ]
  },
@@ -601,60 +957,98 @@ export const redactionSpans = {
     "id": "05-s0"
    },
    {
+    "start": 128,
+    "end": 168,
+    "surface": "ADULT INTENSIVE COMMUNITY TREATMENT TEAM",
+    "token": "ORG_3",
+    "cls": "Organization",
+    "src": "NER model",
+    "id": "05-s1"
+   },
+   {
     "start": 227,
     "end": 238,
     "surface": "Access 24/7",
     "token": "CRISIS_LINE_1",
     "cls": "Contact",
-    "src": "NER model",
+    "src": "Pattern rule",
     "over": true,
-    "why": "Public crisis line. The digits trip the phone pattern rule.",
-    "id": "05-s1"
-   },
-   {
-    "start": 330,
-    "end": 335,
-    "surface": "Priya",
-    "token": "CLIENT_1",
-    "cls": "Person",
-    "src": "NER model",
+    "why": "Public crisis line.",
     "id": "05-s2"
    },
    {
-    "start": 458,
-    "end": 486,
-    "surface": "Dr. S. Achterberg, MD, FRCPC",
-    "token": "PSYCHIATRIST_1",
-    "cls": "Person",
-    "src": "NER model",
+    "start": 239,
+    "end": 253,
+    "surface": "(780) 424-2424",
+    "token": "CRISIS_LINE_1",
+    "cls": "Contact",
+    "src": "Pattern rule",
+    "over": true,
+    "why": "Public crisis line number.",
     "id": "05-s3"
    },
    {
-    "start": 501,
-    "end": 522,
-    "surface": "T. Ilesanmi, RN, BScN",
-    "token": "RN_2",
+    "start": 318,
+    "end": 338,
+    "surface": "RAMANATHAN, Priya S.",
+    "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
     "id": "05-s4"
    },
    {
-    "start": 537,
-    "end": 570,
-    "surface": "L. Fontaine-Berg, R.Psych (#4471)",
-    "token": "PSYCHOLOGIST_1",
-    "cls": "Person",
-    "src": "NER model",
+    "start": 368,
+    "end": 379,
+    "surface": "6047-2231-9",
+    "token": "AB_PHN_1549",
+    "cls": "Identifier",
+    "src": "Pattern rule",
     "id": "05-s5"
    },
    {
-    "start": 3827,
-    "end": 3837,
-    "surface": "Dr. Okonjo",
-    "token": "GP_1",
+    "start": 462,
+    "end": 475,
+    "surface": "S. Achterberg",
+    "token": "PSYCHIATRIST_1",
     "cls": "Person",
     "src": "NER model",
     "id": "05-s6"
+   },
+   {
+    "start": 501,
+    "end": 512,
+    "surface": "T. Ilesanmi",
+    "token": "RN_2",
+    "cls": "Person",
+    "src": "NER model",
+    "id": "05-s7"
+   },
+   {
+    "start": 537,
+    "end": 553,
+    "surface": "L. Fontaine-Berg",
+    "token": "PSYCHOLOGIST_1",
+    "cls": "Person",
+    "src": "NER model",
+    "id": "05-s8"
+   },
+   {
+    "start": 555,
+    "end": 570,
+    "surface": "R.Psych (#4471)",
+    "token": "REG_NO_6709",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "05-s9"
+   },
+   {
+    "start": 3831,
+    "end": 3837,
+    "surface": "Okonjo",
+    "token": "GP_1",
+    "cls": "Person",
+    "src": "NER model",
+    "id": "05-s10"
    },
    {
     "start": 3919,
@@ -663,43 +1057,43 @@ export const redactionSpans = {
     "token": "CLIENT_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "05-s7"
+    "id": "05-s11"
    },
    {
     "start": 7669,
-    "end": 7690,
-    "surface": "T. Ilesanmi, RN, BScN",
+    "end": 7680,
+    "surface": "T. Ilesanmi",
     "token": "RN_2",
     "cls": "Person",
     "src": "NER model",
-    "id": "05-s8"
+    "id": "05-s12"
    },
    {
-    "start": 7728,
+    "start": 7725,
     "end": 7738,
-    "surface": "Achterberg",
+    "surface": "S. Achterberg",
     "token": "PSYCHIATRIST_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "05-s9"
+    "id": "05-s13"
    },
    {
-    "start": 7775,
+    "start": 7772,
     "end": 7781,
-    "surface": "Okonjo",
+    "surface": "H. Okonjo",
     "token": "GP_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "05-s10"
+    "id": "05-s14"
    },
    {
-    "start": 7789,
-    "end": 7802,
-    "surface": "Fontaine-Berg",
-    "token": "PSYCHOLOGIST_1",
+    "start": 7786,
+    "end": 7788,
+    "surface": "L.",
+    "token": "PERSON_2754",
     "cls": "Person",
     "src": "NER model",
-    "id": "05-s11"
+    "id": "05-s15"
    }
   ]
  },
@@ -719,7 +1113,7 @@ export const redactionSpans = {
     "start": 17,
     "end": 30,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
     "id": "06-s1"
@@ -737,15 +1131,15 @@ export const redactionSpans = {
     "start": 383,
     "end": 396,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
     "id": "06-s3"
    },
    {
     "start": 453,
-    "end": 478,
-    "surface": "L. Fontaine-Berg, R.Psych",
+    "end": 469,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
@@ -764,19 +1158,37 @@ export const redactionSpans = {
     "start": 2811,
     "end": 2824,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
     "id": "06-s6"
    },
    {
-    "start": 4936,
-    "end": 4967,
-    "surface": "L. Fontaine-Berg, R.Psych #4471",
-    "token": "PSYCHOLOGIST_1",
+    "start": 4462,
+    "end": 4472,
+    "surface": "ANNOTATION",
+    "token": "PERSON_6953",
     "cls": "Person",
     "src": "NER model",
     "id": "06-s7"
+   },
+   {
+    "start": 4936,
+    "end": 4952,
+    "surface": "L. Fontaine-Berg",
+    "token": "PSYCHOLOGIST_1",
+    "cls": "Person",
+    "src": "NER model",
+    "id": "06-s8"
+   },
+   {
+    "start": 4954,
+    "end": 4967,
+    "surface": "R.Psych #4471",
+    "token": "REG_NO_2195",
+    "cls": "Identifier",
+    "src": "Pattern rule",
+    "id": "06-s9"
    }
   ]
  },
@@ -796,7 +1208,7 @@ export const redactionSpans = {
     "start": 17,
     "end": 30,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
     "id": "07-s1"
@@ -814,15 +1226,15 @@ export const redactionSpans = {
     "start": 364,
     "end": 377,
     "surface": "NPS-2025-0417",
-    "token": "ID_1",
+    "token": "FILE_NO_1804",
     "cls": "Identifier",
     "src": "Pattern rule",
     "id": "07-s3"
    },
    {
     "start": 434,
-    "end": 459,
-    "surface": "L. Fontaine-Berg, R.Psych",
+    "end": 450,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
@@ -859,7 +1271,7 @@ export const redactionSpans = {
     "start": 3002,
     "end": 3014,
     "surface": "780-555-0164",
-    "token": "PHONE_1",
+    "token": "CA_PHONE_3031",
     "cls": "Contact",
     "src": "Pattern rule",
     "id": "07-s8"
@@ -870,9 +1282,9 @@ export const redactionSpans = {
     "surface": "Access 24/7",
     "token": "CRISIS_LINE_1",
     "cls": "Contact",
-    "src": "NER model",
+    "src": "Pattern rule",
     "over": true,
-    "why": "Public crisis line. The digits trip the phone pattern rule.",
+    "why": "Public crisis line.",
     "id": "07-s9"
    },
    {
@@ -881,19 +1293,10 @@ export const redactionSpans = {
     "surface": "988",
     "token": "CRISIS_LINE_2",
     "cls": "Contact",
-    "src": "NER model",
+    "src": "Pattern rule",
     "over": true,
     "why": "Public crisis line.",
     "id": "07-s10"
-   },
-   {
-    "start": 3552,
-    "end": 3555,
-    "surface": "Mum",
-    "token": "RELATIVE_1",
-    "cls": "Person",
-    "src": "NER model",
-    "id": "07-s11"
    },
    {
     "start": 3822,
@@ -902,21 +1305,30 @@ export const redactionSpans = {
     "token": "GP_1",
     "cls": "Person",
     "src": "NER model",
-    "id": "07-s12"
+    "id": "07-s11"
    },
    {
     "start": 5137,
-    "end": 5168,
-    "surface": "L. Fontaine-Berg, R.Psych #4471",
+    "end": 5153,
+    "surface": "L. Fontaine-Berg",
     "token": "PSYCHOLOGIST_1",
     "cls": "Person",
     "src": "NER model",
+    "id": "07-s12"
+   },
+   {
+    "start": 5155,
+    "end": 5168,
+    "surface": "R.Psych #4471",
+    "token": "REG_NO_2195",
+    "cls": "Identifier",
+    "src": "Pattern rule",
     "id": "07-s13"
    },
    {
-    "start": 6637,
-    "end": 6659,
-    "surface": "M. Osei-Bonsu, R.Psych",
+    "start": 6623,
+    "end": 6650,
+    "surface": "Countersigned M. Osei-Bonsu",
     "token": "SUPERVISOR_1",
     "cls": "Person",
     "src": "NER model",

@@ -66,7 +66,7 @@ export default function ExportModal({ config, onClose }) {
           width: 'min(820px, 94vw)', maxHeight: '94vh', background: 'var(--surface)',
           border: '1px solid var(--line-strong)', borderRadius: 'var(--radius)',
           boxShadow: 'var(--shadow-pop)', zIndex: 91, display: 'flex', flexDirection: 'column',
-          animation: 'ins-fade-up 260ms cubic-bezier(0.22,0.61,0.36,1) both',
+          animation: 'ins-rise-centred 260ms cubic-bezier(0.22,0.61,0.36,1) both',
         }}
       >
         <header style={{ padding: '17px 22px', borderBottom: '1px solid var(--line)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

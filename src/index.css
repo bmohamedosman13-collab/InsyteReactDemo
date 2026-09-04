@@ -354,6 +354,15 @@ textarea:focus-visible,
   white-space: nowrap;
 }
 
+/* Centred with translateX, so it needs keyframes that keep that translate.
+   Animating `transform` on an element whose layout depends on a transform
+   overrides the declared value once the animation fills forwards, which drops
+   the element half its own width off centre. */
+@keyframes ins-rise-centred {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  to   { opacity: 1; transform: translateX(-50%); }
+}
+
 .ins-approve-bar {
   padding: 17px 20px;
   display: flex;
@@ -367,7 +376,7 @@ textarea:focus-visible,
   width: min(1000px, calc(100vw - 48px));
   background: var(--surface);
   box-shadow: var(--shadow-pop);
-  animation: ins-fade-up var(--slow) var(--ease) both;
+  animation: ins-rise-centred var(--slow) var(--ease) both;
 }
 
 .ins-spinner {

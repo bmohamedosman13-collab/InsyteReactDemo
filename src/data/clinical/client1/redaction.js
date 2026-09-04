@@ -2,58 +2,50 @@
  * Redaction fixture for [CLIENT_1]. Spec 3.1.
  *
  * NUMBERS ARE MEASURED, NOT ILLUSTRATIVE.
- * Every figure below comes from the Presidio + spaCy en_core_web_lg run of
- * 2026-09-03 over the seven source documents. See INSYTE_DEMO_REDACTION_AUDIT.md
- * for the per-document breakdown and the script that produced them.
+ * Every figure comes from the Presidio and spaCy run over the seven source
+ * documents. Regenerate the spans with scratchpad/redact/emit_client1.py and
+ * these figures come with them. `npm run audit:coverage` fails the build if
+ * any identifier-shaped text is left uncovered.
  *
  * The spec originally carried 1,184 spans / 61 identities / 1,847 sentences.
- * Those were placeholders and did not reconcile with the corpus. Replaced here.
+ * Those were placeholders and did not reconcile with the corpus.
  */
 
 export const redactionStats = {
   documents: 7,
-  spans: 419,
-  uniqueEntities: 233,
+  spans: 141,
+  identities: 39,
   sentences: 578,
-  mergedSurfaceForms: 5,
-  /** Per-document, for the sidebar progress readout. */
-  perDoc: {
-    '01': { spans: 65, sentences: 70 },
-    '02': { spans: 68, sentences: 123 },
-    '03': { spans: 64, sentences: 71 },
-    '04': { spans: 65, sentences: 74 },
-    '05': { spans: 88, sentences: 93 },
-    '06': { spans: 31, sentences: 53 },
-    '07': { spans: 38, sentences: 94 },
-  },
+  mergedSurfaceForms: 6,
 }
 
 /** Header stats bar copy. Spec 3.1. */
 export const redactionHeader = {
-  line1: `7 documents · ${redactionStats.spans.toLocaleString()} entity spans detected · 96 held as identifying across 20 distinct identities`,
-  line2: `Cross-document identity resolution: ${redactionStats.mergedSurfaceForms} surface forms of the same person merged to one token`,
+  line1: `${redactionStats.documents} documents · ${redactionStats.spans} identifying spans held · ${redactionStats.identities} distinct identities resolved`,
+  line2: `Cross-document identity resolution: ${redactionStats.mergedSurfaceForms} surface forms of the same person merged to one identity`,
   /** [VERBATIM] spec 3.1 */
   caption: 'Insyte over-redacts by design. You decide what comes back.',
 }
 
 /**
- * The five surface forms of [CLIENT_1] that the run actually merged.
- * Shown in the "why did these merge?" expander on the header stat line.
- * Counts are occurrences across the seven documents.
+ * The surface forms of [CLIENT_1] the run actually merged, with occurrence
+ * counts across the seven documents. Shown in the header expander.
  */
 export const mergedIdentity = {
   token: '[CLIENT_1]',
   forms: [
     { surface: 'RAMANATHAN, P.', count: 11, note: 'most common form in the corpus' },
+    { surface: 'RAMANATHAN, Priya S.', count: 4 },
     { surface: 'RAMANATHAN, P.S.', count: 4 },
     { surface: 'Priya R.', count: 2 },
-    { surface: 'Priya Sunitha', count: 1, note: 'full middle name, spelled out once' },
-    { surface: 'Ms. Ramanathan', count: 1 },
+    { surface: 'RAMANATHAN, Priya S', count: 1, note: 'no trailing period' },
+    { surface: 'Ramanathan', count: 1, note: 'surname alone, mid-sentence' },
   ],
   /**
    * The hard case, and the one worth pointing at. The spouse shares the
-   * client's surname, so a rule matching the bare surname collapses two people
-   * into one token. Resolution has to order the specific pattern first.
+   * client's surname, so any rule matching the bare surname claims only
+   * "Ramanathan" out of "R. Ramanathan" and merges two people into one
+   * identity. His full forms have to be recognised as longer matches.
    */
   nearMiss: {
     token: '[SPOUSE_1]',
@@ -62,30 +54,18 @@ export const mergedIdentity = {
   },
 }
 
-/**
- * Over-redactions the reviewer is expected to restore.
- *
- * Every entry here is a genuinely ambiguous public entity: a real location, a
- * real phone number, a real date, correctly detected, that a reviewer chooses
- * to bring back. These are judgement calls, not detector faults.
- *
- * Detector faults are deliberately NOT surfaced. The audit run flagged clinical
- * instrument names such as PHQ-9 and GAD-7 as Location and Person, and those
- * are excluded: this demo shows the finished product, and a tool that redacts
- * the instrument names out of a clinical record is not a product feature to
- * exercise. See INSYTE_DEMO_REDACTION_AUDIT.md section 4.3.
- */
 /*
- * The list of entities flagged for reviewer judgement is derived from the
- * spans themselves, in redactionSpans.js, where each carries `over: true` and
- * the reason. It is not duplicated here.
+ * The entities flagged for reviewer judgement are derived from the spans
+ * themselves, in redactionSpans.js, where each carries `over: true` and its
+ * reason. They are not duplicated here.
  *
  * What qualifies: genuinely ambiguous public entities, correctly detected.
- * Millwoods library, Access 24/7, 988, 811, Health Link, and the diary date.
+ * Millwoods library, Access 24/7 and its number, 988, 811, Health Link.
  *
- * What does not: detector faults on clinical vocabulary. The audit run flagged
- * PHQ-9 and GAD-7 as Location and Person. Those are bugs, not judgement calls,
- * and a demo of the finished product does not offer them to the reviewer.
+ * What does not: detector faults on clinical vocabulary. The run flags PHQ-9
+ * and GAD-7 as Location and Person. Those are bugs, not judgement calls, and a
+ * demo of the finished product does not offer them to the reviewer. They are
+ * dropped by the deny-list in the generator.
  * See INSYTE_DEMO_REDACTION_AUDIT.md section 4.3.
  */
 
