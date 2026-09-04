@@ -201,7 +201,15 @@ export default function RedactionReview({
     if (!strip || !tab) return
     const target = tab.offsetLeft - strip.clientWidth / 2 + tab.clientWidth / 2
     const max = strip.scrollWidth - strip.clientWidth
-    strip.scrollTo({ left: Math.max(0, Math.min(target, max)), behavior: 'smooth' })
+    const left = Math.max(0, Math.min(target, max))
+    // Element.scrollTo is missing in older engines, and the CSS on the strip
+    // already gives smooth behaviour, so assigning scrollLeft is a complete
+    // fallback rather than a degraded one.
+    if (typeof strip.scrollTo === 'function') {
+      strip.scrollTo({ left, behavior: 'smooth' })
+    } else {
+      strip.scrollLeft = left
+    }
   }, [activeId])
 
   const openDoc = (id) => {
