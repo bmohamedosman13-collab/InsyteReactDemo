@@ -595,6 +595,7 @@ textarea:focus-visible,
   color: var(--ink-tertiary);
 }
 .ins-doctabs-strip {
+  position: relative;
   display: flex;
   gap: 6px;
   padding: 10px 12px;
@@ -625,7 +626,9 @@ textarea:focus-visible,
   text-transform: none;
   letter-spacing: 0;
 }
-.ins-doctabs-strip { scroll-behavior: smooth; }
+/* Smoothness is requested per call in JS. Declaring it here as well means two
+   scroll animations can be in flight for the same element, and the longest
+   jumps were arriving in the wrong place or not at all. */
 
 /* ------------------------------------------------------ selection to redact */
 /* Anchored to the first line of the highlight. Positioned from the range's

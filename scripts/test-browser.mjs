@@ -109,6 +109,166 @@ for (const [label, track, viewport] of [
   await page.close()
 }
 
+/* ------------------------------------------------------------------------ */
+/* Document strip: every document must be reachable, in both directions.      */
+
+for (const viewport of [
+  { width: 1600, height: 900 },
+  { width: 1280, height: 720 },
+  { width: 1100, height: 700 },
+]) {
+  const label = `strip at ${viewport.width}`
+  const page = await browser.newPage({ viewport })
+  await page.goto(`${BASE}/org`, { waitUntil: 'networkidle' })
+  await page.waitForSelector('.ins-doctabs-strip')
+
+  // Click through the DOM rather than through Playwright, which scrolls an
+  // element into view before clicking and would hide the very bug under test.
+  const clickTab = (i) => page.evaluate((n) => {
+    document.querySelectorAll('.ins-doctab')[n].click()
+  }, i)
+
+  // Smooth scrolling takes longer the further it goes, so a fixed wait measures
+  // long jumps mid-flight. Poll until the strip stops moving instead.
+  const settled = async () => {
+    // Give the scroll a chance to start before deciding it has stopped, then
+    // require several stable samples. Sampling immediately after the click
+    // reads the position from before the animation began.
+    await page.waitForTimeout(120)
+    let last = null
+    let stable = 0
+    for (let i = 0; i < 60; i += 1) {
+      const now = await page.evaluate(() => document.querySelector('.ins-doctabs-strip').scrollLeft)
+      stable = last !== null && Math.abs(now - last) < 0.5 ? stable + 1 : 0
+      last = now
+      if (stable >= 3) return now
+      await page.waitForTimeout(50)
+    }
+    return last
+  }
+
+  // Poll the outcome rather than guessing at animation timing: wait until the
+  // tab is fully in view, or give up. This tests what the reviewer sees, not
+  // how it got there.
+  const settledVisible = async (i) => {
+    for (let n = 0; n < 30; n += 1) {
+      const v = await visibility(i)
+      if (v.shown > 0.99) return v
+      await page.waitForTimeout(60)
+    }
+    return visibility(i)
+  }
+
+  const visibility = (i) => page.evaluate((n) => {
+    const strip = document.querySelector('.ins-doctabs-strip')
+    const tab = document.querySelectorAll('.ins-doctab')[n]
+    const s = strip.getBoundingClientRect()
+    const t = tab.getBoundingClientRect()
+    const overlap = Math.max(0, Math.min(s.right, t.right) - Math.max(s.left, t.left))
+    return {
+      shown: overlap / t.width,
+      scrollLeft: strip.scrollLeft,
+      count: document.querySelectorAll('.ins-doctab').length,
+      fits: strip.scrollWidth <= strip.clientWidth,
+    }
+  }, i)
+
+  const state = await visibility(0)
+  check(`${label}: strip holds every document`, state.count === 15, `found ${state.count}`)
+  check(`${label}: the strip actually overflows`, !state.fits,
+    'nothing is off screen, so this viewport cannot exercise the bug')
+
+  // Forward: from the start, jump to each document in turn.
+  const forward = []
+  for (let i = 1; i < state.count; i += 1) {
+    await clickTab(i)
+    const v = await settledVisible(i)
+    if (v.shown <= 0.99) forward.push(`${i + 1} at ${(v.shown * 100).toFixed(0)}%`)
+  }
+  check(`${label}: every document reachable going forward`, forward.length === 0,
+    `off screen after selecting: ${forward.join(', ')}`)
+
+  // Backward: from the end, walk back down.
+  const backward = []
+  for (let i = state.count - 2; i >= 0; i -= 1) {
+    await clickTab(i)
+    const v = await settledVisible(i)
+    if (v.shown <= 0.99) backward.push(`${i + 1} at ${(v.shown * 100).toFixed(0)}%`)
+  }
+  check(`${label}: every document reachable going backward`, backward.length === 0,
+    `off screen after selecting: ${backward.join(', ')}`)
+
+  // Large jumps, which is where this actually goes wrong. Stepping one tab at
+  // a time never moves the strip far enough to expose an offset error.
+  const jumps = [[0, 14], [14, 0], [0, 11], [11, 0], [0, 7], [14, 3], [2, 13], [13, 2]]
+  const broken = []
+  for (const [from, to] of jumps) {
+    await clickTab(from)
+    await settled()
+    await clickTab(to)
+    const jv = await settledVisible(to)
+    if (jv.shown <= 0.99) {
+      broken.push(`${from + 1} to ${to + 1}: ${(jv.shown * 100).toFixed(0)}% visible`)
+    }
+  }
+  check(`${label}: large jumps bring the target into view`, broken.length === 0,
+    broken.join('; '))
+
+  // Walking the whole set with Next unreviewed, which is the only way to reach
+  // a document that is not currently on screen. Every step must bring its
+  // target into view.
+  await page.reload({ waitUntil: 'networkidle' })
+  await page.waitForSelector('.ins-doctabs-strip')
+  const walk = []
+  for (let step = 0; step < 14; step += 1) {
+    const moved = await page.evaluate(() => {
+      const btn = [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Next unreviewed')
+      if (!btn) return false
+      btn.click()
+      return true
+    })
+    if (!moved) break
+    await settled()
+    const seen = await page.evaluate(() => {
+      const strip = document.querySelector('.ins-doctabs-strip')
+      const tabs = [...document.querySelectorAll('.ins-doctab')]
+      const tab = tabs.find((t) => getComputedStyle(t).backgroundColor === 'rgb(45, 27, 78)')
+      if (!tab) return null
+      const s = strip.getBoundingClientRect()
+      const t = tab.getBoundingClientRect()
+      const overlap = Math.max(0, Math.min(s.right, t.right) - Math.max(s.left, t.left))
+      return { shown: overlap / t.width, index: tabs.indexOf(tab) }
+    })
+    if (!seen || seen.shown <= 0.9) {
+      walk.push(seen ? `document ${seen.index + 1} at ${(seen.shown * 100).toFixed(0)}%` : 'no active tab')
+    }
+  }
+  check(`${label}: walking with Next unreviewed keeps each document in view`,
+    walk.length === 0, walk.join('; '))
+
+  // Next unreviewed has to bring its target into view as well.
+  await page.evaluate(() => {
+    const btn = [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Next unreviewed')
+    btn?.click()
+  })
+  await settled()
+  const active = await page.evaluate(() => {
+    const strip = document.querySelector('.ins-doctabs-strip')
+    const tabs = [...document.querySelectorAll('.ins-doctab')]
+    const tab = tabs.find((t) => getComputedStyle(t).backgroundColor === 'rgb(45, 27, 78)')
+    if (!tab) return null
+    const s = strip.getBoundingClientRect()
+    const t = tab.getBoundingClientRect()
+    const overlap = Math.max(0, Math.min(s.right, t.right) - Math.max(s.left, t.left))
+    return { shown: overlap / t.width, index: tabs.indexOf(tab) }
+  })
+  check(`${label}: Next unreviewed brings its document into view`,
+    active !== null && active.shown > 0.9,
+    active ? `document ${active.index + 1} only ${(active.shown * 100).toFixed(0)}% visible` : 'no active tab found')
+
+  await page.close()
+}
+
 await browser.close()
 console.log(failed === 0 ? '\nbrowser tests passed\n' : `\nbrowser tests FAILED: ${failed}\n`)
 process.exit(failed ? 1 : 0)

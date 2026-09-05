@@ -99,3 +99,24 @@ export function firstRealRect(rects) {
   const real = list.filter((r) => r.width >= 1 && r.height >= 1)
   return real[0] || null
 }
+
+/**
+ * Where the document strip should scroll to put a tab in the middle.
+ *
+ * Takes the tab's offset measured from the strip's own content origin, not
+ * `offsetLeft`. A statically positioned strip is not an `offsetParent`, so
+ * `offsetLeft` is measured from some ancestor further up and carries the
+ * strip's own page position as a constant error. That error is clamped away
+ * when scrolling towards the start, so backward jumps looked correct while
+ * forward jumps silently under-shot and left the target off screen.
+ *
+ * @param {number} tabOffset  tab's left edge relative to the strip content
+ * @param {number} tabWidth
+ * @param {number} viewport   strip.clientWidth
+ * @param {number} content    strip.scrollWidth
+ */
+export function centreScrollLeft(tabOffset, tabWidth, viewport, content) {
+  const target = tabOffset - viewport / 2 + tabWidth / 2
+  const max = Math.max(0, content - viewport)
+  return Math.max(0, Math.min(target, max))
+}

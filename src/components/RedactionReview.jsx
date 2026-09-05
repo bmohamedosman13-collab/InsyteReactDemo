@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { APPROVAL_STEP_MS, runSequence } from '../lib/simulate.js'
-import { absoluteOffset, anchorPosition, largestFreeRange, trimToWords } from '../lib/redactionSelection.js'
+import { absoluteOffset, anchorPosition, centreScrollLeft, largestFreeRange, trimToWords } from '../lib/redactionSelection.js'
 
 /**
  * Redaction review and approval gate. Spec 3.1 and 3.2.
@@ -201,17 +201,38 @@ export default function RedactionReview({
     const strip = stripRef.current
     const tab = tabRefs.current[activeId]
     if (!strip || !tab) return
-    const target = tab.offsetLeft - strip.clientWidth / 2 + tab.clientWidth / 2
-    const max = strip.scrollWidth - strip.clientWidth
-    const left = Math.max(0, Math.min(target, max))
-    // Element.scrollTo is missing in older engines, and the CSS on the strip
-    // already gives smooth behaviour, so assigning scrollLeft is a complete
-    // fallback rather than a degraded one.
-    if (typeof strip.scrollTo === 'function') {
-      strip.scrollTo({ left, behavior: 'smooth' })
-    } else {
-      strip.scrollLeft = left
+    // Measured from the strip itself rather than from offsetLeft, which is
+    // relative to whatever the nearest positioned ancestor happens to be.
+    const centre = () => {
+      const stripBox = strip.getBoundingClientRect()
+      const tabBox = tab.getBoundingClientRect()
+      const tabOffset = tabBox.left - stripBox.left + strip.scrollLeft
+      return centreScrollLeft(tabOffset, tabBox.width, strip.clientWidth, strip.scrollWidth)
     }
+
+    // Element.scrollTo is missing in older engines, so assigning scrollLeft is
+    // the fallback rather than a degraded path.
+    if (typeof strip.scrollTo === 'function') {
+      strip.scrollTo({ left: centre(), behavior: 'smooth' })
+    } else {
+      strip.scrollLeft = centre()
+    }
+
+    // Guarantee the outcome. A smooth scroll can be interrupted, throttled or
+    // simply not supported, and the reviewer has to open every document before
+    // the gate will pass, so a tab left off screen is a dead end. If it is not
+    // fully in view shortly after, put it there without animating.
+    const check = () => {
+      const stripBox = strip.getBoundingClientRect()
+      const tabBox = tab.getBoundingClientRect()
+      if (tabBox.left < stripBox.left - 1 || tabBox.right > stripBox.right + 1) {
+        strip.scrollLeft = centre()
+      }
+    }
+    // Two checks: one soon after the animation would normally finish, one late
+    // enough to cover a slow or throttled frame.
+    const timers = [setTimeout(check, 300), setTimeout(check, 800)]
+    return () => timers.forEach(clearTimeout)
   }, [activeId])
 
   const openDoc = (id) => {

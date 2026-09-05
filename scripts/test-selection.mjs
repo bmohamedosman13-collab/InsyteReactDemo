@@ -8,7 +8,7 @@
  */
 import { JSDOM } from 'jsdom'
 import process from 'node:process'
-import { absoluteOffset, anchorPosition, firstRealRect, largestFreeRange, trimToWords } from '../src/lib/redactionSelection.js'
+import { absoluteOffset, anchorPosition, centreScrollLeft, firstRealRect, largestFreeRange, trimToWords } from '../src/lib/redactionSelection.js'
 
 const dom = new JSDOM('<!doctype html><body></body>')
 globalThis.window = dom.window
