@@ -12,7 +12,8 @@
     "audit:coverage": "node scripts/audit-coverage.mjs",
     "smoke": "vite-node scripts/smoke-render.mjs",
     "test:selection": "node scripts/test-selection.mjs",
-    "verify": "node scripts/check-citations.mjs && node scripts/audit-coverage.mjs && node scripts/test-selection.mjs && vite-node scripts/smoke-render.mjs && eslint ."
+    "verify": "node scripts/check-citations.mjs && node scripts/audit-coverage.mjs && node scripts/test-selection.mjs && vite-node scripts/smoke-render.mjs && eslint .",
+    "test:browser": "node scripts/test-browser.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
@@ -32,6 +33,7 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.5.0",
     "jsdom": "^29.1.1",
+    "playwright-core": "^1.63.0",
     "tailwindcss": "^4.2.4",
     "vite": "^8.0.10",
     "vite-node": "^6.0.0"

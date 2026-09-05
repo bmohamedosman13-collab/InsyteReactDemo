@@ -8,7 +8,7 @@
  */
 import { JSDOM } from 'jsdom'
 import process from 'node:process'
-import { absoluteOffset, anchorPosition, largestFreeRange, trimToWords } from '../src/lib/redactionSelection.js'
+import { absoluteOffset, anchorPosition, firstRealRect, largestFreeRange, trimToWords } from '../src/lib/redactionSelection.js'
 
 const dom = new JSDOM('<!doctype html><body></body>')
 globalThis.window = dom.window
@@ -73,6 +73,12 @@ check('clamps to the left edge',
 check('clamps to the right edge on a narrow screen',
   anchorPosition([line(760, 400)], 800), { left: 692, top: 364 })
 check('no rects means no control', anchorPosition([], 1600), null)
+check('skips a zero-width rect at a line end',
+  anchorPosition([line(1490, 380, 0, 16), line(120, 400)], 1600), { left: 120, top: 364 })
+check('firstRealRect ignores degenerate rects',
+  firstRealRect([line(1490, 380, 0, 16), line(120, 400)]), line(120, 400))
+check('firstRealRect returns null when every rect is degenerate',
+  firstRealRect([line(1490, 380, 0, 0)]), null)
 check('a zero-size rect means no control',
   anchorPosition([{ left: 0, top: 0, width: 0, height: 0, bottom: 0 }], 1600), null)
 

@@ -77,10 +77,25 @@ export function trimToWords(text, start, end) {
  * @returns {{left: number, top: number}|null}
  */
 export function anchorPosition(rects, viewportWidth, controlWidth = 100, offset = 36) {
-  const first = rects && rects[0]
-  if (!first || (!first.width && !first.height)) return null
+  const first = firstRealRect(rects)
+  if (!first) return null
   return {
     left: Math.max(8, Math.min(first.left, viewportWidth - controlWidth - 8)),
     top: first.top > offset + 8 ? first.top - offset : first.bottom + 8,
   }
+}
+
+/**
+ * The first rect that actually covers some text.
+ *
+ * getClientRects returns a rect per line box, but browsers also emit
+ * zero-width rects at line boundaries: a selection beginning at the end of a
+ * line yields a degenerate rect sitting at the far right of the line above.
+ * Anchoring to one of those puts the control at the right-hand edge of the
+ * screen, nowhere near the highlight, which is exactly what it was doing.
+ */
+export function firstRealRect(rects) {
+  const list = rects ? Array.from(rects) : []
+  const real = list.filter((r) => r.width >= 1 && r.height >= 1)
+  return real[0] || null
 }

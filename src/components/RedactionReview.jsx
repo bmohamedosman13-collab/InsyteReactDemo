@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { APPROVAL_STEP_MS, runSequence } from '../lib/simulate.js'
 import { absoluteOffset, anchorPosition, largestFreeRange, trimToWords } from '../lib/redactionSelection.js'
 
@@ -509,10 +510,13 @@ export default function RedactionReview({
         </div>
       </div>
 
-      {selection && (
-        // mousedown inside the control would collapse the text selection,
-        // which unmounts the control before the click lands. Preventing the
-        // default keeps the selection alive long enough for the button to fire.
+      {selection && createPortal(
+        // Rendered into <body>. A position:fixed element is positioned against
+        // the nearest ancestor with a transform, filter or containment rather
+        // than the viewport, and this screen animates its container, so the
+        // control has to escape the tree to land where the maths says it will.
+        // mousedown is prevented because it would otherwise collapse the text
+        // selection and unmount the control before the click lands.
         <div
           className="ins-selection-tip"
           onMouseDown={(e) => e.preventDefault()}
@@ -525,7 +529,8 @@ export default function RedactionReview({
           >
             Redact
           </button>
-        </div>
+        </div>,
+        document.body
       )}
 
       <div className="ins-card ins-approve-bar">
